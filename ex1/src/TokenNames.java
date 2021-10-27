@@ -77,26 +77,26 @@ public interface TokenNames {
         return "LT";
       case 20:
         return "GT";
-	    case 21:
-		    return "TYPE_INT";
-	    case 22:
-		    return "TYPE_STRING";
-	    case 23:
-		    return "CLASS";
-	    case 24:
-		    return "EXTENDS";
-	    case 25:
-		    return "NIL";
-	    case 26:
-		    return "RETURN";
-	    case 27:
-		    return "ARRAY";
-	    case 28:
-		    return "NEW";
-	    case 29:
-		    return "WHILE";
-	    case 30:
-		    return "IF";
+      case 21:
+        return "TYPE_INT";
+      case 22:
+        return "TYPE_STRING";
+      case 23:
+        return "CLASS";
+      case 24:
+        return "EXTENDS";
+      case 25:
+        return "NIL";
+      case 26:
+        return "RETURN";
+      case 27:
+        return "ARRAY";
+      case 28:
+        return "NEW";
+      case 29:
+        return "WHILE";
+      case 30:
+        return "IF";
       default:
         return "ERROR";
     }
