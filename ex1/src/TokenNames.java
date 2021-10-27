@@ -21,6 +21,16 @@ public interface TokenNames {
   public static final int EQ = 18;
   public static final int LT = 19;
   public static final int GT = 20;
+  public static final int TYPE_INT = 21;
+  public static final int TYPE_STRING = 22;
+  public static final int CLASS = 23;
+  public static final int EXTENDS = 24;
+  public static final int NIL = 25;
+  public static final int RETURN = 26;
+  public static final int ARRAY = 27;
+  public static final int NEW = 28;
+  public static final int WHILE = 29;
+  public static final int IF = 30;
   
 
   public static String translateToken(int token){
@@ -67,6 +77,26 @@ public interface TokenNames {
         return "LT";
       case 20:
         return "GT";
+	    case 21:
+		    return "TYPE_INT";
+	    case 22:
+		    return "TYPE_STRING";
+	    case 23:
+		    return "CLASS";
+	    case 24:
+		    return "EXTENDS";
+	    case 25:
+		    return "NIL";
+	    case 26:
+		    return "RETURN";
+	    case 27:
+		    return "ARRAY";
+	    case 28:
+		    return "NEW";
+	    case 29:
+		    return "WHILE";
+	    case 30:
+		    return "IF";
       default:
         return "ERROR";
     }
