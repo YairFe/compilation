@@ -68,12 +68,35 @@ import java_cup.runtime.*;
 %}
 
 /***********************/
-/* MACRO DECALARATIONS */
+/* MACRO DECLARATIONS */
 /***********************/
 LineTerminator	= \r|\n|\r\n
-WhiteSpace		= {LineTerminator} | [ \t\f]
+OtherWhiteSpace = [ \t\f]
+Letters = [a-zA-Z]
+Other = .
+Digits = [0-9]
+WhiteSpace		= {LineTerminator} | {OtherWhitespace}
+CommChars 		= "{" | "}" | "[" | "]" | "?" | "!" | "/" | "*" | "-" | "+" | "." | ";" 
 INTEGER			= 0 | [1-9][0-9]*
-ID				= [a-z]+
+
+/* NOTE: currently assuming that an identifier can start with an uppercase letter.
+   If not, should be rewritten to: ID = ([a-z]+)({Digits} | {Letters})* */
+ID				= ({Letters}+)({Digits} | {Letters})*
+
+STRING 			= \" ( {Letters}* ) \"
+LineComm		= "//"( {Letters} | {Digits} | {OtherWhiteSpace} | {CommChars} ) * ( {LineTerminator} )
+BlockComm		= "/*"( ( {Letters} | {Digits} | {CommChars} | {WhiteSpace} )* )"*/"
+CLASS_KEY = "class"
+EXTENDS_KEY = "extends" 
+NIL_KEY = "nil" 
+RETURN_KEY = "return" 
+ARRAY_KEY = "array" 
+NEW_KEY = "new" 
+WHILE_KEY = "while" 
+IF_KEY = "if"
+INT_KEY = "int"
+STRING_KEY = "string"
+ASSIGN = ":="
 
 /******************************/
 /* DOLAR DOLAR - DON'T TOUCH! */
@@ -95,12 +118,43 @@ ID				= [a-z]+
 
 "+"					{ return symbol(TokenNames.PLUS);}
 "-"					{ return symbol(TokenNames.MINUS);}
-"PPP"				{ return symbol(TokenNames.TIMES);}
+"*"					{ return symbol(TokenNames.TIMES);}
 "/"					{ return symbol(TokenNames.DIVIDE);}
 "("					{ return symbol(TokenNames.LPAREN);}
 ")"					{ return symbol(TokenNames.RPAREN);}
-{INTEGER}			{ return symbol(TokenNames.NUMBER, new Integer(yytext()));}
-{ID}				{ return symbol(TokenNames.ID,     new String( yytext()));}   
-{WhiteSpace}		{ /* just skip what was found, do nothing */ }
-<<EOF>>				{ return symbol(TokenNames.EOF);}
+"["					{ return symbol(TokenNames.RBRACK);}
+"]"					{ return symbol(TokenNames.LBRACK);}
+"{"					{ return symbol(TokenNames.RBRACE);}
+"}"					{ return symbol(TokenNames.LBRACE);}
+"."					{ return symbol(TokenNames.DOT);}
+","					{ return symbol(TokenNames.COMMA);}
+";"					{ return symbol(TokenNames.SEMICOLON);}
+"<"					{ return symbol(TokenNames.LT);}
+">"					{ return symbol(TokenNames.GT);}
+{ASSIGN}				{ return symbol(TokenNames.ASSIGN);}
+"="					{ return symbol(TokenNames.EQ);}
+{INTEGER}				{ return symbol(TokenNames.NUMBER, new Integer(yytext()));}
+{CLASS_KEY}				{ return symbol(TokenNames.CLASS);}
+{EXTENDS_KEY}			        { return symbol(TokenNames.EXTENDS);}
+{NIL_KEY}				{ return symbol(TokenNames.NIL);}
+{RETURN_KEY}				{ return symbol(TokenNames.RETURN);}
+{ARRAY_KEY}				{ return symbol(TokenNames.ARRAY);}
+{NEW_KEY}				{ return symbol(TokenNames.NEW);}
+{WHILE_KEY}				{ return symbol(TokenNames.WHILE);}
+{IF_KEY}				{ return symbol(TokenNames.IF);}
+{INT_KEY}				{ return symbol(TokenNames.TYPE_INT);}
+{STRING_KEY}				{ return symbol(TokenNames.TYPE_STRING);}
+{ID}					{ return symbol(TokenNames.ID,     new String( yytext()));} 
+{STRING}				{ return symbol(TokenNames.STRING, new String(yytext()));}
+{WhiteSpace}				{ /* just skip what was found, do nothing */ }
+/*
+	NOTE: currently assuming that comments should be ignored.
+	If comments should be part of the output, need to update
+	the next two cases.
+*/
+{LineComm}				{ /* just skip what was found, do nothing */ }
+{BlockComm}				{ /* just skip what was found, do nothing */ }
+<<EOF>>					{ return symbol(TokenNames.EOF);}
+{Other}					{ /* lexical error */
+					  throw new Exception("Lexical error");}
 }
