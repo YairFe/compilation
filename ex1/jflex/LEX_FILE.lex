@@ -6,7 +6,7 @@
 /* USER CODE */
 /*************/
 import java_cup.runtime.*;
-
+import java.io.IOException;
 /******************************/
 /* DOLAR DOLAR - DON'T TOUCH! */
 /******************************/
@@ -75,7 +75,7 @@ OtherWhiteSpace = [ \t\f]
 Letters = [a-zA-Z]
 Other = .
 Digits = [0-9]
-WhiteSpace		= {LineTerminator} | {OtherWhitespace}
+WhiteSpace		= {LineTerminator} | {OtherWhiteSpace}
 CommChars 		= "{" | "}" | "[" | "]" | "?" | "!" | "/" | "*" | "-" | "+" | "." | ";" 
 INTEGER			= 0 | [1-9][0-9]*
 
@@ -86,6 +86,7 @@ ID				= ({Letters}+)({Digits} | {Letters})*
 STRING 			= \" ( {Letters}* ) \"
 LineComm		= "//"( {Letters} | {Digits} | {OtherWhiteSpace} | {CommChars} ) * ( {LineTerminator} )
 BlockComm		= "/*"( ( {Letters} | {Digits} | {CommChars} | {WhiteSpace} )* )"*/"
+WrongComment	= "/*" | "//"
 CLASS_KEY = "class"
 EXTENDS_KEY = "extends" 
 NIL_KEY = "nil" 
@@ -116,21 +117,24 @@ ASSIGN = ":="
 
 <YYINITIAL> {
 
+{BlockComm}				{ /* just skip what was found, do nothing */ }
+{LineComm}				{ /* just skip what was found, do nothing */ }
 "+"					{ return symbol(TokenNames.PLUS);}
 "-"					{ return symbol(TokenNames.MINUS);}
 "*"					{ return symbol(TokenNames.TIMES);}
 "/"					{ return symbol(TokenNames.DIVIDE);}
 "("					{ return symbol(TokenNames.LPAREN);}
 ")"					{ return symbol(TokenNames.RPAREN);}
-"["					{ return symbol(TokenNames.RBRACK);}
-"]"					{ return symbol(TokenNames.LBRACK);}
-"{"					{ return symbol(TokenNames.RBRACE);}
-"}"					{ return symbol(TokenNames.LBRACE);}
+"["					{ return symbol(TokenNames.LBRACK);}
+"]"					{ return symbol(TokenNames.RBRACK);}
+"{"					{ return symbol(TokenNames.LBRACE);}
+"}"					{ return symbol(TokenNames.RBRACE);}
 "."					{ return symbol(TokenNames.DOT);}
 ","					{ return symbol(TokenNames.COMMA);}
 ";"					{ return symbol(TokenNames.SEMICOLON);}
 "<"					{ return symbol(TokenNames.LT);}
 ">"					{ return symbol(TokenNames.GT);}
+{WrongComment}		{ throw new IOException("Comment is Wrong");}
 {ASSIGN}				{ return symbol(TokenNames.ASSIGN);}
 "="					{ return symbol(TokenNames.EQ);}
 {INTEGER}				{ return symbol(TokenNames.NUMBER, new Integer(yytext()));}
@@ -152,9 +156,6 @@ ASSIGN = ":="
 	If comments should be part of the output, need to update
 	the next two cases.
 */
-{LineComm}				{ /* just skip what was found, do nothing */ }
-{BlockComm}				{ /* just skip what was found, do nothing */ }
 <<EOF>>					{ return symbol(TokenNames.EOF);}
-{Other}					{ /* lexical error */
-					  throw new Exception("Lexical error");}
+{Other}					{ throw new IOException("Lexical error");}
 }

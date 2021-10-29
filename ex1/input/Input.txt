@@ -1,3 +1,1 @@
-abcd
-moish 77 999 zebra
-90
+( ) { } [ ] (){}[] * / + - .,;:==<>iff whilee wwhile new string int class array extends nil return 
