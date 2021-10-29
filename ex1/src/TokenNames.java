@@ -46,7 +46,7 @@ public interface TokenNames {
       case 4:
         return "DIVIDE";
       case 5:
-        return "LPRAEN";
+        return "LPAREN";
       case 6:
         return "RPAREN";
       case 7:
