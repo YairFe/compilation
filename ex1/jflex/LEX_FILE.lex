@@ -134,7 +134,7 @@ ASSIGN = ":="
 ";"					{ return symbol(TokenNames.SEMICOLON);}
 "<"					{ return symbol(TokenNames.LT);}
 ">"					{ return symbol(TokenNames.GT);}
-{WrongComment}		{ throw new IOException("Comment is Wrong");}
+{WrongComment}		{ throw new IOException("Comment in Wrong format");}
 {ASSIGN}				{ return symbol(TokenNames.ASSIGN);}
 "="					{ return symbol(TokenNames.EQ);}
 {INTEGER}				{ return symbol(TokenNames.NUMBER, new Integer(yytext()));}
