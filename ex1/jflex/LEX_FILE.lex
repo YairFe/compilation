@@ -29,7 +29,7 @@ import java.io.IOException;
 /********************************************************************/
 %line
 %column
-
+%state Comment
 /*******************************************************************************/
 /* Note that this has to be the EXACT same name of the class the CUP generates */
 /*******************************************************************************/
@@ -76,8 +76,8 @@ Letters = [a-zA-Z]
 Other = .
 Digits = [0-9]
 WhiteSpace		= {LineTerminator} | {OtherWhiteSpace}
-CommChars 		= "{" | "}" | "[" | "]" | "?" | "!" | "/" | "*" | "-" | "+" | "." | ";" 
-INTEGER			= 0 | [1-9][0-9]*
+CommChars 		= "(" | ")" | "{" | "}" | "[" | "]" | "?" | "!" | "/" | "*" | "-" | "+" | "." | ";" 
+INTEGER			= [0-9]+
 
 /* NOTE: currently assuming that an identifier can start with an uppercase letter.
    If not, should be rewritten to: ID = ([a-z]+)({Digits} | {Letters})* */
@@ -85,8 +85,8 @@ ID				= ({Letters}+)({Digits} | {Letters})*
 
 STRING 			= \" ( {Letters}* ) \"
 LineComm		= "//"( {Letters} | {Digits} | {OtherWhiteSpace} | {CommChars} ) * ( {LineTerminator} )
-BlockComm		= "/*"( ( {Letters} | {Digits} | {CommChars} | {WhiteSpace} )* )"*/"
-WrongComment	= "/*" | "//"
+StartBlock		= "/*"
+StartLineComm	= "//"
 CLASS_KEY = "class"
 EXTENDS_KEY = "extends" 
 NIL_KEY = "nil" 
@@ -116,46 +116,51 @@ ASSIGN = ":="
 /**************************************************************/
 
 <YYINITIAL> {
-
-{BlockComm}				{ /* just skip what was found, do nothing */ }
+{StartBlock}			{ yybegin(Comment); }
 {LineComm}				{ /* just skip what was found, do nothing */ }
-"+"					{ return symbol(TokenNames.PLUS);}
-"-"					{ return symbol(TokenNames.MINUS);}
-"*"					{ return symbol(TokenNames.TIMES);}
-"/"					{ return symbol(TokenNames.DIVIDE);}
-"("					{ return symbol(TokenNames.LPAREN);}
-")"					{ return symbol(TokenNames.RPAREN);}
-"["					{ return symbol(TokenNames.LBRACK);}
-"]"					{ return symbol(TokenNames.RBRACK);}
-"{"					{ return symbol(TokenNames.LBRACE);}
-"}"					{ return symbol(TokenNames.RBRACE);}
-"."					{ return symbol(TokenNames.DOT);}
-","					{ return symbol(TokenNames.COMMA);}
-";"					{ return symbol(TokenNames.SEMICOLON);}
-"<"					{ return symbol(TokenNames.LT);}
-">"					{ return symbol(TokenNames.GT);}
-{WrongComment}		{ throw new IOException("Comment in Wrong format");}
+{StartLineComm}			{ throw new IOException("Lexer Error");}
+"+"						{ return symbol(TokenNames.PLUS);}
+"-"						{ return symbol(TokenNames.MINUS);}
+"*"						{ return symbol(TokenNames.TIMES);}
+"/"						{ return symbol(TokenNames.DIVIDE);}
+"("						{ return symbol(TokenNames.LPAREN);}
+")"						{ return symbol(TokenNames.RPAREN);}
+"["						{ return symbol(TokenNames.LBRACK);}
+"]"						{ return symbol(TokenNames.RBRACK);}
+"{"						{ return symbol(TokenNames.LBRACE);}
+"}"						{ return symbol(TokenNames.RBRACE);}
+"."						{ return symbol(TokenNames.DOT);}
+","						{ return symbol(TokenNames.COMMA);}
+";"						{ return symbol(TokenNames.SEMICOLON);}
+"<"						{ return symbol(TokenNames.LT);}
+">"						{ return symbol(TokenNames.GT);}
 {ASSIGN}				{ return symbol(TokenNames.ASSIGN);}
-"="					{ return symbol(TokenNames.EQ);}
-{INTEGER}				{ return symbol(TokenNames.NUMBER, new Integer(yytext()));}
+"="						{ return symbol(TokenNames.EQ);}
+{INTEGER}				{ if (yytext().length() > 1 && yytext().charAt(0)=='0')
+								throw new IOException("Wrong Num");
+							return symbol(TokenNames.NUMBER, new Integer(yytext()));}
 {CLASS_KEY}				{ return symbol(TokenNames.CLASS);}
-{EXTENDS_KEY}			        { return symbol(TokenNames.EXTENDS);}
+{EXTENDS_KEY}			{ return symbol(TokenNames.EXTENDS);}
 {NIL_KEY}				{ return symbol(TokenNames.NIL);}
-{RETURN_KEY}				{ return symbol(TokenNames.RETURN);}
+{RETURN_KEY}			{ return symbol(TokenNames.RETURN);}
 {ARRAY_KEY}				{ return symbol(TokenNames.ARRAY);}
 {NEW_KEY}				{ return symbol(TokenNames.NEW);}
 {WHILE_KEY}				{ return symbol(TokenNames.WHILE);}
 {IF_KEY}				{ return symbol(TokenNames.IF);}
 {INT_KEY}				{ return symbol(TokenNames.TYPE_INT);}
-{STRING_KEY}				{ return symbol(TokenNames.TYPE_STRING);}
+{STRING_KEY}			{ return symbol(TokenNames.TYPE_STRING);}
 {ID}					{ return symbol(TokenNames.ID,     new String( yytext()));} 
 {STRING}				{ return symbol(TokenNames.STRING, new String(yytext()));}
-{WhiteSpace}				{ /* just skip what was found, do nothing */ }
-/*
-	NOTE: currently assuming that comments should be ignored.
-	If comments should be part of the output, need to update
-	the next two cases.
-*/
+{WhiteSpace}			{ /* just skip what was found, do nothing */ }
 <<EOF>>					{ return symbol(TokenNames.EOF);}
 {Other}					{ throw new IOException("Lexical error");}
+}
+
+<Comment> {
+	"*/"				{ yybegin(YYINITIAL);}
+	{Letters}			{/* Do Nothing */}
+	{Digits}			{/* Do Nothing */}
+	{WhiteSpace}		{/* Do Nothing */}
+	{CommChars}			{/* Do Nothing */}
+	{Other}				{ throw new IOException("Lexical error");}
 }

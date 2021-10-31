@@ -3,6 +3,6 @@ a t HelloFrom /*abd*/ 123//a/*hi*/
 1abc 1if1        //{}}()[].;
 /*
 
-*/ id1ForLife
+*/ id1ForLife /* 0123 */
 /*string*/a/*{}()[]?!.;/*+-ff01*/*///hellofrom mario
 newLine //
