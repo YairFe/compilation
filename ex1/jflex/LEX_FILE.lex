@@ -85,8 +85,8 @@ ID				= ({Letters}+)({Digits} | {Letters})*
 
 STRING 			= \" ( {Letters}* ) \"
 LineComm		= "//"( {Letters} | {Digits} | {OtherWhiteSpace} | {CommChars} ) * ( {LineTerminator} )
+diffLineComm	= "//" ~{LineTerminator}
 StartBlock		= "/*"
-StartLineComm	= "//"
 CLASS_KEY = "class"
 EXTENDS_KEY = "extends" 
 NIL_KEY = "nil" 
@@ -118,7 +118,7 @@ ASSIGN = ":="
 <YYINITIAL> {
 {StartBlock}			{ yybegin(Comment); }
 {LineComm}				{ /* just skip what was found, do nothing */ }
-{StartLineComm}			{ throw new IOException("Lexer Error");}
+{diffLineComm}			{ throw new IOException("Lexer Error");}
 "+"						{ return symbol(TokenNames.PLUS);}
 "-"						{ return symbol(TokenNames.MINUS);}
 "*"						{ return symbol(TokenNames.TIMES);}

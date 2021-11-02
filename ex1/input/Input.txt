@@ -5,4 +5,5 @@ a t HelloFrom /*abd*/ 123//a/*hi*/
 
 */ id1ForLife /* 0123 */
 /*string*/a/*{}()[]?!.;/*+-ff01*/*///hellofrom mario
-newLine //
+newLine //123{}
+done 1if=0{3}Hello
