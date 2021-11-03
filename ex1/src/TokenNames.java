@@ -58,7 +58,7 @@ public interface TokenNames {
       case 10:
         return "RBRACK";
       case 11:  
-        return "NUMBER";
+        return "INT";
       case 12:
         return "ID";
       case 13:

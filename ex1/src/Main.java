@@ -25,8 +25,8 @@ public class Main
 			while (s.sym != TokenNames.EOF)
 			{
 				if (s.sym == TokenNames.NUMBER)
-					if((Integer) s.value < 0 || (Integer) s.value >= (1<<16))
-						throw new Exception("not a Number");
+					if((Integer) s.value < 0 || (Integer) s.value >= (1<<15))
+						throw new Exception(s.value + " not a Number");
 				
 				printToken(l,s,file_writer);
 				
