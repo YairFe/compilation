@@ -116,7 +116,7 @@ ASSIGN = ":="
 /**************************************************************/
 
 <YYINITIAL> {
-{StartBlock}			{ yybegin(Comment); }
+{StartBlock}			{ yybegin(Comment);}
 {LineComm}				{ /* just skip what was found, do nothing */ }
 {diffLineComm}			{ throw new IOException("Lexer Error");}
 "+"						{ return symbol(TokenNames.PLUS);}
@@ -162,5 +162,6 @@ ASSIGN = ":="
 	{Digits}			{/* Do Nothing */}
 	{WhiteSpace}		{/* Do Nothing */}
 	{CommChars}			{/* Do Nothing */}
+	<<EOF>>				{ throw new IOException("Lexical error");}
 	{Other}				{ throw new IOException("Lexical error");}
 }
