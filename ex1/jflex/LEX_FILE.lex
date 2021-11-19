@@ -91,6 +91,7 @@ CLASS_KEY = "class"
 EXTENDS_KEY = "extends" 
 NIL_KEY = "nil" 
 RETURN_KEY = "return" 
+VOID_KEY = "void"
 ARRAY_KEY = "array" 
 NEW_KEY = "new" 
 WHILE_KEY = "while" 
@@ -138,7 +139,7 @@ ASSIGN = ":="
 "="						{ return symbol(TokenNames.EQ);}
 {INTEGER}				{ if (yytext().length() > 1 && yytext().charAt(0)=='0')
 								throw new IOException("Wrong Num");
-							return symbol(TokenNames.NUMBER, new Integer(yytext()));}
+							return symbol(TokenNames.INT, new Integer(yytext()));}
 {CLASS_KEY}				{ return symbol(TokenNames.CLASS);}
 {EXTENDS_KEY}			{ return symbol(TokenNames.EXTENDS);}
 {NIL_KEY}				{ return symbol(TokenNames.NIL);}
@@ -149,6 +150,7 @@ ASSIGN = ":="
 {IF_KEY}				{ return symbol(TokenNames.IF);}
 {INT_KEY}				{ return symbol(TokenNames.TYPE_INT);}
 {STRING_KEY}			{ return symbol(TokenNames.TYPE_STRING);}
+{VOID_KEY}				{ return symbol(TokenNames.TYPE_VOID);}
 {ID}					{ return symbol(TokenNames.ID,     new String( yytext()));} 
 {STRING}				{ return symbol(TokenNames.STRING, new String(yytext()));}
 {WhiteSpace}			{ /* just skip what was found, do nothing */ }
