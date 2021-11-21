@@ -22,7 +22,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		System.out.print("====================== exp -> exp BINOP exp\n");
 
 		/*******************************/
-		/* COPY INPUT DATA NENBERS ... */
+		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
 		this.left = left;
 		this.right = right;
