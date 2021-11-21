@@ -169,7 +169,7 @@ exp			::=		var					{: RESULT = new AST_STMT_LIST(s,l)}
 					;
 var			::=		ID					{: RESULT = new AST_STMT_LIST(s,l)}
 					| var DOT ID		{: RESULT = new AST_STMT_LIST(s,l)}
-					| var LBRACK EXP RBRACK		{: RESULT = new AST_STMT_LIST(s,l)}
+					| var LBRACK exp RBRACK		{: RESULT = new AST_STMT_LIST(s,l)}
 					;
 stmt		::=		varDec				{: RESULT = new AST_STMT_LIST(s,l)}
 					| var ASSIGN exp SEMICOLON	{: RESULT = new AST_STMT_LIST(s,l)}
