@@ -39,8 +39,15 @@ public class AST_EXP_BINOP extends AST_EXP
 		/*********************************/
 		/* CONVERT OP to a printable sOP */
 		/*********************************/
-		if (OP == 0) {sOP = "+";}
-		if (OP == 1) {sOP = "-";}
+		
+		/* NOTE: OP int values correspond to TokenNames.java */
+		if (OP == 1)  {sOP = "+";}
+		if (OP == 2)  {sOP = "-";}
+		if (OP == 3)  {sOP = "*";}
+		if (OP == 4)  {sOP = "/";}
+		if (OP == 18) {sOP = "=";}
+		if (OP == 19) {sOP = "<";}
+		if (OP == 20) {sOP = ">";}
 		
 		/*************************************/
 		/* AST NODE TYPE = AST BINOP EXP */
@@ -58,7 +65,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		/***************************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			String.format("BINOP(%s)",sOP));
+			String.format("BINOP( %s )",sOP));
 		
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */

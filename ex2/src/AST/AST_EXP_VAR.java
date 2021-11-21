@@ -20,7 +20,7 @@ public class AST_EXP_VAR extends AST_EXP
 		System.out.print("====================== exp -> var\n");
 
 		/*******************************/
-		/* COPY INPUT DATA NENBERS ... */
+		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
 		this.var = var;
 	}
@@ -36,7 +36,7 @@ public class AST_EXP_VAR extends AST_EXP
 		System.out.print("AST NODE EXP VAR\n");
 
 		/*****************************/
-		/* RECURSIVELY PRINT var ... */
+		/* RECURSIVELY PRINT VAR ... */
 		/*****************************/
 		if (var != null) var.PrintMe();
 		
@@ -50,7 +50,7 @@ public class AST_EXP_VAR extends AST_EXP
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
 		/****************************************/
-		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
+		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
 			
 	}
 }

@@ -24,7 +24,7 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		System.out.print("====================== stmt -> var ASSIGN exp SEMICOLON\n");
 
 		/*******************************/
-		/* COPY INPUT DATA NENBERS ... */
+		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
 		this.var = var;
 		this.exp = exp;
@@ -56,7 +56,7 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
 		/****************************************/
-		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
-		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
+		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
+		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
 }

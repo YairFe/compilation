@@ -23,7 +23,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		System.out.format("====================== var -> ID( %s )\n",name);
 
 		/*******************************/
-		/* COPY INPUT DATA NENBERS ... */
+		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
 		this.name = name;
 	}
@@ -43,6 +43,6 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		/*********************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			String.format("SIMPLE\nVAR\n(%s)",name));
+			String.format("SIMPLE\nVAR\n( %s )",name));
 	}
 }

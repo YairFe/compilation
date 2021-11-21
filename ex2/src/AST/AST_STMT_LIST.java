@@ -21,11 +21,11 @@ public class AST_STMT_LIST extends AST_Node
 		/***************************************/
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
-		if (tail != null) System.out.print("====================== stmts -> stmt stmts\n");
-		if (tail == null) System.out.print("====================== stmts -> stmt      \n");
+		if (tail != null) System.out.print("====================== multiStmt -> stmt multiStmt\n");
+		if (tail == null) System.out.print("====================== multiStmt -> stmt      \n");
 
 		/*******************************/
-		/* COPY INPUT DATA NENBERS ... */
+		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
 		this.head = head;
 		this.tail = tail;
