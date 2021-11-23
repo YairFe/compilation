@@ -52,7 +52,7 @@ public class AST_BINOP extends AST_Node
 		/*************************************/
 		/* AST NODE TYPE = AST BINOP EXP */
 		/*************************************/
-		System.out.print("BINOP\n");
+		System.out.print("AST NODE BINOP\n");
 		
 		/***************************************/
 		/* PRINT Node to AST GRAPHVIZ DOT file */

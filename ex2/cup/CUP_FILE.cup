@@ -157,9 +157,7 @@ multiVar	::=		type:t ID:id 			{: RESULT = new AST_VAR_LIST(id,null,t);    :}
 multiStmt	::=		stmt:s 					{: RESULT = new AST_STMT_LIST(s,null);    :}
 					| stmt:s multiStmt:mul_s 	{: RESULT = new AST_STMT_LIST(s,mul_s);    :}
 					;
-funcDec		::=		type:t ID:id LPAREN RPAREN LBRACE RBRACE	{: RESULT = new AST_FUNC_DEC(t,id,null,null);    :}
-					| type:t ID:id LPAREN RPAREN LBRACE multiStmt:mul_stmt RBRACE	{: RESULT = new AST_FUNC_DEC(t,id,null,mul_stmt);    :}
-					| type:t ID:id LPAREN multiVar:mul_var RPAREN LBRACE RBRACE	{: RESULT = new AST_FUNC_DEC(t,id,mul_var,null);    :}
+funcDec		::=		type:t ID:id LPAREN RPAREN LBRACE multiStmt:mul_stmt RBRACE	{: RESULT = new AST_FUNC_DEC(t,id,null,mul_stmt);    :}
 					| type:t ID:id LPAREN multiVar:mul_var RPAREN LBRACE multiStmt:mul_stmt RBRACE	{: RESULT = new AST_FUNC_DEC(t,id,mul_var,mul_stmt);    :}
 					;
 classCont	::=		cField:c1				{: RESULT= new AST_CLASS_CONT(c1,null);	:} 
@@ -197,6 +195,7 @@ stmt		::=		varDec:v_dec				{: RESULT = new AST_STMT_VAR_DEC(v_dec);	:}
 					| var:v DOT ID:id LPAREN RPAREN SEMICOLON	{: RESULT = new AST_STMT_VAR_FUNC(v,id,null);	:}
 					| var:v DOT ID:id LPAREN multiExp:mul_e RPAREN SEMICOLON	{: RESULT = new AST_STMT_VAR_FUNC(v,id,mul_e);	:}
 					| ID:id LPAREN multiExp:mul_e RPAREN SEMICOLON	{: RESULT = new AST_STMT_VAR_FUNC(null,id,mul_e);	:}
+					| ID:id LPAREN RPAREN SEMICOLON	{: RESULT = new AST_STMT_VAR_FUNC(null,id,null);	:}
 					;
 newExp		::=		NEW type:t			{: RESULT = new AST_NEW_EXP(t,null);	:}
 					| NEW type:t LBRACK exp:e RBRACK	{: RESULT = new AST_NEW_EXP(t,e);	:}
