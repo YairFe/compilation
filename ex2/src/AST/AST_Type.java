@@ -24,6 +24,7 @@ public class AST_Type extends AST_Node {
 		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
 		this.t = t;
+		this.id = id;
 	}
 	
 	public AST_Type(String id) {

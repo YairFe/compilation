@@ -19,8 +19,8 @@ public class AST_STMT_VAR_FUNC extends AST_STMT {
 		/***************************************/
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
-		
-		System.out.format("====================== stmt -> var DOT ID(%s) LPAREN multiExp RPAREN SEMICOLON\n", fn);
+		if(var==null) System.out.format("====================== stmt -> ID(%s) LPAREN multiExp RPAREN SEMICOLON\n", fn);
+		if(var!=null) System.out.format("====================== stmt -> var DOT ID(%s) LPAREN multiExp RPAREN SEMICOLON\n", fn);
 		
 		/*******************************/
 		/* COPY INPUT DATA MEMBERS ... */
@@ -55,7 +55,7 @@ public class AST_STMT_VAR_FUNC extends AST_STMT {
 		
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			String.format("STMT/n VAR FUNC( %s )", fn));
+			String.format("STMT\n VAR\n FUNC( %s )", fn));
 		
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */

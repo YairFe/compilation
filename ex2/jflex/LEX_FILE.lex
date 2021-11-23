@@ -141,7 +141,10 @@ ASSIGN = ":="
 "="						{ return symbol(TokenNames.EQ);}
 {INTEGER}				{ if (yytext().length() > 1 && yytext().charAt(0)=='0')
 								throw new IOException("Wrong Num");
-							return symbol(TokenNames.INT, new Integer(yytext()));}
+							int tmp = new Integer(yytext());
+							if(tmp < 0 || tmp >= (1<<15))
+								throw new IOException("not a Number");
+							return symbol(TokenNames.INT, tmp);}
 {CLASS_KEY}				{ return symbol(TokenNames.CLASS);}
 {EXTENDS_KEY}			{ return symbol(TokenNames.EXTENDS);}
 {NIL_KEY}				{ return symbol(TokenNames.NIL);}
