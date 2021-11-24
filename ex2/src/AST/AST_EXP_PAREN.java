@@ -46,7 +46,7 @@ public class AST_EXP_PAREN extends AST_EXP {
 		/*********************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			"EXP PAREN");
+			"( EXP )");
 		
 		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
