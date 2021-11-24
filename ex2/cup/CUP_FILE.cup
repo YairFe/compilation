@@ -113,13 +113,13 @@ non terminal AST_EXP_LIST multiExp;
 /***********************/
 /* OPERATOR PRECEDENCE */
 /***********************/
-precedence left ASSIGN;
+precedence nonassoc ASSIGN;
 precedence left EQ;
 precedence left GT,LT;
 precedence left PLUS,MINUS;
 precedence left TIMES,DIVIDE;
-precedence left LBRACK;
-precedence left LBRACE;
+precedence nonassoc LBRACK;
+precedence nonassoc LBRACE;
 precedence left DOT;
 
 /************************/
