@@ -42,13 +42,6 @@ public class AST_BINOP extends AST_Node
 	public void PrintMe()
 	{
 		
-		/*********************************/
-		/* CONVERT OP to a printable sOP */
-		/*********************************/
-		
-		/* NOTE: OP int values correspond to TokenNames.java */
-		
-		
 		/*************************************/
 		/* AST NODE TYPE = AST BINOP EXP */
 		/*************************************/
