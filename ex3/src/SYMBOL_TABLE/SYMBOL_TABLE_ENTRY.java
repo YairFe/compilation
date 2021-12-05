@@ -47,6 +47,7 @@ public class SYMBOL_TABLE_ENTRY
 		TYPE type,
 		int index,
 		SYMBOL_TABLE_ENTRY next,
+		int scope_depth;
 		SYMBOL_TABLE_ENTRY prevtop,
 		int prevtop_index)
 	{
@@ -54,6 +55,7 @@ public class SYMBOL_TABLE_ENTRY
 		this.name = name;
 		this.type = type;
 		this.next = next;
+		this.scope_depth = scope_depth;
 		this.prevtop = prevtop;
 		this.prevtop_index = prevtop_index;
 	}
