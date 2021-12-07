@@ -114,7 +114,8 @@ public class SYMBOL_TABLE
 	/************************************************************/
 	public boolean existInScope(String name)
 	{
-		for (SYMBOL_TABLE_ENTRY e = table[hash(name)]; e != null; e = e.next)
+		SYMBOL_TABLE_ENTRY  e;
+		for (e = table[hash(name)]; e != null; e = e.next)
 		{
 			if (name.equals(e.name))
 			{	
