@@ -109,6 +109,24 @@ public class SYMBOL_TABLE
 		return null;
 	}
 	/************************************************************/
+	/* function that check if value can be assign to var		*/
+	/* with the following conditions							*/
+	/* value class is a child class of var class				*/
+	/* var and value are array type with the same type			*/
+	/* value is a function with return value of var type		*/
+	/* value and var are of the same type						*/
+	/************************************************************/
+	public boolean canAssignValueToVar(TYPE var, TYPE value){
+		if(var.isClass() && value.isClass())
+			return ((TYPE_CLASS) var).isFatherOf(value);
+		if(var.isArray() && value.isArray())
+			return ((TYPE_ARRAY) var).type.name.equals(((TYPE_ARRAY) value).type.name);
+		if(value.isFunc())
+			value = ((TYPE_FUNCTION) value).returnType;
+		return var.name.equals(value.name);
+	}
+
+	/************************************************************/
 	/* function to look if the name exist in current scope		*/
 	/* use to check if we can declare the variable on the scope	*/
 	/************************************************************/

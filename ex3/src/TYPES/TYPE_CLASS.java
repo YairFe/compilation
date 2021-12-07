@@ -36,4 +36,13 @@ public class TYPE_CLASS extends TYPE
 			return this.father.findInClassScope;
 		return null;
 	}
+	
+	public boolean isFatherOf(TYPE_CLASS son){
+		while(son != null){
+			if(this.name.equals(son.name))
+				return true;
+			son = son.father;
+		}
+		return false;
+	}
 }
