@@ -98,7 +98,7 @@ public class SYMBOL_TABLE
 		}
 		if (classContext){
 			/* look for the name in the class scope	*/
-			if (fatherClass)
+			if (fatherClass != null)
 				result_type = fatherClass.findInClassScope(name);
 			if (result_type != null){
 				return result_type;
@@ -132,6 +132,7 @@ public class SYMBOL_TABLE
 	/************************************************************/
 	public boolean existInScope(String name)
 	{
+		SYMBOL_TABLE_ENTRY  e;
 		for (e = table[hash(name)]; e != null; e = e.next)
 		{
 			if (name.equals(e.name))
@@ -143,7 +144,7 @@ public class SYMBOL_TABLE
 	}
 
 	/***************************************************************************/
-	/* begine scope = Enter the <SCOPE-BOUNDARY> element to the data structure */
+	/* begin scope = Enter the <SCOPE-BOUNDARY> element to the data structure */
 	/***************************************************************************/
 	public void beginScope()
 	{

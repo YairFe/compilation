@@ -32,7 +32,7 @@ public class TYPE_CLASS extends TYPE
 				return e.head.type;
 			}
 		}
-		if (this.father)
+		if (this.father != null)
 			return this.father.findInClassScope;
 		return null;
 	}
