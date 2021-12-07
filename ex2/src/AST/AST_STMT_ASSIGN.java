@@ -59,4 +59,15 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
 		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
+
+	public TYPE SemantMe(){
+		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
+		TYPE var_type = var.SemantMe();
+		if(!var_type) return null;
+		TYPE exp_type = exp.SemantMe();
+		if(!exp_type) return null;
+		if(s.canAssignValueToVar(var_type,exp_type))
+			return TYPE_VOID.getInstance();
+		return null;
+	}
 }

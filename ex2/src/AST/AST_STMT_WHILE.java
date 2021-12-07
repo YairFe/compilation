@@ -60,4 +60,15 @@ public class AST_STMT_WHILE extends AST_STMT
 		if (cond != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,cond.SerialNumber);
 		if (body != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,body.SerialNumber);
 	}
+
+	public TYPE SemantMe(){
+        SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
+		TYPE t;
+		t = cond.SemantMe();
+		if (!t || !t.name.equals("int")) return null;
+		s.beginScope();
+		if(!body.SemantMe()) return null;
+		s.endScope();
+		return TYPE_VOID.getInstance();
+    }
 }

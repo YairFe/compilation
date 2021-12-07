@@ -59,4 +59,14 @@ public class AST_STMT_IF extends AST_STMT
 		if (cond != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,cond.SerialNumber);
 		if (body != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,body.SerialNumber);
 	}
+
+	public TYPE SemantMe(){
+		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
+		TYPE exp_type = cond.SemantMe();
+		if(!exp_type || !exp_type.name.equals("int")) return null;
+		s.beginScope();
+		if(!body.SemantMe()) return null;
+		s.endScope();
+		return TYPE_VOID.getInstance();
+	}
 }
