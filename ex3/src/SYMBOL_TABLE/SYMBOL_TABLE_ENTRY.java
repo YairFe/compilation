@@ -39,17 +39,13 @@ public class SYMBOL_TABLE_ENTRY
 	/****************************************************/
 	public int prevtop_index;
 	
+	int scope_depth;
+	
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public SYMBOL_TABLE_ENTRY(
-		String name,
-		TYPE type,
-		int index,
-		SYMBOL_TABLE_ENTRY next,
-		int scope_depth;
-		SYMBOL_TABLE_ENTRY prevtop,
-		int prevtop_index)
+	public SYMBOL_TABLE_ENTRY( String name, TYPE type, int index, SYMBOL_TABLE_ENTRY next, int scope_depth, SYMBOL_TABLE_ENTRY prevtop,
+    int prevtop_index)
 	{
 		this.index = index;
 		this.name = name;
