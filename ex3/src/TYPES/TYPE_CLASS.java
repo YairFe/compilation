@@ -22,7 +22,6 @@ public class TYPE_CLASS extends TYPE
 		this.name = name;
 		this.father = father;
 		this.data_members = data_members;
-		this.isClass = true;
 	}
 
 	public TYPE findInClassScope(String name){
