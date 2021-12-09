@@ -45,4 +45,6 @@ public class TYPE_CLASS extends TYPE
 		}
 		return false;
 	}
+	
+	public boolean isClass () { return true; }
 }
