@@ -118,7 +118,7 @@ public class SYMBOL_TABLE
 	/************************************************************/
 	public boolean canAssignValueToVar(TYPE var, TYPE value){
 		if(var.isClass() && value.isClass())
-			return ((TYPE_CLASS) var).isFatherOf(value);
+			return ((TYPE_CLASS) var).isFatherOf((TYPE_CLASS) value);
 		if(var.isArray() && value.isArray())
 			return ((TYPE_ARRAY) var).type.name.equals(((TYPE_ARRAY) value).type.name);
 		if(value.isFunc())
