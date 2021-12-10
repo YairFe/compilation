@@ -5,7 +5,7 @@ public class TYPE_ARRAY extends TYPE
     public TYPE array_type;
 
     public TYPE_ARRAY(STRING name, TYPE type){
-        this.name = name
+        this.name = name;
         this.array_type = type;
     }
 	/*************/
