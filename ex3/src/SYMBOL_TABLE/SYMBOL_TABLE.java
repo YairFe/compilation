@@ -120,7 +120,7 @@ public class SYMBOL_TABLE
 		if(var.isClass() && value.isClass())
 			return ((TYPE_CLASS) var).isFatherOf((TYPE_CLASS) value);
 		if(var.isArray() && value.isArray())
-			return ((TYPE_ARRAY) var).type.name.equals(((TYPE_ARRAY) value).type.name);
+			return ((TYPE_ARRAY) var).array_type.name.equals(((TYPE_ARRAY) value).array_type.name);
 		if(value.isFunc())
 			value = ((TYPE_FUNCTION) value).returnType;
 		return var.name.equals(value.name);
