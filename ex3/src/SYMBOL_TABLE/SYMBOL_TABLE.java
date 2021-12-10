@@ -27,8 +27,8 @@ public class SYMBOL_TABLE
 	private SYMBOL_TABLE_ENTRY top;
 	private int top_index = 0;
 	private int cur_scope_depth = 0;
-	private TYPE_CLASS fatherClass = null;
-	private boolean classContext = false;
+	public TYPE_CLASS fatherClass = null;
+	public boolean classContext = false;
 	
 	/**************************************************************/
 	/* A very primitive hash function for exposition purposes ... */
