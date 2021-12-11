@@ -29,11 +29,11 @@ public class TYPE_CLASS extends TYPE
 			return null;
 		for (TYPE_CLASS_VAR_DEC_LIST e=this.data_members;e!=null;e=e.tail){
 			if (e.head.name.equals(name)){
-				return e.head.type;
+				return e.head.t;
 			}
 		}
 		if (this.father != null)
-			return this.father.findInClassScope;
+			return this.father.findInClassScope(name);
 		return null;
 	}
 	
