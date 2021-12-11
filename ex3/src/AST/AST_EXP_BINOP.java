@@ -96,7 +96,8 @@ public class AST_EXP_BINOP extends AST_EXP
 				if (hasString) return null;
 				return TYPE_INT.getInstance();
 			}
-			/* TODO: check that the compared values have similar types */
+			/* check that the compared values have similar types */
+			if(canAssignValueToVar(t1,t2) && canAssignValueToVar(t2, t1)) return TYPE_INT.getInstance();
 		}
 		// otherwise, error
 		return null;
