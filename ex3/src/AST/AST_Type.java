@@ -16,16 +16,15 @@ public class AST_Type extends AST_Node {
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
 		switch(t) {
-		case 1: id = "TYPE_INT"; break;
-		case 2: id = "TYPE_STRING"; break;
-		case 3: id = "TYPE_VOID"; break;
+		case 1: this.id = "TYPE_INT"; break;
+		case 2: this.id = "TYPE_STRING"; break;
+		case 3: this.id = "TYPE_VOID"; break;
 		}
 		System.out.format("====================== type -> %s \n", id);
 		/*******************************/
 		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
 		this.t = t;
-		this.id = id;
 	}
 	
 	public AST_Type(int line, String id) {
@@ -44,7 +43,7 @@ public class AST_Type extends AST_Node {
 		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
 		this.t = 4;
-		this.id = null;
+		this.id = id;
 	}
 	
 	public void PrintMe()

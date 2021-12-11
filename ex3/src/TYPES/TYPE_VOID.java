@@ -20,7 +20,7 @@ public class TYPE_VOID extends TYPE
 		if (instance == null)
 		{
 			instance = new TYPE_VOID();
-			this.name = "void";
+			instance.name = "void";
 		}
 		return instance;
 	}
