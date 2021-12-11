@@ -23,7 +23,7 @@ public class AST_EXP_CALL extends AST_EXP
 	}
 
 	/************************************************************/
-	/* The printing message for a function declaration AST node */
+	/* The printing message for a function call AST node */
 	/************************************************************/
 	public void PrintMe()
 	{
