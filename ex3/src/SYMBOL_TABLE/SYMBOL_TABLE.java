@@ -27,7 +27,7 @@ public class SYMBOL_TABLE
 	private SYMBOL_TABLE_ENTRY top;
 	private int top_index = 0;
 	private int cur_scope_depth = 0;
-	private TYPE_CLASS curClass = null;
+	public TYPE_CLASS curClass = null;
 	private TYPE returnType = null;
 	
 	/**************************************************************/
@@ -90,13 +90,13 @@ public class SYMBOL_TABLE
 			{	
 				/* scope_depth will be zero if there is only 	**
 				** a global variable with this name				*/
-				if (curClass && e.scope_depth == 0){
+				if ((curClass != null) && (e.scope_depth == 0)){
 					break;
 				}
 				return e.type;
 			}
 		}
-		if (curClass){
+		if (curClass != null){
 			/* look for the name in the class scope	*/
 			if (curClass != null)
 				result_type = curClass.findInClassScope(name);
@@ -137,7 +137,7 @@ public class SYMBOL_TABLE
 	/* if not in function scope return false					*/
 	/************************************************************/
 	public boolean canReturnType(TYPE other){
-		if (!this.returnType)
+		if (this.returnType == null)
 			return false;
 		return canAssignValueToVar(this.returnType, other);
 	}
