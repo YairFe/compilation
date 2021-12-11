@@ -1,13 +1,12 @@
-package AST;
+package AST; import TYPES.*;
 
 public class AST_C_FIELD extends AST_Node {
 
 	public AST_VAR_DEC varDec;
 	public AST_FUNC_DEC funcDec;
 	
-	public AST_C_FIELD(int line, AST_VAR_DEC varDec) 
+	public AST_C_FIELD(AST_VAR_DEC varDec) 
 	{
-		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -25,9 +24,8 @@ public class AST_C_FIELD extends AST_Node {
 		this.funcDec = null;
 	}
 	
-	public AST_C_FIELD(int line, AST_FUNC_DEC funcDec) 
+	public AST_C_FIELD(AST_FUNC_DEC funcDec) 
 	{
-		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -72,15 +70,12 @@ public class AST_C_FIELD extends AST_Node {
 		if(funcDec != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,funcDec.SerialNumber);
 		
 	}
-
-	public TYPE SemantMe(){
-		TYPE t;
-		if(varDec){
-			t = varDec.SemantMe();
-		} else { // else funcDec is not null
-			t = funcDec.SemantMe();
-		}
-		if(t.isError()) return t;
-		return TYPE_VOID.getInstance();
+	
+	public TYPE SemantMe() 
+	{ 
+		if (varDec != null) return varDec.SemantMe();
+		if (funcDec != null) return funcDec.SemantMe();
+		
+		return null;
 	}
 }

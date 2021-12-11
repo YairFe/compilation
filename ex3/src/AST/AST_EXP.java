@@ -1,11 +1,8 @@
-package AST;
+package AST; import TYPES.*;
 
-import TYPES.*;
 
 public abstract class AST_EXP extends AST_Node
 {
-	public TYPE SemantMe()
-	{
-		return null;
-	}
+	public TYPE SemantMe() { return null; }
 }
+

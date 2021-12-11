@@ -1,17 +1,11 @@
 package AST; import TYPES.*;
 
-public class AST_EXP_LIST extends AST_Node 
-{
-	/****************/
-	/* DATA MEMBERS */
-	/****************/
-	public AST_EXP head;
-	public AST_EXP_LIST tail;
+public class AST_CLASS_CONT extends AST_Node {
+
+	public AST_C_FIELD head;
+	public AST_CLASS_CONT tail;
 	
-	/******************/
-	/* CONSTRUCTOR(S) */
-	/******************/
-	public AST_EXP_LIST(AST_EXP head, AST_EXP_LIST tail)
+	public AST_CLASS_CONT(AST_C_FIELD head, AST_CLASS_CONT tail)
 	{
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
@@ -21,8 +15,8 @@ public class AST_EXP_LIST extends AST_Node
 		/***************************************/
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
-		if (tail != null) System.out.print("====================== multiExp	-> exp COMMA multiExp\n");
-		if (tail == null) System.out.print("====================== multiExp -> exp      \n");
+		if (tail != null) System.out.print("====================== classCont -> cField classCont\n");
+		if (tail == null) System.out.print("====================== classCont -> cField      \n");
 
 		/*******************************/
 		/* COPY INPUT DATA MEMBERS ... */
@@ -30,16 +24,13 @@ public class AST_EXP_LIST extends AST_Node
 		this.head = head;
 		this.tail = tail;
 	}
-	
-	/******************************************************/
-	/* The printing message for an expression list AST node */
-	/******************************************************/
+
 	public void PrintMe()
 	{
 		/**************************************/
-		/* AST NODE TYPE = AST EXPRESSION LIST */
+		/* AST NODE TYPE = AST CLASS          */
 		/**************************************/
-		System.out.print("AST NODE EXP LIST\n");
+		System.out.print("AST NODE CLASS CONT\n");
 
 		/*************************************/
 		/* RECURSIVELY PRINT HEAD + TAIL ... */
@@ -52,7 +43,7 @@ public class AST_EXP_LIST extends AST_Node
 		/**********************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			"EXP\nLIST\n");
+			"CLASS CONT\n");
 		
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
@@ -61,7 +52,8 @@ public class AST_EXP_LIST extends AST_Node
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
 	
-	public TYPE SemantMe() {
+	public TYPE SemantMe() 
+	{ 
 		TYPE t1 = null;
 		TYPE t2 = null;
 		
@@ -74,6 +66,7 @@ public class AST_EXP_LIST extends AST_Node
 			if(t2 == null) return null;
 		}
 		
-		return new TYPE_LIST(t1, (TYPE_LIST)t2);
+		return new TYPE_CLASS_VAR_DEC_LIST((TYPE_CLASS_VAR_DEC)t1,(TYPE_CLASS_VAR_DEC_LIST)t2);
 	}
+	
 }

@@ -1,14 +1,13 @@
 package AST; import TYPES.*;
 
-public class AST_EXP_STRING extends AST_EXP {
-	
-	public String value;
-
+public class AST_EXP_NIL extends AST_EXP 
+{
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_EXP_STRING(String value) 
-	{	
+	
+	public AST_EXP_NIL()
+	{
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -17,37 +16,28 @@ public class AST_EXP_STRING extends AST_EXP {
 		/***************************************/
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
-		System.out.format("====================== exp -> STRING( %s )\n", value);
-		
-		/*******************************/
-		/* COPY INPUT DATA MEMBERS ... */
-		/*******************************/
-		this.value = value;
+		System.out.print("====================== exp -> NIL\n");
+
 	}
 	
 	/************************************************/
-	/* The printing message for a STRING EXP AST node */
+	/* The printing message for an NIL EXP AST node */
 	/************************************************/
 	public void PrintMe()
 	{
 		/*******************************/
-		/* AST NODE TYPE = AST STRING EXP */
+		/* AST NODE TYPE = AST NIL EXP */
 		/*******************************/
-		System.out.format("AST NODE STRING( %s )\n",value);
+		System.out.print("AST NODE NIL\n");
 
 		/*********************************/
 		/* Print to AST GRAPHIZ DOT file */
 		/*********************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			String.format("STRING( %s )",value));
+			"NIL");
 	}
 	
-	/*************************************************/
-	/*          Semantic analysis function           */
-	/*************************************************/
-	public TYPE SemantMe()
-	{
-		return TYPE_STRING.getInstance();
-	}
+	public TYPE SemantMe() { return TYPE_NIL.getInstance(); }
+
 }
