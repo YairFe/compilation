@@ -8,8 +8,9 @@ public class AST_STMT_ASSIGN_NEW extends AST_STMT
 	/*******************/
 	/*  CONSTRUCTOR(S) */
 	/*******************/
-	public AST_STMT_ASSIGN_NEW(AST_VAR var, AST_NEW_EXP exp)
+	public AST_STMT_ASSIGN_NEW(int line, AST_VAR var, AST_NEW_EXP exp)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -60,12 +61,12 @@ public class AST_STMT_ASSIGN_NEW extends AST_STMT
 	public TYPE SemantMe(){
 		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
 		TYPE var_type = var.SemantMe();
-		if(!var_type) return null;
+		if(var_type.isError()) return var_type;
 		TYPE exp_type = exp.SemantMe();
-		if(!exp_type) return null;
+		if(exp_type.isError()) return exp_type;
 		if(s.canAssignValueToVar(var_type,exp_type))
 			return TYPE_VOID.getInstance();
-		return null;
+		return new TYPE_ERROR(line);
 	}
 	
 }

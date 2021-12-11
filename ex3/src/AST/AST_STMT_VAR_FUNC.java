@@ -9,8 +9,9 @@ public class AST_STMT_VAR_FUNC extends AST_STMT {
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_STMT_VAR_FUNC(AST_VAR var, String fn, AST_EXP_LIST exps) 
+	public AST_STMT_VAR_FUNC(int line, AST_VAR var, String fn, AST_EXP_LIST exps) 
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -74,19 +75,23 @@ public class AST_STMT_VAR_FUNC extends AST_STMT {
 		TYPE exp_type;
 		if(!var){
 			TYPE var_type = var.SemantMe();
-			if(!var_type || !var_type.isClass()) return null;
+			if(var_type.isError()){
+				return var_type;
+			} else if(!var_type.isClass()){
+				return new TYPE_ERROR(line);
+			}
 			id_type = ((TYPE_CLASS) var_type).findInClassScope(id);
 		} else {
 			s.find(id);
 		}
-		if(!id_type || !id_type.isFunc()) return null;
+		if(!id_type || !id_type.isFunc()) return new TYPE_ERROR(line);
 		if(!exps){
 			exp_type = exps.SemantMe();
-			if(!exp_type) return null;
+			if(exp_type.isError()) return exp_type;
 		} else {
 			exp_type = null;
 		}
-		if(!((TYPE_FUNCTION) id_type).isSameArgs(exp_type)) return null;
+		if(!((TYPE_FUNCTION) id_type).isSameArgs(exp_type)) return new TYPE_ERROR(line);
 		return ((TYPE_FUNCTION) id_type).returnType;
 	}
 	

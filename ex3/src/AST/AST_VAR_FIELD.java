@@ -8,8 +8,9 @@ public class AST_VAR_FIELD extends AST_VAR
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_VAR_FIELD(AST_VAR var,String fieldName)
+	public AST_VAR_FIELD(int line, AST_VAR var,String fieldName)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -58,8 +59,10 @@ public class AST_VAR_FIELD extends AST_VAR
 
 	public TYPE SemantMe(){
 		TYPE var_type = var.SemantMe();
-		if (!var_type && !var_type.isClass()) return null;
-		return ((TYPE_CLASS) var_type).findInClassScope(id);
+		if (var_type.isError())
+			return var_type;
+		else if(!var_type.isClass()) return new TYPE_ERROR(line);
+		return ((TYPE_CLASS) var_type).findInClassScope(fieldName);
 
 	}
 }

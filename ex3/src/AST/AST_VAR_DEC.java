@@ -7,7 +7,8 @@ public class AST_VAR_DEC extends AST_Node {
 	public AST_EXP exp;
 	public AST_NEW_EXP newexp;
 	
-	public AST_VAR_DEC(AST_Type type, String id) {
+	public AST_VAR_DEC(int line, AST_Type type, String id) {
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -27,7 +28,8 @@ public class AST_VAR_DEC extends AST_Node {
 		this.newexp = null;
 	}
 	
-	public AST_VAR_DEC(AST_Type type, String id, AST_EXP exp) {
+	public AST_VAR_DEC(int line, AST_Type type, String id, AST_EXP exp) {
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -47,7 +49,8 @@ public class AST_VAR_DEC extends AST_Node {
 		this.newexp = null;
 	}
 	
-	public AST_VAR_DEC(AST_Type type, String id, AST_NEW_EXP newexp) {
+	public AST_VAR_DEC(int line, AST_Type type, String id, AST_NEW_EXP newexp) {
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -104,18 +107,22 @@ public class AST_VAR_DEC extends AST_Node {
 		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
 		TYPE exp_type;
 		TYPE var_type = type.SemantMe();
-		if(!var_type || var_type.name.equals("void")) return null;
-		if(s.existInScope(id)) return null;
+		if(var_type.isError()){
+			return var_type;
+		} else if(var_type.name.equals("void")){
+			return new TYPE_ERROR(line);
+		} 
+		if(s.existInScope(id)) return new TYPE_ERROR(line);
 
 		s.enter(id,var_type);
 
 		if(exp) exp_type = exp.SemantMe();
-		else exp_type = newExp.SemantMe();
+		else if(newexp) exp_type = newExp.SemantMe();
 
-		if(!exp_type) return null;
+		if(exp_type && exp_type.isError()) return exp_type;
 
-		if(!s.canAssignValueToVar(var_type,exp_type)) return null;
-		return exp_type; //can return Void as the type
+		if(!s.canAssignValueToVar(var_type,exp_type)) return new TYPE_ERROR(line);
+		return TYPE_VOID.getInstance();
 	}
 	
 }

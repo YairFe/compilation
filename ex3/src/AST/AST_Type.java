@@ -5,7 +5,8 @@ public class AST_Type extends AST_Node {
 	public int t;
 	public String id;
 
-	public AST_Type(int t) {
+	public AST_Type(int line, int t) {
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -27,7 +28,8 @@ public class AST_Type extends AST_Node {
 		this.id = id;
 	}
 	
-	public AST_Type(String id) {
+	public AST_Type(int line, String id) {
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -72,6 +74,6 @@ public class AST_Type extends AST_Node {
 				if(t != null && (t.isClass() || t.isArray()))
 					return t;
 		}
-		return null;
+		return new TYPE_ERROR(line);
 	}
 }

@@ -8,8 +8,9 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_VAR_SUBSCRIPT(AST_VAR var,AST_EXP subscript)
+	public AST_VAR_SUBSCRIPT(int line, AST_VAR var,AST_EXP subscript)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -59,9 +60,15 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 
 	public TYPE SemantMe(){
 		TYPE var_type = var.SemantMe();
-		if(!var_type || !(var_type.isArray())) return null;
+		if(var_type.isError())
+			return var_type;
+		else if(!(var_type.isArray()))
+			return new TYPE_ERROR(line);
 		TYPE exp_type = subscript.SemantMe();
-		if(!exp_type || !exp_type.name.equals("int")) return null;
+		if(exp_type.isError())
+			return exp_type;
+		else if(!exp_type.name.equals("int"))
+			return new TYPE_ERROR(line);
 		return ((TYPE_ARRAY) var_type).type;
 	}
 }

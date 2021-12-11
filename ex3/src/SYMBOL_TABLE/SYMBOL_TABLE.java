@@ -27,8 +27,8 @@ public class SYMBOL_TABLE
 	private SYMBOL_TABLE_ENTRY top;
 	private int top_index = 0;
 	private int cur_scope_depth = 0;
-	private TYPE_CLASS fatherClass = null;
-	private boolean classContext = false;
+	private TYPE_CLASS curClass = null;
+	private TYPE returnType = null;
 	
 	/**************************************************************/
 	/* A very primitive hash function for exposition purposes ... */
@@ -90,16 +90,16 @@ public class SYMBOL_TABLE
 			{	
 				/* scope_depth will be zero if there is only 	**
 				** a global variable with this name				*/
-				if (classContext && e.scope_depth == 0){
+				if (curClass && e.scope_depth == 0){
 					break;
 				}
 				return e.type;
 			}
 		}
-		if (classContext){
+		if (curClass){
 			/* look for the name in the class scope	*/
-			if (fatherClass != null)
-				result_type = fatherClass.findInClassScope(name);
+			if (curClass != null)
+				result_type = curClass.findInClassScope(name);
 			if (result_type != null){
 				return result_type;
 			} else if (e != null){
@@ -111,12 +111,18 @@ public class SYMBOL_TABLE
 	/************************************************************/
 	/* function that check if value can be assign to var		*/
 	/* with the following conditions							*/
+	/* nil can be assign to both array and class type			*/
 	/* value class is a child class of var class				*/
 	/* var and value are array type with the same type			*/
 	/* value is a function with return value of var type		*/
 	/* value and var are of the same type						*/
 	/************************************************************/
 	public boolean canAssignValueToVar(TYPE var, TYPE value){
+		if(value.isNil())
+			if(var.isClass() || var.isArray())
+				return true;
+			else
+				return false;
 		if(var.isClass() && value.isClass())
 			return ((TYPE_CLASS) var).isFatherOf(value);
 		if(var.isArray() && value.isArray())
@@ -125,7 +131,16 @@ public class SYMBOL_TABLE
 			value = ((TYPE_FUNCTION) value).returnType;
 		return var.name.equals(value.name);
 	}
-
+	/************************************************************/
+	/* function which check if the type provided can be 		*/
+	/* returned by the function in the scope					*/
+	/* if not in function scope return false					*/
+	/************************************************************/
+	public boolean canReturnType(TYPE other){
+		if (!this.returnType)
+			return false;
+		return canAssignValueToVar(this.returnType, other);
+	}
 	/************************************************************/
 	/* function to look if the name exist in current scope		*/
 	/* use to check if we can declare the variable on the scope	*/
@@ -142,7 +157,6 @@ public class SYMBOL_TABLE
 		}
 		return false;
 	}
-
 	/***************************************************************************/
 	/* begin scope = Enter the <SCOPE-BOUNDARY> element to the data structure */
 	/***************************************************************************/
@@ -164,17 +178,28 @@ public class SYMBOL_TABLE
 		PrintMe();
 	}
 	/********************************************************************/
-	/* begine class scope 												*/
-	/*= Enter the <SCOPE-BOUNDARY> element to the data structure 		*/
+	/* begin class scope 												*/
+	/* Enter the <SCOPE-BOUNDARY> element to the data structure 		*/
 	/* initializing class context parameters: 							*/
-	/* fatherClass an instance of the type of the father				*/
+	/* curClass an instance of the type of the father				*/
 	/* classContext value which indicate that we're in class scope		*/
 	/********************************************************************/
-	public void beginClassScope(TYPE_CLASS fatherClass)
+	public void beginClassScope(TYPE_CLASS curClass)
 	{
 		beginScope();
-		this.fatherClass = fatherClass;
-		this.classContext = true;
+		this.curClass = curClass;
+
+	}
+	/********************************************************************/
+	/* begin function scope												*/
+	/* Enter the <SCOPE-BOUNDARY> element to the data structure 		*/
+	/* initializing function type parameters: 							*/
+	/* returnType an instance of the return type of the function		*/
+	/********************************************************************/
+	public void beginFuncScope(TYPE returnType)
+	{
+		beginScope();
+		this.returnType = returnType;
 
 	}
 	/********************************************************************************/
@@ -204,18 +229,15 @@ public class SYMBOL_TABLE
 		/*********************************************/
 		PrintMe();
 	}
-	/********************************************************************************/
-	/* end scope = Keep popping elements out of the data structure,                 */
-	/* from most recent element entered, until a <NEW-SCOPE> element is encountered */
-	/* and sets back the class context variable define in beginClassScope		    */
-	/********************************************************************************/
 	public void endClassScope()
 	{
 		endScope();
-		this.fatherClass = null;
-		this.classContext = false;
+		this.curClass = null;
 	}
-
+	public void endFuncScope(){
+		endScope();
+		this.returnType = null;
+	}
 
 	public static int n=0;
 	

@@ -6,8 +6,9 @@ public class AST_STMT_RETURN extends AST_STMT {
 	/*******************/
 	/*  CONSTRUCTOR(S) */
 	/*******************/
-	public AST_STMT_RETURN(AST_EXP exp)
+	public AST_STMT_RETURN(int line, AST_EXP exp)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -54,7 +55,19 @@ public class AST_STMT_RETURN extends AST_STMT {
 	}
 
 	public TYPE SemantMe(){
-		if(exp != null) return exp.SemantMe();
+		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
+		if(exp != null) {
+			TYPE exp_type = exp.SemantMe();
+			if(exp_type.isError()){
+				return exp_type;
+			}
+			// need to implement func scope
+			if(!s.canReturnType(exp_type))
+				return new TYPE_ERROR(line);
+		} else {
+			if(!s.canReturnType(TYPE_VOID.getInstance()))
+				return new TYPE_ERROR(line);
+		}
 		return TYPE_VOID.getInstance();
 	}
 }

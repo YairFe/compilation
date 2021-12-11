@@ -63,11 +63,13 @@ public class AST_STMT_WHILE extends AST_STMT
 
 	public TYPE SemantMe(){
         SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
-		TYPE t;
-		t = cond.SemantMe();
-		if (!t || !t.name.equals("int")) return null;
+		
+		TYPE t = cond.SemantMe();
+		if (t.isError()) return t;
+		else if(!t.name.equals("int")) return new TYPE_ERROR(line);
 		s.beginScope();
-		if(!body.SemantMe()) return null;
+		TYPE body_type = body.SemantMe();
+		if(body_type.isError()) return body_type;
 		s.endScope();
 		return TYPE_VOID.getInstance();
     }

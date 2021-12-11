@@ -8,7 +8,11 @@ public abstract class AST_Node
 	/* a graphviz dot format of the AST ...    */
 	/*******************************************/
 	public int SerialNumber;
-	
+	public int line;
+
+	public AST_Node(int line){
+		this.line = line;
+	}
 	/***********************************************/
 	/* The default message for an unknown AST node */
 	/***********************************************/

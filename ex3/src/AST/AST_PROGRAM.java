@@ -10,8 +10,9 @@ public class AST_PROGRAM extends AST_Node {
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_PROGRAM(AST_DEC head,AST_PROGRAM tail)
+	public AST_PROGRAM(int line, AST_DEC head,AST_PROGRAM tail)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -62,10 +63,10 @@ public class AST_PROGRAM extends AST_Node {
 
 	public TYPE SemantMe(){
 		TYPE head_type = head.SemantMe();
-		if(!head_type) return null;
+		if(head_type.isError()) return head_type;
 		if(!tail) {
 			TYPE tail_type = tail.SemantMe();
-			if(!tail_type) return null;
+			if(tail_type.isError()) return tail_type;
 		}
 		return TYPE_VOID.getInstance();
 	}

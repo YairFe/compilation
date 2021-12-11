@@ -11,8 +11,9 @@ public class AST_STMT_LIST extends AST_Node
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_STMT_LIST(AST_STMT head,AST_STMT_LIST tail)
+	public AST_STMT_LIST(int line, AST_STMT head,AST_STMT_LIST tail)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -65,10 +66,10 @@ public class AST_STMT_LIST extends AST_Node
 		TYPE head_type;
 		TYPE tail_type;
 		head_type = head.SemantMe();
-		if(!head_type) return null;
+		if(head_type.isError()) return head_type;
 		if(!tail) {
 			tail_type = tail.SemantMe();
-			if(!tail_type) return null;
+			if(tail_type.isError()) return tail_type;
 		}
 		return TYPE_VOID.getInstance();
 		

@@ -8,8 +8,9 @@ public class AST_STMT_IF extends AST_STMT
 	/*******************/
 	/*  CONSTRUCTOR(S) */
 	/*******************/
-	public AST_STMT_IF(AST_EXP cond,AST_STMT_LIST body)
+	public AST_STMT_IF(int line, AST_EXP cond,AST_STMT_LIST body)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -63,9 +64,15 @@ public class AST_STMT_IF extends AST_STMT
 	public TYPE SemantMe(){
 		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
 		TYPE exp_type = cond.SemantMe();
-		if(!exp_type || !exp_type.name.equals("int")) return null;
+		if(exp_type.isError()){
+			return exp_type;
+		} else if(!exp_type.name.equals("int")){
+			// might fail if exp_type is null
+			return new TYPE_ERROR(line);
+		}
 		s.beginScope();
-		if(!body.SemantMe()) return null;
+		TYPE body_type = body.SemantMe();
+		if(body_type.isError()) return body_type;
 		s.endScope();
 		return TYPE_VOID.getInstance();
 	}

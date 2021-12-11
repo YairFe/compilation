@@ -11,8 +11,9 @@ public class AST_VAR_LIST extends AST_Node {
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_VAR_LIST(String head, AST_VAR_LIST tail, AST_Type type)
+	public AST_VAR_LIST(int line, String head, AST_VAR_LIST tail, AST_Type type)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -68,10 +69,17 @@ public class AST_VAR_LIST extends AST_Node {
 		TYPE head_type;
 		TYPE tail_type = null;
 		head_type = type.SemantMe();
-		if(!head_type || head_type.name.equals("void")) return null;
-		if(s.existInScope(head)) return null;
+		if(head_type.isError()){
+			return head_type;
+		} else if(head_type.name.equals("void")){
+			return new TYPE_ERROR(line);
+		}
+		if(s.existInScope(head)) return new TYPE_ERROR(line);
 		s.enter(head,head_type);
-		if(tail != null) tail_type = tail.SemantMe();
+		if(tail != null){
+			tail_type = tail.SemantMe();
+			if(tail_type.isError()) return tail_type;
+		}
 		return new TYPE_LIST(head_type,tail_type);
 	}
 }

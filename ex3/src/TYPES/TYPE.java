@@ -21,4 +21,14 @@ public abstract class TYPE
 	/* isFunc() */
 	/*************/
 	public boolean isFunc(){ return false;}
+	
+	/*************/
+	/* isError() */
+	/*************/
+	public boolean isError(){ return false;}
+
+	/*************/
+	/* isNil()	 */
+	/*************/
+	public boolean isNil() {return false;}
 }

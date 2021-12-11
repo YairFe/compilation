@@ -10,8 +10,9 @@ public class AST_VAR_SIMPLE extends AST_VAR
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_VAR_SIMPLE(String name)
+	public AST_VAR_SIMPLE(int line, String name)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -47,6 +48,9 @@ public class AST_VAR_SIMPLE extends AST_VAR
 	}
 
 	public TYPE SemantMe(){
-		return SYMBOL_TABLE.getInstance().find(name);		
+		// might need to add a check to id type is not func
+		TYPE id_type = SYMBOL_TABLE.getInstance().find(name);
+		if(!id_type) return new TYPE_ERROR(line);
+		return id_type;
 	}
 }
