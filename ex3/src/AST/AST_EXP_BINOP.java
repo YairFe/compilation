@@ -10,8 +10,9 @@ public class AST_EXP_BINOP extends AST_EXP
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_EXP_BINOP(AST_EXP left,AST_EXP right,AST_BINOP OP)
+	public AST_EXP_BINOP(int line, AST_EXP left,AST_EXP right,AST_BINOP OP)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -68,38 +69,36 @@ public class AST_EXP_BINOP extends AST_EXP
 	/*************************************************/
 	public TYPE SemantMe()
 	{
+		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
 		TYPE t1 = null;
 		TYPE t2 = null;
 		
 		t1 = left.SemantMe();
+		if(t1.isError()) return t1;
 		t2 = right.SemantMe();
-		
+		if(t2.isError()) return t2;
 		// case: int binop
 		if ((t1 == TYPE_INT.getInstance()) && (t2 == TYPE_INT.getInstance()))
 		{
-			if((((AST_EXP_INT)right).value == 0) && (OP.OP == 4)) { /*	TODO: return division-by-0 error */ }
+			if((right instanceof AST_EXP_INT) && (((AST_EXP_INT)right).value == 0) && (OP.OP == 4))
+				return new TYPE_ERROR(line);
 			return TYPE_INT.getInstance();
 		}
 		
 		// case: string concatenation
 		if ((t1 == TYPE_STRING.getInstance()) && (t2 == TYPE_STRING.getInstance()))
 		{
-			return TYPE_STRING.getInstance();
+			if(OP == 1)
+				return TYPE_STRING.getInstance();
 		}
 		
 		// case: equality testing
 		if(OP.OP == 5) 
 		{
-			boolean hasString = (t1 == TYPE_STRING.getInstance()) || (t2 == TYPE_STRING.getInstance());
-			boolean hasNil = (t1 == TYPE_NIL.getInstance()) || (t2 == TYPE_NIL.getInstance());
-			if (hasNil) {
-				if (hasString) return null;
-				return TYPE_INT.getInstance();
-			}
 			/* check that the compared values have similar types */
-			if(canAssignValueToVar(t1,t2) && canAssignValueToVar(t2, t1)) return TYPE_INT.getInstance();
+			if(s.canAssignValueToVar(t1,t2) || s.canAssignValueToVar(t2, t1)) return TYPE_INT.getInstance();
 		}
 		// otherwise, error
-		return null;
+		return new TYPE_ERROR(line);
 	}
 }

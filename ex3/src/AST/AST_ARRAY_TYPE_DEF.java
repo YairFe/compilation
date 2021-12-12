@@ -6,7 +6,8 @@ public class AST_ARRAY_TYPE_DEF extends AST_Node {
 	public AST_Type type;
 	
 	
-	public AST_ARRAY_TYPE_DEF(String id, AST_Type type) {
+	public AST_ARRAY_TYPE_DEF(int line, String id, AST_Type type) {
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -56,17 +57,14 @@ public class AST_ARRAY_TYPE_DEF extends AST_Node {
 		/* check that the array name is available.
 		 * Note that we should only check the local scope,
 		 * since arrays can only be defined in the global scope. */
-		if (s.existInScope(id)) return null;
-		if (s.curClass != null) return null; // arrays cannot be defined in class context
+		if (s.existInScope(id)) return new TYPE_ERROR(line);
+		// if (s.curClass != null) return null; // arrays cannot be defined in class context
 		
 		TYPE t = type.SemantMe();
-		if (t != null) {
-			// semantic analysis successful, create symbol table entry
-			TYPE_ARRAY t1 = new TYPE_ARRAY(id, t);
-			s.enter(id, t1);
-			return t1;
-		}
-		
-		return null;
+		if (t.isError()) return t;
+		// semantic analysis successful, create symbol table entry
+		TYPE_ARRAY t1 = new TYPE_ARRAY(id, t);
+		s.enter(id, t1);
+		return t1; // can return void as well
 	}
 }

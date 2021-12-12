@@ -10,7 +10,7 @@ public class AST_EXP_VAR_FUNC extends AST_EXP {
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_EXP_VAR_FUNC(AST_VAR var, String fn, AST_EXP_LIST exps) 
+	public AST_EXP_VAR_FUNC(int line, AST_VAR var, String fn, AST_EXP_LIST exps) 
 	{
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
@@ -71,19 +71,20 @@ public class AST_EXP_VAR_FUNC extends AST_EXP {
 		
 		// analyze var
 		TYPE t1 = var.SemantMe();
-		if(t1 == null) return null; 
-		
+		if(t1.isError()) return t1; 
+		else if(!t1.isClass()) return new TYPE_ERROR(line);
+		TYPE t2 = (TYPE_CLASS t1).findInClassScope(fn);
+		if(t2 == null || !t2.isFunc()) return new TYPE_ERROR(line);
 		// analyze exps
+		TYPE t3 = null;
 		if(exps != null) 
 		{
-			TYPE t2 = exps.SemantMe();
-			if(t2 == null) return null;
+			t3 = exps.SemantMe();
+			if(t3.isError()) return t3;
 		}
+		if(!(TYPE_FUNCTION) t2).isSameArgs(t3)) return new TYPE_ERROR(line);
 		
-		/* TODO: check that exps represents a correct set of parameters.
-		 * TODO: find the object of fn and return its return type */
-		
-		return null;
+		return ((TYPE_FUNCTION) t2).returnType;
 	}
 	
 }

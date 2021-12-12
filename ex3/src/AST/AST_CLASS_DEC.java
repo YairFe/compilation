@@ -6,8 +6,9 @@ public class AST_CLASS_DEC extends AST_Node {
 	public String id2;
 	public AST_CLASS_CONT cont;
 	
-	public AST_CLASS_DEC(String id1, AST_CLASS_CONT cont) 
+	public AST_CLASS_DEC(int line, String id1, AST_CLASS_CONT cont) 
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -26,8 +27,9 @@ public class AST_CLASS_DEC extends AST_Node {
 		this.cont = cont;
 	}
 	
-	public AST_CLASS_DEC(String id1, String id2, AST_CLASS_CONT cont) 
+	public AST_CLASS_DEC(int line, String id1, String id2, AST_CLASS_CONT cont) 
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -80,8 +82,8 @@ public class AST_CLASS_DEC extends AST_Node {
 		/*************************/
 		/* [0] Check Class Name */
 		/*************************/
-		if(SYMBOL_TABLE.getInstance().existInScope(id1)) { return null; /* name already exists */ }
-		if(SYMBOL_TABLE.getInstance().curClass != null) { return null; /* cannot define nested classes*/ }
+		if(SYMBOL_TABLE.getInstance().existInScope(id1)) { return new TYPE_ERROR(line); /* name already exists */ }
+		// if(SYMBOL_TABLE.getInstance().curClass != null) { return null; /* cannot define nested classes*/ }
 		
 		/*************************/
 		/* [1] Begin Class Scope */
@@ -92,7 +94,7 @@ public class AST_CLASS_DEC extends AST_Node {
 			// find parent class object
 			parent = SYMBOL_TABLE.getInstance().find(id2);
 			
-			if ((parent == null) || !(parent.isClass())) return null; // parent does not exist
+			if ((parent == null) || !(parent.isClass())) return new TYPE_ERROR(line); // parent does not exist
 		}
 		
 		
@@ -111,12 +113,13 @@ public class AST_CLASS_DEC extends AST_Node {
 		/* [2.5] Semant Data Members */
 		/*****************************/
 		TYPE c = cont.SemantMe();
+		if(c.isError()) return c;
 		t = new TYPE_CLASS((TYPE_CLASS) parent, id1, (TYPE_CLASS_VAR_DEC_LIST)c);
 
 		/*****************/
 		/* [3] End Scope */
 		/*****************/
-		SYMBOL_TABLE.getInstance().endScope();
+		SYMBOL_TABLE.getInstance().endClassScope();
 
 		/********************************************************/
 		/* [4] Enter the Class Type to the Symbol Table (again) */

@@ -7,8 +7,9 @@ public class AST_FUNC_DEC extends AST_Node {
 	AST_VAR_LIST vars;
 	AST_STMT_LIST stmts;
 	
-	public AST_FUNC_DEC(AST_Type type, String id, AST_VAR_LIST vars, AST_STMT_LIST stmts) 
+	public AST_FUNC_DEC(int line, AST_Type type, String id, AST_VAR_LIST vars, AST_STMT_LIST stmts) 
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -64,16 +65,7 @@ public class AST_FUNC_DEC extends AST_Node {
 		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
 		/* check that the function name is available in current scope */
 		/* NOTE: should insert library functions into the global scope beforehand */
-		if (s.existInScope(id)) return null;
-		
-		/* if a class method, check for method overloading (same name, different type or params) */
-		if(s.curClass != null) {
-			TYPE d = s.curClass.findInClassScope(id);
-			if(d != null) {
-				if(!d.isFunc()) return null;  // found match with a non-function name
-				duplicate = (TYPE_FUNCTION) d; // otherwise, found match with a function name
-			}
-		}
+		if (s.existInScope(id)) return new TYPE_ERROR(line);
 		
 		TYPE t1 = null;
 		TYPE t2 = null;
@@ -81,35 +73,45 @@ public class AST_FUNC_DEC extends AST_Node {
 		
 		
 		// analyze type
-		t1 = type.SemantMe();
-		if(t1 == null) return null;
-		if((duplicate != null) && (duplicate.returnType != t1)) return null; // method overloading found
-
+		TYPE t1 = type.SemantMe();
+		if(t1.isError()) return t1;
 		// analyze parameters
 		if(vars != null) {
-		t2 = vars.SemantMe();
-		if(t2 == null) return null;
-		if((duplicate != null) && (!duplicate.isSameArgs((TYPE_LIST)t2))) return null; // method overloading found
-		}
-		
+			t2 = vars.SemantMe();
+			if(t2.isError()) return t2;
+
+		if(s.curClass != null) {
+			TYPE d = s.curClass.findInClassScope(id);
+			if(d != null) {
+				// found match with a non-function name
+				if(!d.isFunc()) return new TYPE_ERROR(line);  
+				// otherwise, found match with a function name
+				TYPE_FUNCTION duplicate = (TYPE_FUNCTION) d; 
+				 // method overloading found with different type
+				if((duplicate != null) && (duplicate.returnType != t1)) return new TYPE_ERROR(line);
+				 // method overloading found with different args types
+				if((duplicate != null) && (!duplicate.isSameArgs((TYPE_LIST)t2))) return new TYPE_ERROR(line);
+			}
+		}				
+
 		TYPE_FUNCTION t = new TYPE_FUNCTION(t1, id, (TYPE_LIST)t2);
 		
 		// analyze statements
 		if(stmts != null) {
 		/* only define a function scope if the body of the function is not empty */
-		s.beginScope();
+		s.beginFuncScope();
 		// temporarily enter t into the function scope - will be flushed on endScope()
 		s.enter(id, t);
 		t3 = stmts.SemantMe();
 		if(t3 == null) return null;
-		s.endScope();
+		s.endFuncScope();
 		}
 		
 		t = new TYPE_FUNCTION(t1, id, (TYPE_LIST)t2);
 		s.enter(id, t);
 		
 		/* return value is irrelevant, like with class declarations(?) */
-		return null;
+		return t;
 		
 	}
 	

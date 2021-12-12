@@ -7,8 +7,9 @@ public class AST_DEC extends AST_Node {
 	public AST_CLASS_DEC classDec;
 	public AST_ARRAY_TYPE_DEF arrayTypedef;
 	
-	public AST_DEC(AST_VAR_DEC varDec) 
+	public AST_DEC(int line, AST_VAR_DEC varDec) 
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -28,8 +29,9 @@ public class AST_DEC extends AST_Node {
 		this.arrayTypedef = null;
 	}
 	
-	public AST_DEC(AST_FUNC_DEC funcDec) 
+	public AST_DEC(int line,AST_FUNC_DEC funcDec) 
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -49,8 +51,9 @@ public class AST_DEC extends AST_Node {
 		this.arrayTypedef = null;
 	}
 	
-	public AST_DEC(AST_CLASS_DEC classDec) 
+	public AST_DEC(int line, AST_CLASS_DEC classDec) 
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -70,8 +73,9 @@ public class AST_DEC extends AST_Node {
 		this.arrayTypedef = null;
 	}
 	
-	public AST_DEC(AST_ARRAY_TYPE_DEF arrayTypedef) 
+	public AST_DEC(int line, AST_ARRAY_TYPE_DEF arrayTypedef) 
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -133,7 +137,6 @@ public class AST_DEC extends AST_Node {
 		if (funcDec != null) return funcDec.SemantMe();
 		if (classDec != null) return classDec.SemantMe();
 		if (arrayTypedef != null) return arrayTypedef.SemantMe();
-		
-		System.exit(0); return null;
+		return new TYPE_ERROR(line);
 	}
 }

@@ -119,7 +119,7 @@ public class SYMBOL_TABLE
 	/************************************************************/
 	public boolean canAssignValueToVar(TYPE var, TYPE value){
 		if(value.isNil())
-			if(var.isClass() || var.isArray())
+			if(var.isClass() || var.isArray() || var.isNil())
 				return true;
 			else
 				return false;

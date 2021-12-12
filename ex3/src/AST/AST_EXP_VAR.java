@@ -7,8 +7,9 @@ public class AST_EXP_VAR extends AST_EXP
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_EXP_VAR(AST_VAR var)
+	public AST_EXP_VAR(int line,AST_VAR var)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/

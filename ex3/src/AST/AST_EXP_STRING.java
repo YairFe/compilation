@@ -7,8 +7,9 @@ public class AST_EXP_STRING extends AST_EXP {
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_EXP_STRING(String value) 
+	public AST_EXP_STRING(int line, String value) 
 	{	
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/

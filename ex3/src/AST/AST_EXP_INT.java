@@ -7,8 +7,9 @@ public class AST_EXP_INT extends AST_EXP
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_EXP_INT(int value)
+	public AST_EXP_INT(int line, int value)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/

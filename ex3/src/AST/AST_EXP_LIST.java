@@ -11,8 +11,9 @@ public class AST_EXP_LIST extends AST_Node
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_EXP_LIST(AST_EXP head, AST_EXP_LIST tail)
+	public AST_EXP_LIST(int line, AST_EXP head, AST_EXP_LIST tail)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -66,12 +67,12 @@ public class AST_EXP_LIST extends AST_Node
 		TYPE t2 = null;
 		
 		t1 = head.SemantMe();
-		if(t1 == null) return null;
+		if(t1.isError()) return t1;
 		
 		if (tail != null) 
 		{
 			t2 = tail.SemantMe();
-			if(t2 == null) return null;
+			if(t2.isError()) return t2;
 		}
 		
 		return new TYPE_LIST(t1, (TYPE_LIST)t2);

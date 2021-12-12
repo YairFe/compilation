@@ -5,8 +5,9 @@ public class AST_CLASS_CONT extends AST_Node {
 	public AST_C_FIELD head;
 	public AST_CLASS_CONT tail;
 	
-	public AST_CLASS_CONT(AST_C_FIELD head, AST_CLASS_CONT tail)
+	public AST_CLASS_CONT(int line, AST_C_FIELD head, AST_CLASS_CONT tail)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -58,12 +59,12 @@ public class AST_CLASS_CONT extends AST_Node {
 		TYPE t2 = null;
 		
 		t1 = head.SemantMe();
-		if(t1 == null) return null;
+		if(t1.isError()) return new TYPE_ERROR(line);
 		
 		if (tail != null) 
 		{
 			t2 = tail.SemantMe();
-			if(t2 == null) return null;
+			if(t2.isError()) return new TYPE_ERROR(line);
 		}
 		
 		return new TYPE_CLASS_VAR_DEC_LIST((TYPE_CLASS_VAR_DEC)t1,(TYPE_CLASS_VAR_DEC_LIST)t2);

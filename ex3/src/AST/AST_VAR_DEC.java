@@ -122,7 +122,7 @@ public class AST_VAR_DEC extends AST_Node {
 		if(exp_type && exp_type.isError()) return exp_type;
 
 		if(!s.canAssignValueToVar(var_type,exp_type)) return new TYPE_ERROR(line);
-		return TYPE_VOID.getInstance();
+		return new TYPE_CLASS_VAR_DEC(var_type,id);
 	}
 	
 }

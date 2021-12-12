@@ -24,14 +24,7 @@ public class TYPE_CLASS extends TYPE
 		this.data_members = data_members;
 	}
 
-	/*************/
-	/* isClass() */
-	/*************/
-	public boolean isClass(){ return true;}
-
 	public TYPE findInClassScope(String name){
-		if (data_members == null)
-			return null;
 		for (TYPE_CLASS_VAR_DEC_LIST e=this.data_members;e!=null;e=e.tail){
 			if (e.head.name.equals(name)){
 				return e.head.t;

@@ -7,8 +7,9 @@ public class AST_BINOP extends AST_Node
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_BINOP(int OP)
+	public AST_BINOP(int line, int OP)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -53,5 +54,9 @@ public class AST_BINOP extends AST_Node
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
 			String.format("BINOP( %s )",translateOP()));
+	}
+
+	public TYPE SemantMe(){
+		return null;
 	}
 }
