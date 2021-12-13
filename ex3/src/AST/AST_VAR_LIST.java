@@ -1,4 +1,6 @@
 package AST;
+import SYMBOL_TABLE.*;
+import TYPES.*;
 
 public class AST_VAR_LIST extends AST_Node {
 	/****************/
@@ -80,6 +82,6 @@ public class AST_VAR_LIST extends AST_Node {
 			tail_type = tail.SemantMe();
 			if(tail_type.isError()) return tail_type;
 		}
-		return new TYPE_LIST(head_type,tail_type);
+		return new TYPE_LIST(head_type,(TYPE_LIST) tail_type);
 	}
 }

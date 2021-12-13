@@ -35,7 +35,7 @@ public class SYMBOL_TABLE
 	/**************************************************************/
 	private int hash(String s)
 	{
-		return s.hashCode() % hashArraySize;
+		return Math.abs(s.hashCode()) % hashArraySize;
 	}
 
 	/****************************************************************************/

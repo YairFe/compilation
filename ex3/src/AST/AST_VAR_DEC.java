@@ -1,4 +1,6 @@
 package AST;
+import SYMBOL_TABLE.*;
+import TYPES.*;
 
 public class AST_VAR_DEC extends AST_Node {
 
@@ -105,23 +107,24 @@ public class AST_VAR_DEC extends AST_Node {
 
 	public TYPE SemantMe(){
 		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
-		TYPE exp_type;
+		TYPE exp_type = null;
 		TYPE var_type = type.SemantMe();
 		if(var_type.isError()){
 			return var_type;
 		} else if(var_type.name.equals("void")){
-			return new TYPE_ERROR(line);
+			return new TYPE_ERROR(type.line);
 		} 
-		if(s.existInScope(id)) return new TYPE_ERROR(line);
+		if(s.existInScope(id)) return new TYPE_ERROR(type.line);
 
 		s.enter(id,var_type);
 
-		if(exp) exp_type = exp.SemantMe();
-		else if(newexp) exp_type = newExp.SemantMe();
+		if(exp != null) exp_type = exp.SemantMe();
+		else if(newexp != null) exp_type = newexp.SemantMe();
 
-		if(exp_type && exp_type.isError()) return exp_type;
-
-		if(!s.canAssignValueToVar(var_type,exp_type)) return new TYPE_ERROR(line);
+		if(exp_type != null){
+			if(exp_type.isError()) return exp_type;
+			if(!s.canAssignValueToVar(var_type,exp_type)) return new TYPE_ERROR(type.line);
+		} 
 		return new TYPE_CLASS_VAR_DEC(var_type,id);
 	}
 	

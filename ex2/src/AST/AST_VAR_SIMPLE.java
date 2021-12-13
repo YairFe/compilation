@@ -1,4 +1,5 @@
 package AST;
+import SYMBOL_TABLE.*
 
 public class AST_VAR_SIMPLE extends AST_VAR
 {

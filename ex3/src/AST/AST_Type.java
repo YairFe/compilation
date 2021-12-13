@@ -1,4 +1,6 @@
 package AST;
+import SYMBOL_TABLE.*;
+import TYPES.*;
 
 public class AST_Type extends AST_Node {
 
@@ -63,7 +65,6 @@ public class AST_Type extends AST_Node {
 
 	public TYPE SemantMe(){
 		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
-		
 		switch(t){
 			case 1: return TYPE_INT.getInstance();
 			case 2: return TYPE_STRING.getInstance();

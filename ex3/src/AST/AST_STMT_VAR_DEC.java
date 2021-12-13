@@ -1,4 +1,5 @@
 package AST;
+import TYPES.*;
 
 public class AST_STMT_VAR_DEC extends AST_STMT {
 

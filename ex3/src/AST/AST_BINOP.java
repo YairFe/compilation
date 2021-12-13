@@ -56,7 +56,4 @@ public class AST_BINOP extends AST_Node
 			String.format("BINOP( %s )",translateOP()));
 	}
 
-	public TYPE SemantMe(){
-		return null;
-	}
 }

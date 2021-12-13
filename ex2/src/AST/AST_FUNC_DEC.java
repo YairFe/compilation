@@ -17,8 +17,8 @@ public class AST_FUNC_DEC extends AST_Node {
 		/***************************************/
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
-		if (stmts == null) System.out.format("====================== funcDec -> type ID( %s ) LPAREN multiVar RPAREN LBRACE RBRACE\n", id);
-		if (stmts != null) System.out.format("====================== multiVar -> type ID( %s ) LPAREN multiVar RPAREN LBRACE multiStmt RBRACE\n", id);
+		if (multiVar == null) System.out.format("====================== funcDec -> type ID( %s ) LPAREN RPAREN LBRACE multiStmt RBRACE\n", id);
+		if (multiVar != null) System.out.format("====================== funcDec -> type ID( %s ) LPAREN multiVar RPAREN LBRACE multiStmt RBRACE\n", id);
 
 		/*******************************/
 		/* COPY INPUT DATA MEMBERS ... */

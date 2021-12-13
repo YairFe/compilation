@@ -1,4 +1,5 @@
 package AST;
+import SYMBOL_TABLE.*
 
 public class AST_STMT_IF extends AST_STMT
 {

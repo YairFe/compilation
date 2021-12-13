@@ -1,4 +1,5 @@
 package AST;
+import TYPES.*;
 
 public class AST_VAR_FIELD extends AST_VAR
 {

@@ -1,4 +1,6 @@
 package AST;
+import SYMBOL_TABLE.*;
+import TYPES.*;
 
 public class AST_STMT_ASSIGN_NEW extends AST_STMT 
 {
@@ -20,7 +22,6 @@ public class AST_STMT_ASSIGN_NEW extends AST_STMT
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
 		System.out.print("====================== stmt -> var ASSIGN newExp SEMICOLON\n");
-
 		/*******************************/
 		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
@@ -37,7 +38,6 @@ public class AST_STMT_ASSIGN_NEW extends AST_STMT
 		/* AST NODE TYPE = AST NEW EXP ASSIGNMENT STATEMENT */
 		/********************************************/
 		System.out.print("AST NODE ASSIGN NEW STMT\n");
-
 		/***********************************/
 		/* RECURSIVELY PRINT VAR + EXP ... */
 		/***********************************/
@@ -66,7 +66,7 @@ public class AST_STMT_ASSIGN_NEW extends AST_STMT
 		if(exp_type.isError()) return exp_type;
 		if(s.canAssignValueToVar(var_type,exp_type))
 			return TYPE_VOID.getInstance();
-		return new TYPE_ERROR(line);
+		return new TYPE_ERROR(var.line);
 	}
 	
 }

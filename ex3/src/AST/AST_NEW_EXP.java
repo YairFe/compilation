@@ -5,8 +5,8 @@ public class AST_NEW_EXP extends AST_Node {
 	public AST_Type type;
 	public AST_EXP exp;
 	
-	public AST_NEW_EXP(AST_Type type, AST_EXP exp) {
-		
+	public AST_NEW_EXP(int line, AST_Type type, AST_EXP exp) {
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -17,7 +17,6 @@ public class AST_NEW_EXP extends AST_Node {
 		/***************************************/
 		if(exp == null) System.out.print("====================== newExp -> NEW type\n");
 		if(exp != null) System.out.print("====================== newExp -> NEW type RBRACK exp LBRACK\n");
-
 		/*******************************/
 		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
@@ -59,18 +58,18 @@ public class AST_NEW_EXP extends AST_Node {
 	public TYPE SemantMe() 
 	{
 		TYPE t1 = type.SemantMe();
-		if(t1 == null) return null;
+		if(t1.isError()) return t1;
 		
 		TYPE t2 = null;
 		if(exp != null) 
 		{ 
 			// index can only be an integer
 			t2 = exp.SemantMe();
-			if(t2 != TYPE_INT.getInstance()) return null;
+			if(t2 != TYPE_INT.getInstance()) return new TYPE_ERROR(line);
+			return new TYPE_ARRAY(null,t1);
 		}
-		
 		return t1;
-		
+
 	}
 	
 }

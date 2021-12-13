@@ -51,7 +51,7 @@ CUP_FLAGS =                                \
 #########################
 # DEFINITIONS :: PARSER #
 #########################
-INPUT    = ${INPUT_DIR}/Input.txt
+INPUT    = ${INPUT_DIR}/TEST_12_Nested_Var_d.txt
 OUTPUT   = ${OUTPUT_DIR}/SemanticStatus.txt
 
 ##########
@@ -248,3 +248,70 @@ debug:
 	@echo "******************************************************************"
 	eog ${OUTPUT_DIR}/SYMBOL_TABLE_0.jpeg &
 	
+run:
+	clear
+	@echo "*****************************"
+	@echo "*                           *"
+	@echo "*                           *"
+	@echo "* [0] Remove PARSER program *"
+	@echo "*                           *"
+	@echo "*                           *"
+	@echo "*****************************"
+	rm -rf COMPILER
+	@echo "\n"
+	@echo "************************************************************"
+	@echo "*                                                          *"
+	@echo "*                                                          *"
+	@echo "* [1] Remove *.class files and JFlex-CUP generated files:  *"
+	@echo "*                                                          *"
+	@echo "*     Lexer.java                                           *"
+	@echo "*     Parser.java                                          *"
+	@echo "*     TokenNames.java                                      *"
+	@echo "*                                                          *"
+	@echo "************************************************************"
+	rm -rf ${JFlex_CUP_GENERATED_FILES} ${BIN_DIR}/*.class ${BIN_DIR}/AST/*.class
+	@echo "\n"
+	@echo "************************************************************"
+	@echo "*                                                          *"
+	@echo "*                                                          *"
+	@echo "* [2] Use JFlex to synthesize Lexer.java from LEX_FILE.lex *"
+	@echo "*                                                          *"
+	@echo "*                                                          *"
+	@echo "************************************************************"
+	$(JFlex_PROGRAM) ${JFlex_FLAGS} -d ${JFlex_DEST_DIR} ${JFlex_FILE}
+	@echo "\n"
+	@echo "*******************************************************************************"
+	@echo "*                                                                             *"
+	@echo "*                                                                             *"
+	@echo "* [3] Use CUP to synthesize Parser.java and TokenNames.java from CUP_FILE.cup *"
+	@echo "*                                                                             *"
+	@echo "*                                                                             *"
+	@echo "*******************************************************************************"
+	$(CUP_PROGRAM) ${CUP_FLAGS} -destdir ${SRC_DIR} ${CUP_FILE}
+	@echo "\n"
+	@echo "********************************************************"
+	@echo "*                                                      *"
+	@echo "*                                                      *"
+	@echo "* [4] Create *.class files from *.java files + CUP JAR *"
+	@echo "*                                                      *"
+	@echo "*                                                      *"
+	@echo "********************************************************"
+	javac -cp ${EXTERNAL_JAR_FILES} -d ${BIN_DIR} ${SRC_FILES}
+	@echo "\n"
+	@echo "***********************************************************"
+	@echo "*                                                         *"
+	@echo "*                                                         *"
+	@echo "* [5] Create a JAR file from from *.class files + CUP JAR *"
+	@echo "*                                                         *"
+	@echo "*                                                         *"
+	@echo "***********************************************************"
+	jar cfm COMPILER ${MANIFEST_FILE} -C ${BIN_DIR} .
+	@echo "\n"
+	@echo "*****************************"
+	@echo "*                           *"
+	@echo "*                           *"
+	@echo "* [6] Run resulting program *"
+	@echo "*                           *"
+	@echo "*                           *"
+	@echo "*****************************"
+	java -jar COMPILER ${INPUT} ${OUTPUT}

@@ -1,4 +1,5 @@
 package AST;
+import TYPES.*;
 
 public class AST_PROGRAM extends AST_Node {
 	/****************/
@@ -64,7 +65,7 @@ public class AST_PROGRAM extends AST_Node {
 	public TYPE SemantMe(){
 		TYPE head_type = head.SemantMe();
 		if(head_type.isError()) return head_type;
-		if(!tail) {
+		if(tail != null) {
 			TYPE tail_type = tail.SemantMe();
 			if(tail_type.isError()) return tail_type;
 		}

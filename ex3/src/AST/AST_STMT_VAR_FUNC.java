@@ -1,4 +1,6 @@
 package AST;
+import SYMBOL_TABLE.*;
+import TYPES.*;
 
 public class AST_STMT_VAR_FUNC extends AST_STMT {
 	
@@ -71,27 +73,27 @@ public class AST_STMT_VAR_FUNC extends AST_STMT {
 	
 	public TYPE SemantMe(){
 		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
-		TYPE id_type;
-		TYPE exp_type;
-		if(!var){
+		TYPE id_type = null;
+		TYPE exp_type = null;
+		if(var != null){
 			TYPE var_type = var.SemantMe();
 			if(var_type.isError()){
 				return var_type;
 			} else if(!var_type.isClass()){
 				return new TYPE_ERROR(line);
 			}
-			id_type = ((TYPE_CLASS) var_type).findInClassScope(id);
+			id_type = ((TYPE_CLASS) var_type).findInClassScope(fn);
 		} else {
-			s.find(id);
+			id_type = s.find(fn);
 		}
-		if(!id_type || !id_type.isFunc()) return new TYPE_ERROR(line);
-		if(!exps){
+		if(id_type == null || !id_type.isFunc()) return new TYPE_ERROR(line);
+		if(exps != null){
 			exp_type = exps.SemantMe();
 			if(exp_type.isError()) return exp_type;
 		} else {
 			exp_type = null;
 		}
-		if(!((TYPE_FUNCTION) id_type).isSameArgs(exp_type)) return new TYPE_ERROR(line);
+		if(!((TYPE_FUNCTION) id_type).isSameArgs((TYPE_LIST) exp_type)) return new TYPE_ERROR(line);
 		return ((TYPE_FUNCTION) id_type).returnType;
 	}
 	

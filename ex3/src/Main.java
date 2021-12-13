@@ -3,6 +3,7 @@ import java.io.*;
 import java.io.PrintWriter;
 import java_cup.runtime.Symbol;
 import AST.*;
+import TYPES.*;
 
 public class Main
 {
@@ -53,8 +54,10 @@ public class Main
 			/*************************/
 			TYPE t = AST.SemantMe();
 			if(t.isError()){
-				String msg = String.format("ERROR(%d)",t.line);
+				System.out.format("ERROR(%d)\n",((TYPE_ERROR) t).line);
+				String msg = String.format("ERROR(%d)",((TYPE_ERROR) t).line);
 				writeToFile(outputFilename,msg);
+				return;
 			}
 
 			/*************************************/
@@ -62,12 +65,14 @@ public class Main
 			/*************************************/
 			AST_GRAPHVIZ.getInstance().finalizeFile();
 			writeToFile(outputFilename,"OK");
+			System.out.println("OK");
     	}
 		catch (IOException e){
 			writeToFile(outputFilename,"ERROR");
 		}     
 		catch (Exception e)
 		{	
+			e.printStackTrace();
 			String msg = String.format("ERROR(%d)",l.getLine());
 			writeToFile(outputFilename,msg);
 		}

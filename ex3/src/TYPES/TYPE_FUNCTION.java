@@ -27,8 +27,9 @@ public class TYPE_FUNCTION extends TYPE
 			if(tmp.head != null && !tmp.head.name.equals(args.head.name))
 				return false;
 			tmp = tmp.tail;
+			args = args.tail;
 		}
-		if(params == null && args == null)
+		if(tmp == null && args == null)
 			return true;
 		return false;
 	}

@@ -18,8 +18,8 @@ public class AST_FUNC_DEC extends AST_Node {
 		/***************************************/
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
-		if (stmts == null) System.out.format("====================== funcDec -> type ID( %s ) LPAREN multiVar RPAREN LBRACE RBRACE\n", id);
-		if (stmts != null) System.out.format("====================== multiVar -> type ID( %s ) LPAREN multiVar RPAREN LBRACE multiStmt RBRACE\n", id);
+		if (vars == null) System.out.format("====================== funcDec -> type ID( %s ) LPAREN RPAREN LBRACE multiStmt RBRACE\n", id);
+		if (vars != null) System.out.format("====================== funcDec -> type ID( %s ) LPAREN multiVar RPAREN LBRACE multiStmt RBRACE\n", id);
 
 		/*******************************/
 		/* COPY INPUT DATA MEMBERS ... */
@@ -65,28 +65,27 @@ public class AST_FUNC_DEC extends AST_Node {
 		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
 		/* check that the function name is available in current scope */
 		/* NOTE: should insert library functions into the global scope beforehand */
-		if (s.existInScope(id)) return new TYPE_ERROR(line);
-		
 		TYPE t1 = null;
 		TYPE t2 = null;
 		TYPE t3 = null;
 		
-		
+		if (s.existInScope(id)) return new TYPE_ERROR(line);
 		// analyze type
-		TYPE t1 = type.SemantMe();
+		t1 = type.SemantMe();
 		if(t1.isError()) return t1;
 		// analyze parameters
+		s.beginFuncScope(t1);
 		if(vars != null) {
 			t2 = vars.SemantMe();
 			if(t2.isError()) return t2;
-
+		}
 		if(s.curClass != null) {
 			TYPE d = s.curClass.findInClassScope(id);
 			if(d != null) {
 				// found match with a non-function name
 				if(!d.isFunc()) return new TYPE_ERROR(line);  
 				// otherwise, found match with a function name
-				TYPE_FUNCTION duplicate = (TYPE_FUNCTION) d; 
+				duplicate = (TYPE_FUNCTION) d; 
 				 // method overloading found with different type
 				if((duplicate != null) && (duplicate.returnType != t1)) return new TYPE_ERROR(line);
 				 // method overloading found with different args types
@@ -95,18 +94,11 @@ public class AST_FUNC_DEC extends AST_Node {
 		}				
 
 		TYPE_FUNCTION t = new TYPE_FUNCTION(t1, id, (TYPE_LIST)t2);
-		
-		// analyze statements
-		if(stmts != null) {
-		/* only define a function scope if the body of the function is not empty */
-		s.beginFuncScope();
 		// temporarily enter t into the function scope - will be flushed on endScope()
 		s.enter(id, t);
 		t3 = stmts.SemantMe();
-		if(t3 == null) return null;
+		if(t3.isError()) return t3;
 		s.endFuncScope();
-		}
-		
 		t = new TYPE_FUNCTION(t1, id, (TYPE_LIST)t2);
 		s.enter(id, t);
 		

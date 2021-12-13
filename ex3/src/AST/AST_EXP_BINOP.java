@@ -1,5 +1,5 @@
 package AST; import TYPES.*;
-
+import SYMBOL_TABLE.*;
 
 public class AST_EXP_BINOP extends AST_EXP
 {
@@ -88,7 +88,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		// case: string concatenation
 		if ((t1 == TYPE_STRING.getInstance()) && (t2 == TYPE_STRING.getInstance()))
 		{
-			if(OP == 1)
+			if(OP.OP == 1)
 				return TYPE_STRING.getInstance();
 		}
 		

@@ -2,7 +2,7 @@ package TYPES;
 
 public class TYPE_ERROR extends TYPE
 {
-    int line;
+    public int line;
 	/*****************************/
 	/* PREVENT INSTANTIATION ... */
 	/*****************************/

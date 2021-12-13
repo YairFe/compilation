@@ -1,4 +1,6 @@
 package AST;
+import SYMBOL_TABLE.*;
+import TYPES.*;
 
 public class AST_STMT_RETURN extends AST_STMT {
 	public AST_EXP exp;
@@ -63,7 +65,7 @@ public class AST_STMT_RETURN extends AST_STMT {
 			}
 			// need to implement func scope
 			if(!s.canReturnType(exp_type))
-				return new TYPE_ERROR(line);
+				return new TYPE_ERROR(exp.line);
 		} else {
 			if(!s.canReturnType(TYPE_VOID.getInstance()))
 				return new TYPE_ERROR(line);

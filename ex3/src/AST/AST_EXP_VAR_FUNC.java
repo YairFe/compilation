@@ -12,6 +12,7 @@ public class AST_EXP_VAR_FUNC extends AST_EXP {
 	/******************/
 	public AST_EXP_VAR_FUNC(int line, AST_VAR var, String fn, AST_EXP_LIST exps) 
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -71,9 +72,11 @@ public class AST_EXP_VAR_FUNC extends AST_EXP {
 		
 		// analyze var
 		TYPE t1 = var.SemantMe();
-		if(t1.isError()) return t1; 
-		else if(!t1.isClass()) return new TYPE_ERROR(line);
-		TYPE t2 = (TYPE_CLASS t1).findInClassScope(fn);
+		if(t1.isError()) 
+			return t1; 
+		else if(!t1.isClass()) 
+			return new TYPE_ERROR(line);
+		TYPE t2 = ((TYPE_CLASS) t1).findInClassScope(fn);
 		if(t2 == null || !t2.isFunc()) return new TYPE_ERROR(line);
 		// analyze exps
 		TYPE t3 = null;
@@ -82,7 +85,7 @@ public class AST_EXP_VAR_FUNC extends AST_EXP {
 			t3 = exps.SemantMe();
 			if(t3.isError()) return t3;
 		}
-		if(!(TYPE_FUNCTION) t2).isSameArgs(t3)) return new TYPE_ERROR(line);
+		if(!(((TYPE_FUNCTION) t2).isSameArgs((TYPE_LIST) t3))) return new TYPE_ERROR(line);
 		
 		return ((TYPE_FUNCTION) t2).returnType;
 	}

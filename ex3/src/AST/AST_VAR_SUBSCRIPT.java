@@ -1,4 +1,5 @@
 package AST;
+import TYPES.*;
 
 public class AST_VAR_SUBSCRIPT extends AST_VAR
 {
@@ -69,6 +70,6 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 			return exp_type;
 		else if(!exp_type.name.equals("int"))
 			return new TYPE_ERROR(line);
-		return ((TYPE_ARRAY) var_type).type;
+		return ((TYPE_ARRAY) var_type).array_type;
 	}
 }

@@ -106,9 +106,8 @@ public class AST_CLASS_DEC extends AST_Node {
 		 * because cont should be processed inside class context.     */
 		/*************************************************************/
 		TYPE_CLASS t = new TYPE_CLASS((TYPE_CLASS) parent, id1, null);
-		SYMBOL_TABLE.getInstance().beginClassScope((TYPE_CLASS) parent);
+		SYMBOL_TABLE.getInstance().beginClassScope(t);
 		SYMBOL_TABLE.getInstance().enter(id1, t);
-		
 		/*****************************/
 		/* [2.5] Semant Data Members */
 		/*****************************/
@@ -129,6 +128,6 @@ public class AST_CLASS_DEC extends AST_Node {
 		/*********************************************************/
 		/* [5] Return value is irrelevant for class declarations */
 		/*********************************************************/
-		return null;		
+		return TYPE_VOID.getInstance();		
 	}
 }
