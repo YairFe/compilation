@@ -145,7 +145,7 @@ type		::=		TYPE_INT			{: RESULT = new AST_Type(lexer.getLine(),1);    :}
 					| ID:id				{: RESULT = new AST_Type(lexer.getLine(),id);    :}
 					;
 arrayTypedef ::=	ARRAY ID:id EQ type:t LBRACK RBRACK SEMICOLON
-					{: RESULT = new AST_ARRAY_TYPE_DEF(lexer.getLine(),id,t);    :}
+					{: RESULT = new AST_ARRAY_TYPE_DEF(idleft+1,id,t);    :}
 					;
 varDec		::=		type:t ID:id SEMICOLON			{: RESULT = new AST_VAR_DEC(lexer.getLine(),t,id);    :}
 					| type:t ID:id ASSIGN exp:e SEMICOLON	{: RESULT = new AST_VAR_DEC(lexer.getLine(),t,id,e);    :}
@@ -163,8 +163,8 @@ funcDec		::=		type:t ID:id LPAREN RPAREN LBRACE multiStmt:mul_stmt RBRACE	{: RES
 classCont	::=		cField:c1				{: RESULT= new AST_CLASS_CONT(lexer.getLine(),c1,null);	:} 
 					| cField:c1 classCont:cont	{: RESULT= new AST_CLASS_CONT(lexer.getLine(),c1,cont);	:} 
 					;
-classDec	::=		CLASS ID:id LBRACE classCont:cont RBRACE {: RESULT = new AST_CLASS_DEC(lexer.getLine(),id,cont);	:}
-					| CLASS ID:id1 EXTENDS ID:id2 LBRACE classCont:cont RBRACE {: RESULT = new AST_CLASS_DEC(lexer.getLine(),id1,id2,cont);	:}
+classDec	::=		CLASS ID:id LBRACE classCont:cont RBRACE {: RESULT = new AST_CLASS_DEC(idleft+1,id,cont);	:}
+					| CLASS ID:id1 EXTENDS ID:id2 LBRACE classCont:cont RBRACE {: RESULT = new AST_CLASS_DEC(id1left+1,id1,id2,cont);	:}
 					;
 multiExp	::=		exp:e 					{: RESULT= new AST_EXP_LIST(lexer.getLine(),e,null);	:}
 					| exp:e COMMA multiExp:mul_e 	{: RESULT= new AST_EXP_LIST(lexer.getLine(),e,mul_e);	:}
@@ -192,10 +192,10 @@ stmt		::=		varDec:v_dec				{: RESULT = new AST_STMT_VAR_DEC(lexer.getLine(),v_de
 					| RETURN exp:e SEMICOLON	{: RESULT = new AST_STMT_RETURN(lexer.getLine(),e);	:}
 					| IF LPAREN exp:e RPAREN LBRACE multiStmt:mul_stmt RBRACE	{: RESULT = new AST_STMT_IF(lexer.getLine(),e,mul_stmt);	:}
 					| WHILE LPAREN exp:e RPAREN LBRACE multiStmt:mul_stmt RBRACE	{: RESULT = new AST_STMT_WHILE(lexer.getLine(),e,mul_stmt);	:}
-					| var:v DOT ID:id LPAREN RPAREN SEMICOLON	{: RESULT = new AST_STMT_VAR_FUNC(lexer.getLine(),v,id,null);	:}
-					| var:v DOT ID:id LPAREN multiExp:mul_e RPAREN SEMICOLON	{: RESULT = new AST_STMT_VAR_FUNC(lexer.getLine(),v,id,mul_e);	:}
-					| ID:id LPAREN multiExp:mul_e RPAREN SEMICOLON	{: RESULT = new AST_STMT_VAR_FUNC(lexer.getLine(),null,id,mul_e);	:}
-					| ID:id LPAREN RPAREN SEMICOLON	{: RESULT = new AST_STMT_VAR_FUNC(lexer.getLine(),null,id,null);	:}
+					| var:v DOT ID:id LPAREN RPAREN SEMICOLON	{: RESULT = new AST_STMT_VAR_FUNC(idleft+1,v,id,null);	:}
+					| var:v DOT ID:id LPAREN multiExp:mul_e RPAREN SEMICOLON	{: RESULT = new AST_STMT_VAR_FUNC(idleft+1,v,id,mul_e);	:}
+					| ID:id LPAREN multiExp:mul_e RPAREN SEMICOLON	{: RESULT = new AST_STMT_VAR_FUNC(idleft+1,null,id,mul_e);	:}
+					| ID:id LPAREN RPAREN SEMICOLON	{: RESULT = new AST_STMT_VAR_FUNC(idleft+1,null,id,null);	:}
 					;
 newExp		::=		NEW type:t			{: RESULT = new AST_NEW_EXP(lexer.getLine(),t,null);	:}
 					| NEW type:t LBRACK exp:e RBRACK	{: RESULT = new AST_NEW_EXP(lexer.getLine(),t,e);	:}

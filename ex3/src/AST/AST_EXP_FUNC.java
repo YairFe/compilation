@@ -64,13 +64,13 @@ public class AST_EXP_FUNC extends AST_EXP {
 	public TYPE SemantMe(){
 		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
 		TYPE id_type = s.find(fn);
-		if(id_type == null || !id_type.isFunc()) return new TYPE_ERROR(line);
+		if(id_type == null || !id_type.isFunc()) return new TYPE_ERROR(exps.line);
 		TYPE exp_type = null;
 		if(exps != null){
 			exp_type = exps.SemantMe();
 			if(exp_type.isError()) return exp_type;
 		}
-		if(!((TYPE_FUNCTION) id_type).isSameArgs((TYPE_LIST) exp_type)) return new TYPE_ERROR(line);
+		if(!((TYPE_FUNCTION) id_type).isSameArgs((TYPE_LIST) exp_type)) return new TYPE_ERROR(exps.line);
 		return ((TYPE_FUNCTION) id_type).returnType;
 	}
 	

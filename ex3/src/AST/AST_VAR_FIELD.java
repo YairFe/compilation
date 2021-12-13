@@ -63,7 +63,8 @@ public class AST_VAR_FIELD extends AST_VAR
 		if (var_type.isError())
 			return var_type;
 		else if(!var_type.isClass()) return new TYPE_ERROR(line);
-		return ((TYPE_CLASS) var_type).findInClassScope(fieldName);
-
+		TYPE t = ((TYPE_CLASS) var_type).findInClassScope(fieldName);
+		if(t == null) return new TYPE_ERROR(line);
+		return t;
 	}
 }

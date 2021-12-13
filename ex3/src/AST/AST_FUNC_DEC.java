@@ -69,7 +69,7 @@ public class AST_FUNC_DEC extends AST_Node {
 		TYPE t2 = null;
 		TYPE t3 = null;
 		
-		if (s.existInScope(id)) return new TYPE_ERROR(line);
+		if (s.existInScope(id)) return new TYPE_ERROR(type.line);
 		// analyze type
 		t1 = type.SemantMe();
 		if(t1.isError()) return t1;
@@ -83,13 +83,13 @@ public class AST_FUNC_DEC extends AST_Node {
 			TYPE d = s.curClass.findInClassScope(id);
 			if(d != null) {
 				// found match with a non-function name
-				if(!d.isFunc()) return new TYPE_ERROR(line);  
+				if(!d.isFunc()) return new TYPE_ERROR(type.line);  
 				// otherwise, found match with a function name
 				duplicate = (TYPE_FUNCTION) d; 
 				 // method overloading found with different type
-				if((duplicate != null) && (duplicate.returnType != t1)) return new TYPE_ERROR(line);
+				if((duplicate != null) && (duplicate.returnType != t1)) return new TYPE_ERROR(type.line);
 				 // method overloading found with different args types
-				if((duplicate != null) && (!duplicate.isSameArgs((TYPE_LIST)t2))) return new TYPE_ERROR(line);
+				if((duplicate != null) && (!duplicate.isSameArgs((TYPE_LIST)t2))) return new TYPE_ERROR(type.line);
 			}
 		}				
 
@@ -99,7 +99,6 @@ public class AST_FUNC_DEC extends AST_Node {
 		t3 = stmts.SemantMe();
 		if(t3.isError()) return t3;
 		s.endFuncScope();
-		t = new TYPE_FUNCTION(t1, id, (TYPE_LIST)t2);
 		s.enter(id, t);
 		
 		/* return value is irrelevant, like with class declarations(?) */

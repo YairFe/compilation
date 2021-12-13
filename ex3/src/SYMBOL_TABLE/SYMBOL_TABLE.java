@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 /* PROJECT IMPORTS */
 /*******************/
 import TYPES.*;
-
+import AST.*;
 /****************/
 /* SYMBOL TABLE */
 /****************/
@@ -69,6 +69,12 @@ public class SYMBOL_TABLE
 		/****************************************/
 		table[hashValue] = e;
 		
+		if(curClass != null && cur_scope_depth==1){
+			curClass.data_members = new TYPE_CLASS_VAR_DEC_LIST(
+												new TYPE_CLASS_VAR_DEC(t,name),
+												curClass.data_members);
+		}
+
 		/**************************/
 		/* [6] Print Symbol Table */
 		/**************************/
@@ -125,11 +131,53 @@ public class SYMBOL_TABLE
 				return false;
 		if(var.isClass() && value.isClass())
 			return ((TYPE_CLASS) var).isFatherOf((TYPE_CLASS) value);
-		if(var.isArray() && value.isArray())
-			return ((TYPE_ARRAY) var).array_type.name.equals(((TYPE_ARRAY) value).array_type.name);
+		if(var.isArray() && value.isArray()){
+			TYPE_ARRAY arr1 = (TYPE_ARRAY) var;
+			TYPE_ARRAY arr2 = (TYPE_ARRAY) value;
+			if(arr2.name == null){
+				if(arr1.array_type.isClass() && arr2.array_type.isClass())
+					return ((TYPE_CLASS) arr1.array_type).isFatherOf((TYPE_CLASS) arr2.array_type);
+				return arr1.array_type.name.equals(arr2.array_type.name);
+			}
+			return arr1.name.equals(arr2.name);
+		}
 		if(value.isFunc())
 			value = ((TYPE_FUNCTION) value).returnType;
 		return var.name.equals(value.name);
+	}
+
+	public boolean shadowingVariable(String id, TYPE id_type){
+		if(curClass != null && cur_scope_depth == 1) {
+			TYPE d = curClass.findInClassScope(id);
+			if(d != null) {
+				// found match with a different type name
+				if(!d.name.equals(id_type.name)) return true; 
+			}
+		}
+		return false;
+	}
+	/************************************************************/
+	/* function that check if exp can be assign to var			*/
+	/* when we are at class scope								*/
+	/* with the following conditions							*/
+	/* class type vaiables can only be assign with nil			*/
+	/* int type variables can only be assign with const			*/
+	/* string type can only be assign with string const			*/
+	/* array cant be declared in class so not implemented		*/
+	/************************************************************/
+	public boolean canAssignExpToVar(TYPE var, AST_Node exp){
+		// this policy is only for class variables declarations
+		if(curClass != null && cur_scope_depth == 1){
+			// cant use new exp at the class declaration scope
+			if(exp instanceof AST_NEW_EXP) return false;
+			if(var.isClass())
+				return exp instanceof AST_EXP_NIL;
+			if(var == TYPE_INT.getInstance())
+				return exp instanceof AST_EXP_INT;
+			if(var == TYPE_STRING.getInstance())
+				return exp instanceof AST_EXP_STRING;
+		}
+		return true;	
 	}
 	/************************************************************/
 	/* function which check if the type provided can be 		*/
@@ -229,9 +277,13 @@ public class SYMBOL_TABLE
 		/*********************************************/
 		PrintMe();
 	}
+	/************************************************************/
+	/* end class scope and enter the class to symbol table   	*/
+	/************************************************************/
 	public void endClassScope()
 	{
 		endScope();
+		enter(curClass.name,curClass);
 		this.curClass = null;
 	}
 	public void endFuncScope(){

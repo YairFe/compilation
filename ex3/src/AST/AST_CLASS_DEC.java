@@ -113,7 +113,6 @@ public class AST_CLASS_DEC extends AST_Node {
 		/*****************************/
 		TYPE c = cont.SemantMe();
 		if(c.isError()) return c;
-		t = new TYPE_CLASS((TYPE_CLASS) parent, id1, (TYPE_CLASS_VAR_DEC_LIST)c);
 
 		/*****************/
 		/* [3] End Scope */
@@ -123,7 +122,6 @@ public class AST_CLASS_DEC extends AST_Node {
 		/********************************************************/
 		/* [4] Enter the Class Type to the Symbol Table (again) */
 		/********************************************************/
-		SYMBOL_TABLE.getInstance().enter(id1,t);
 
 		/*********************************************************/
 		/* [5] Return value is irrelevant for class declarations */

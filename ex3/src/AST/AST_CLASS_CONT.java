@@ -59,15 +59,15 @@ public class AST_CLASS_CONT extends AST_Node {
 		TYPE t2 = null;
 		
 		t1 = head.SemantMe();
-		if(t1.isError()) return new TYPE_ERROR(line);
+		if(t1.isError()) return t1;
 		
 		if (tail != null) 
 		{
 			t2 = tail.SemantMe();
-			if(t2.isError()) return new TYPE_ERROR(line);
+			if(t2.isError()) return t2;
 		}
 		
-		return new TYPE_CLASS_VAR_DEC_LIST((TYPE_CLASS_VAR_DEC)t1,(TYPE_CLASS_VAR_DEC_LIST)t2);
+		return TYPE_VOID.getInstance();
 	}
 	
 }

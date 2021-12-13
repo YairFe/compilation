@@ -62,6 +62,7 @@ public class AST_ARRAY_TYPE_DEF extends AST_Node {
 		
 		TYPE t = type.SemantMe();
 		if (t.isError()) return t;
+		else if(t.name.equals("void")) return new TYPE_ERROR(line);
 		// semantic analysis successful, create symbol table entry
 		TYPE_ARRAY t1 = new TYPE_ARRAY(id, t);
 		s.enter(id, t1);

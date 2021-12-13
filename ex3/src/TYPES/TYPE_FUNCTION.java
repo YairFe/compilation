@@ -1,4 +1,5 @@
 package TYPES;
+import SYMBOL_TABLE.*;
 
 public class TYPE_FUNCTION extends TYPE
 {
@@ -24,10 +25,13 @@ public class TYPE_FUNCTION extends TYPE
 	public boolean isSameArgs(TYPE_LIST args){
 		TYPE_LIST tmp = this.params;
 		while(tmp != null){
-			if(tmp.head != null && !tmp.head.name.equals(args.head.name))
-				return false;
+			// shouldnt be null but check anyway
+			if(tmp.head != null){
+				if(!(SYMBOL_TABLE.getInstance().canAssignValueToVar(tmp.head,args.head)))
+					return false;
 			tmp = tmp.tail;
 			args = args.tail;
+			}
 		}
 		if(tmp == null && args == null)
 			return true;

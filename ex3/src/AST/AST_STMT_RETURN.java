@@ -63,12 +63,11 @@ public class AST_STMT_RETURN extends AST_STMT {
 			if(exp_type.isError()){
 				return exp_type;
 			}
-			// need to implement func scope
-			if(!s.canReturnType(exp_type))
+			if(exp_type == TYPE_VOID.getInstance() || !s.canReturnType(exp_type))
 				return new TYPE_ERROR(exp.line);
 		} else {
 			if(!s.canReturnType(TYPE_VOID.getInstance()))
-				return new TYPE_ERROR(line);
+				return new TYPE_ERROR(line-1);
 		}
 		return TYPE_VOID.getInstance();
 	}

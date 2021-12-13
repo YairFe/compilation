@@ -25,12 +25,8 @@ public class TYPE_CLASS extends TYPE
 	}
 
 	public TYPE findInClassScope(String name){
-		System.out.format("name %s\n",name);
-		System.out.format("class name %s\n",this.name);
 		for (TYPE_CLASS_VAR_DEC_LIST e=this.data_members;e!=null;e=e.tail){
-			System.out.format("equality %s\n",e.head.name.equals(name));
 			if (e.head.name.equals(name)){
-				System.out.format("type %s\n",e.head.t.name);
 				return e.head.t;
 			}
 		}

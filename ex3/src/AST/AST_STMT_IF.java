@@ -70,7 +70,7 @@ public class AST_STMT_IF extends AST_STMT
 			return exp_type;
 		} else if(!exp_type.name.equals("int")){
 			// might fail if exp_type is null
-			return new TYPE_ERROR(line);
+			return new TYPE_ERROR(cond.line);
 		}
 		s.beginScope();
 		TYPE body_type = body.SemantMe();

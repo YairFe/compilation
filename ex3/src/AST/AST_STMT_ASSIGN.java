@@ -67,10 +67,12 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
 		TYPE var_type = var.SemantMe();
 		if(var_type.isError()) return var_type;
+
 		TYPE exp_type = exp.SemantMe();
 		if(exp_type.isError()) return exp_type;
-		if(s.canAssignValueToVar(var_type,exp_type))
-			return TYPE_VOID.getInstance();
-		return new TYPE_ERROR(var.line);
+		
+		if(!s.canAssignValueToVar(var_type,exp_type))
+			return new TYPE_ERROR(var.line);
+		return TYPE_VOID.getInstance();
 	}
 }

@@ -69,7 +69,7 @@ public class AST_STMT_WHILE extends AST_STMT
 		
 		TYPE t = cond.SemantMe();
 		if (t.isError()) return t;
-		else if(!t.name.equals("int")) return new TYPE_ERROR(line);
+		else if(!t.name.equals("int")) return new TYPE_ERROR(cond.line);
 		s.beginScope();
 		TYPE body_type = body.SemantMe();
 		if(body_type.isError()) return body_type;

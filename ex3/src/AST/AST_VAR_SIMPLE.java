@@ -52,7 +52,6 @@ public class AST_VAR_SIMPLE extends AST_VAR
 	public TYPE SemantMe(){
 		// might need to add a check to id type is not func
 		TYPE id_type = SYMBOL_TABLE.getInstance().find(name);
-		System.out.println(id_type.name);
 		if(id_type == null) return new TYPE_ERROR(line);
 		return id_type;
 	}

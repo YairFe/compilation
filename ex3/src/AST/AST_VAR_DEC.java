@@ -113,18 +113,21 @@ public class AST_VAR_DEC extends AST_Node {
 			return var_type;
 		} else if(var_type.name.equals("void")){
 			return new TYPE_ERROR(type.line);
-		} 
+		}
+		if(s.shadowingVariable(id,var_type)) return new TYPE_ERROR(type.line);
 		if(s.existInScope(id)) return new TYPE_ERROR(type.line);
-
-		s.enter(id,var_type);
-
 		if(exp != null) exp_type = exp.SemantMe();
 		else if(newexp != null) exp_type = newexp.SemantMe();
 
 		if(exp_type != null){
 			if(exp_type.isError()) return exp_type;
 			if(!s.canAssignValueToVar(var_type,exp_type)) return new TYPE_ERROR(type.line);
-		} 
+		}
+		s.enter(id,var_type); 
+
+		if(exp != null && !s.canAssignExpToVar(var_type,exp)) return new TYPE_ERROR(type.line);
+		else if(newexp != null && !s.canAssignExpToVar(var_type,newexp)) return new TYPE_ERROR(type.line);
+
 		return new TYPE_CLASS_VAR_DEC(var_type,id);
 	}
 	

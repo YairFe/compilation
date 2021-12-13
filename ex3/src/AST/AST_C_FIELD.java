@@ -76,12 +76,7 @@ public class AST_C_FIELD extends AST_Node {
 	public TYPE SemantMe() 
 	{ 
 		if (varDec != null) return varDec.SemantMe();
-		if (funcDec != null){
-			TYPE t = funcDec.SemantMe();
-			if(t.isError()) return t;
-			TYPE_FUNCTION func_type = (TYPE_FUNCTION) t; 
-			return new TYPE_CLASS_VAR_DEC(func_type,t.name);
-		} 
+		if (funcDec != null) return funcDec.SemantMe();
 		
 		return new TYPE_ERROR(line);
 	}
