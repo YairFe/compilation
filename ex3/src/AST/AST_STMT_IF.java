@@ -76,6 +76,6 @@ public class AST_STMT_IF extends AST_STMT
 		TYPE body_type = body.SemantMe();
 		if(body_type.isError()) return body_type;
 		s.endScope();
-		return TYPE_VOID.getInstance();
+		return null;
 	}
 }
