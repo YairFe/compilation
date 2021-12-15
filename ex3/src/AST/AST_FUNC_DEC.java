@@ -101,7 +101,6 @@ public class AST_FUNC_DEC extends AST_Node {
 		s.endFuncScope();
 		s.enter(id, t);
 		
-		/* return value is irrelevant, like with class declarations(?) */
 		return t;
 		
 	}
