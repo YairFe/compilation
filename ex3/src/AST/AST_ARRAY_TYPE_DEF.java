@@ -57,12 +57,12 @@ public class AST_ARRAY_TYPE_DEF extends AST_Node {
 		/* check that the array name is available.
 		 * Note that we should only check the local scope,
 		 * since arrays can only be defined in the global scope. */
-		if (s.existInScope(id)) return new TYPE_ERROR(line);
+		if (s.existInScope(id)) return new TYPE_ERROR(type.line);
 		// if (s.curClass != null) return null; // arrays cannot be defined in class context
 		
 		TYPE t = type.SemantMe();
 		if (t.isError()) return t;
-		else if(t.name.equals("void")) return new TYPE_ERROR(line);
+		else if(t.name.equals("void")) return new TYPE_ERROR(type.line);
 		// semantic analysis successful, create symbol table entry
 		TYPE_ARRAY t1 = new TYPE_ARRAY(id, t);
 		s.enter(id, t1);

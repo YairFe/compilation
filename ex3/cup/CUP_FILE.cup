@@ -200,8 +200,8 @@ stmt		::=		varDec:v_dec				{: RESULT = new AST_STMT_VAR_DEC(lexer.getLine(),v_de
 newExp		::=		NEW type:t			{: RESULT = new AST_NEW_EXP(lexer.getLine(),t,null);	:}
 					| NEW type:t LBRACK exp:e RBRACK	{: RESULT = new AST_NEW_EXP(lexer.getLine(),t,e);	:}
 					;
-cField		::=		varDec:v				{: RESULT = new AST_C_FIELD(lexer.getLine(),v);	:}
-					| funcDec:f			{: RESULT = new AST_C_FIELD(lexer.getLine(),f);	:}
+cField		::=		varDec:v				{: RESULT = new AST_C_FIELD(vleft+1,v);	:}
+					| funcDec:f			{: RESULT = new AST_C_FIELD(fleft+1,f);	:}
 					;
 BINOP		::=		PLUS				{: RESULT = new AST_BINOP(lexer.getLine(),1);	:}
 					| MINUS				{: RESULT = new AST_BINOP(lexer.getLine(),2);	:}

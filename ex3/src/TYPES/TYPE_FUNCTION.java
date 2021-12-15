@@ -24,7 +24,7 @@ public class TYPE_FUNCTION extends TYPE
 	}
 	public boolean isSameArgs(TYPE_LIST args){
 		TYPE_LIST tmp = this.params;
-		while(tmp != null){
+		while(tmp != null && args != null){
 			// shouldnt be null but check anyway
 			if(tmp.head != null){
 				if(!(SYMBOL_TABLE.getInstance().canAssignValueToVar(tmp.head,args.head)))
