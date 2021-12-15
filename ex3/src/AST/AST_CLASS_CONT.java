@@ -67,7 +67,7 @@ public class AST_CLASS_CONT extends AST_Node {
 			if(t2.isError()) return t2;
 		}
 		
-		return TYPE_VOID.getInstance();
+		return null;
 	}
 	
 }
