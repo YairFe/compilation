@@ -73,6 +73,6 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		
 		if(!s.canAssignValueToVar(var_type,exp_type))
 			return new TYPE_ERROR(var.line);
-		return TYPE_VOID.getInstance();
+		return null;
 	}
 }
