@@ -67,9 +67,6 @@ public class AST_EXP_VAR_FUNC extends AST_EXP {
 	public TYPE SemantMe() {
 		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
 		
-		/* TODO: check that fn is a class method of var's class or one of its parent classes */
-		
-		
 		// analyze var
 		TYPE t1 = var.SemantMe();
 		if(t1.isError()) 
