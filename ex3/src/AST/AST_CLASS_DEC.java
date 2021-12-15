@@ -83,7 +83,6 @@ public class AST_CLASS_DEC extends AST_Node {
 		/* [0] Check Class Name */
 		/*************************/
 		if(SYMBOL_TABLE.getInstance().existInScope(id1)) { return new TYPE_ERROR(line); /* name already exists */ }
-		// if(SYMBOL_TABLE.getInstance().curClass != null) { return null; /* cannot define nested classes*/ }
 		
 		/*************************/
 		/* [1] Begin Class Scope */
