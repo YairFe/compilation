@@ -65,7 +65,7 @@ public class AST_STMT_ASSIGN_NEW extends AST_STMT
 		TYPE exp_type = exp.SemantMe();
 		if(exp_type.isError()) return exp_type;
 		if(s.canAssignValueToVar(var_type,exp_type))
-			return null;
+			return TYPE_VOID.getInstance();
 		return new TYPE_ERROR(var.line);
 	}
 	
