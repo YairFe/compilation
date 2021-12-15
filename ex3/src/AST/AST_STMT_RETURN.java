@@ -69,6 +69,6 @@ public class AST_STMT_RETURN extends AST_STMT {
 			if(!s.canReturnType(TYPE_VOID.getInstance()))
 				return new TYPE_ERROR(line-1);
 		}
-		return null;
+		return TYPE_VOID.getInstance();
 	}
 }
