@@ -72,7 +72,7 @@ public class AST_STMT_LIST extends AST_Node
 			tail_type = tail.SemantMe();
 			if(tail_type.isError()) return tail_type;
 		}
-		return null;
+		return TYPE_VOID.getInstance();
 		
 	}
 	
