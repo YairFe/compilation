@@ -6,7 +6,7 @@ JFlex_DIR         = ${BASEDIR}/jflex
 CUP_DIR           = ${BASEDIR}/cup
 SRC_DIR           = ${BASEDIR}/src
 BIN_DIR           = ${BASEDIR}/bin
-INPUT_DIR         = ${BASEDIR}/input
+INPUT_DIR         = ${BASEDIR}/ourinputs
 OUTPUT_DIR        = ${BASEDIR}/output
 EXTERNAL_JARS_DIR = ${BASEDIR}/external_jars
 MANIFEST_DIR      = ${BASEDIR}/manifest
@@ -51,7 +51,7 @@ CUP_FLAGS =                                \
 #########################
 # DEFINITIONS :: PARSER #
 #########################
-INPUT    = ${INPUT_DIR}/TEST_12_Nested_Var_d.txt
+INPUT    = ${INPUT_DIR}/TEST_FILE.txt
 OUTPUT   = ${OUTPUT_DIR}/SemanticStatus.txt
 
 ##########
