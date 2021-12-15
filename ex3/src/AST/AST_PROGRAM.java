@@ -69,6 +69,6 @@ public class AST_PROGRAM extends AST_Node {
 			TYPE tail_type = tail.SemantMe();
 			if(tail_type.isError()) return tail_type;
 		}
-		return TYPE_VOID.getInstance();
+		return null;
 	}
 }
