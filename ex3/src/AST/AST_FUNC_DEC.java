@@ -97,7 +97,7 @@ public class AST_FUNC_DEC extends AST_Node {
 		// temporarily enter t into the function scope - will be flushed on endScope()
 		s.enter(id, t);
 		t3 = stmts.SemantMe();
-		if(t3.isError()) return t3;
+		if((t3 != null) && t3.isError()) return t3;
 		s.endFuncScope();
 		s.enter(id, t);
 		
