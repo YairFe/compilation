@@ -108,19 +108,15 @@ public class AST_CLASS_DEC extends AST_Node {
 		SYMBOL_TABLE.getInstance().beginClassScope(t);
 		SYMBOL_TABLE.getInstance().enter(id1, t);
 		/*****************************/
-		/* [2.5] Semant Data Members */
+		/* [4] Semant Data Members */
 		/*****************************/
 		TYPE c = cont.SemantMe();
 		if(c.isError()) return c;
 
 		/*****************/
-		/* [3] End Scope */
+		/* [4] End Scope */
 		/*****************/
 		SYMBOL_TABLE.getInstance().endClassScope();
-
-		/********************************************************/
-		/* [4] Enter the Class Type to the Symbol Table (again) */
-		/********************************************************/
 
 		/*********************************************************/
 		/* [5] Return value is irrelevant for class declarations */
