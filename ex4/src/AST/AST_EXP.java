@@ -1,16 +1,12 @@
-package AST;
+package AST; import TYPES.*;
 
-import TYPES.*;
-import TEMP.*;
 
 public abstract class AST_EXP extends AST_Node
 {
-	public TYPE SemantMe()
-	{
-		return null;
+	AST_EXP(int line){
+		super(line);
 	}
-	public TEMP IRme()
-	{
-		return null;
-	}
+
+	public TYPE SemantMe() { return null; }
 }
+

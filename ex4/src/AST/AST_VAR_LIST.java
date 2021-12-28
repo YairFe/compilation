@@ -1,17 +1,19 @@
-package AST; import TYPES.*;
+package AST;
+import SYMBOL_TABLE.*;
+import TYPES.*;
 
-public class AST_EXP_LIST extends AST_Node 
-{
+public class AST_VAR_LIST extends AST_Node {
 	/****************/
 	/* DATA MEMBERS */
 	/****************/
-	public AST_EXP head;
-	public AST_EXP_LIST tail;
+	public AST_Type type;
+	public String head;
+	public AST_VAR_LIST tail;
 	
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_EXP_LIST(int line, AST_EXP head, AST_EXP_LIST tail)
+	public AST_VAR_LIST(int line, String head, AST_VAR_LIST tail, AST_Type type)
 	{
 		super(line);
 		/******************************/
@@ -22,14 +24,15 @@ public class AST_EXP_LIST extends AST_Node
 		/***************************************/
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
-		if (tail != null) System.out.print("====================== multiExp	-> exp COMMA multiExp\n");
-		if (tail == null) System.out.print("====================== multiExp -> exp      \n");
+		if (tail != null) System.out.format("====================== multiVar -> type ID( %s ) COMMA multiVar\n", head);
+		if (tail == null) System.out.format("====================== multiVar -> type ID( %s )     \n", head);
 
 		/*******************************/
 		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
 		this.head = head;
 		this.tail = tail;
+		this.type = type;
 	}
 	
 	/******************************************************/
@@ -38,14 +41,15 @@ public class AST_EXP_LIST extends AST_Node
 	public void PrintMe()
 	{
 		/**************************************/
-		/* AST NODE TYPE = AST EXPRESSION LIST */
+		/* AST NODE TYPE = AST VAR LIST */
 		/**************************************/
-		System.out.print("AST NODE EXP LIST\n");
+		System.out.print("AST NODE VAR LIST\n");
 
 		/*************************************/
 		/* RECURSIVELY PRINT HEAD + TAIL ... */
 		/*************************************/
-		if (head != null) head.PrintMe();
+		if (type != null) type.PrintMe();
+		if (head != null) System.out.format("ID: %s\n", head); 
 		if (tail != null) tail.PrintMe();
 
 		/**********************************/
@@ -53,28 +57,31 @@ public class AST_EXP_LIST extends AST_Node
 		/**********************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			"EXP\nLIST\n");
+			"VAR\nLIST\n");
 		
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
 		/****************************************/
-		if (head != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,head.SerialNumber);
+		if (type != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
-	
-	public TYPE SemantMe() {
-		TYPE t1 = null;
-		TYPE t2 = null;
-		
-		t1 = head.SemantMe();
-		if(t1.isError()) return t1;
-		
-		if (tail != null) 
-		{
-			t2 = tail.SemantMe();
-			if(t2.isError()) return t2;
+
+	public TYPE SemantMe(){
+		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
+		TYPE head_type;
+		TYPE tail_type = null;
+		head_type = type.SemantMe();
+		if(head_type.isError()){
+			return head_type;
+		} else if(head_type.name.equals("void")){
+			return new TYPE_ERROR(line);
 		}
-		
-		return new TYPE_LIST(t1, (TYPE_LIST)t2);
+		if(s.existInScope(head)) return new TYPE_ERROR(line);
+		s.enter(head,head_type);
+		if(tail != null){
+			tail_type = tail.SemantMe();
+			if(tail_type.isError()) return tail_type;
+		}
+		return new TYPE_LIST(head_type,(TYPE_LIST) tail_type);
 	}
 }

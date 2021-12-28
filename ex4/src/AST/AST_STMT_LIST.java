@@ -1,7 +1,5 @@
 package AST;
-
 import TYPES.*;
-import TEMP.*;
 
 public class AST_STMT_LIST extends AST_Node
 {
@@ -14,8 +12,9 @@ public class AST_STMT_LIST extends AST_Node
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_STMT_LIST(AST_STMT head,AST_STMT_LIST tail)
+	public AST_STMT_LIST(int line, AST_STMT head,AST_STMT_LIST tail)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
@@ -24,11 +23,11 @@ public class AST_STMT_LIST extends AST_Node
 		/***************************************/
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
-		if (tail != null) System.out.print("====================== stmts -> stmt stmts\n");
-		if (tail == null) System.out.print("====================== stmts -> stmt      \n");
+		if (tail != null) System.out.print("====================== multiStmt -> stmt multiStmt\n");
+		if (tail == null) System.out.print("====================== multiStmt -> stmt      \n");
 
 		/*******************************/
-		/* COPY INPUT DATA NENBERS ... */
+		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
 		this.head = head;
 		this.tail = tail;
@@ -63,20 +62,18 @@ public class AST_STMT_LIST extends AST_Node
 		if (head != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,head.SerialNumber);
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
-	
-	public TEMP IRme()
-	{
-		if (head != null) head.IRme();
-		if (tail != null) tail.IRme();
+
+	public TYPE SemantMe(){
+		TYPE head_type;
+		TYPE tail_type;
+		head_type = head.SemantMe();
+		if(head_type.isError()) return head_type;
+		if(tail != null) {
+			tail_type = tail.SemantMe();
+			if(tail_type.isError()) return tail_type;
+		}
+		return TYPE_VOID.getInstance();
 		
-		return null;
 	}
 	
-	public TYPE SemantMe()
-	{
-		if (head != null) head.SemantMe();
-		if (tail != null) tail.SemantMe();
-		
-		return null;
-	}
 }

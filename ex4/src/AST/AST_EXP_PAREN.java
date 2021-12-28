@@ -1,14 +1,14 @@
 package AST; import TYPES.*;
 
-public class AST_EXP_STRING extends AST_EXP {
+public class AST_EXP_PAREN extends AST_EXP {
 	
-	public String value;
+	public AST_EXP exp;
 
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_EXP_STRING(int line, String value) 
-	{	
+	public AST_EXP_PAREN(int line, AST_EXP exp) 
+	{		
 		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
@@ -18,37 +18,40 @@ public class AST_EXP_STRING extends AST_EXP {
 		/***************************************/
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
-		System.out.format("====================== exp -> STRING( %s )\n", value);
+		System.out.print("====================== exp -> LPAREN exp RPAREN\n");
 		
 		/*******************************/
 		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
-		this.value = value;
+		this.exp = exp;
 	}
 	
 	/************************************************/
-	/* The printing message for a STRING EXP AST node */
+	/* The printing message for a parenthesized EXP AST node */
 	/************************************************/
 	public void PrintMe()
 	{
 		/*******************************/
-		/* AST NODE TYPE = AST STRING EXP */
+		/* AST NODE TYPE = AST INT EXP */
 		/*******************************/
-		System.out.format("AST NODE STRING( %s )\n",value);
+		System.out.format("AST NODE EXP PAREN");
+		
+		/*****************************/
+		/* RECURSIVELY PRINT EXP ... */
+		/*****************************/
+		if (exp != null) exp.PrintMe();
+		
 
 		/*********************************/
 		/* Print to AST GRAPHIZ DOT file */
 		/*********************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			String.format("STRING( %s )",value));
+			"EXP PAREN");
+		
+		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
 	
-	/*************************************************/
-	/*          Semantic analysis function           */
-	/*************************************************/
-	public TYPE SemantMe()
-	{
-		return TYPE_STRING.getInstance();
-	}
+	public TYPE SemantMe() { return exp.SemantMe(); }
+
 }

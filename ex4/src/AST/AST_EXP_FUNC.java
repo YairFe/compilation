@@ -1,78 +1,77 @@
 package AST;
-import SYMBOL_TABLE.*;
 import TYPES.*;
+import SYMBOL_TABLE.*;
 
-public class AST_STMT_ASSIGN extends AST_STMT
-{
-	/***************/
-	/*  var := exp */
-	/***************/
-	public AST_VAR var;
-	public AST_EXP exp;
+public class AST_EXP_FUNC extends AST_EXP {
 
-	/*******************/
-	/*  CONSTRUCTOR(S) */
-	/*******************/
-	public AST_STMT_ASSIGN(int line, AST_VAR var,AST_EXP exp)
+	public String fn;
+	public AST_EXP_LIST exps;
+
+	/******************/
+	/* CONSTRUCTOR(S) */
+	/******************/
+	public AST_EXP_FUNC(int line, String fn, AST_EXP_LIST exps) 
 	{
 		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
 		SerialNumber = AST_Node_Serial_Number.getFresh();
-
+		
 		/***************************************/
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
-		System.out.print("====================== stmt -> var ASSIGN exp SEMICOLON\n");
-
+		
+		System.out.format("====================== exp -> ID(%s) LPAREN multiExp RPAREN\n", fn);
+		
 		/*******************************/
 		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
-		this.var = var;
-		this.exp = exp;
+		this.fn = fn;
+		this.exps = exps;
 	}
-
+	
 	/*********************************************************/
-	/* The printing message for an assign statement AST node */
+	/* The printing message for a variable field AST node */
 	/*********************************************************/
 	public void PrintMe()
 	{
 		/********************************************/
-		/* AST NODE TYPE = AST ASSIGNMENT STATEMENT */
+		/* AST NODE TYPE = EXP VAR FUNC AST node */
 		/********************************************/
-		System.out.print("AST NODE ASSIGN STMT\n");
+		System.out.print("AST NODE EXP FUNC\n");
 
 		/***********************************/
-		/* RECURSIVELY PRINT VAR + EXP ... */
+		/* RECURSIVELY PRINT VAR + EXPS ... */
 		/***********************************/
-		if (var != null) var.PrintMe();
-		if (exp != null) exp.PrintMe();
-
+		if (fn != null) System.out.format("FUNC NAME( %s )\n",fn);
+		if (exps != null) exps.PrintMe();
+		
+		
 		/***************************************/
 		/* PRINT Node to AST GRAPHVIZ DOT file */
 		/***************************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			"ASSIGN\nleft := right\n");
+			String.format("EXP\n FUNC( %s )", fn));
 		
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
 		/****************************************/
-		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
-		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
+		if (exps != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exps.SerialNumber);
 	}
 
 	public TYPE SemantMe(){
 		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
-		TYPE var_type = var.SemantMe();
-		if(var_type.isError()) return var_type;
-
-		TYPE exp_type = exp.SemantMe();
-		if(exp_type.isError()) return exp_type;
-		
-		if(!s.canAssignValueToVar(var_type,exp_type))
-			return new TYPE_ERROR(var.line);
-		return TYPE_VOID.getInstance();
+		TYPE id_type = s.find(fn);
+		if(id_type == null || !id_type.isFunc()) return new TYPE_ERROR(exps.line);
+		TYPE exp_type = null;
+		if(exps != null){
+			exp_type = exps.SemantMe();
+			if(exp_type.isError()) return exp_type;
+		}
+		if(!((TYPE_FUNCTION) id_type).isSameArgs((TYPE_LIST) exp_type)) return new TYPE_ERROR(exps.line);
+		return ((TYPE_FUNCTION) id_type).returnType;
 	}
+	
 }

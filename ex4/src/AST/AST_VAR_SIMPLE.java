@@ -1,34 +1,33 @@
 package AST;
-
-import IR.*;
-import TEMP.*;
-import MIPS.*;
-import TYPES.*;
 import SYMBOL_TABLE.*;
+import TYPES.*;
 
-public class AST_EXP_VAR_SIMPLE extends AST_EXP_VAR
+public class AST_VAR_SIMPLE extends AST_VAR
 {
 	/************************/
 	/* simple variable name */
 	/************************/
 	public String name;
 	
-	/************************************************/
-	/* PRIMITIVE AD-HOC COUNTER FOR LOCAL VARIABLES */
-	/************************************************/
-	public static int localVariablesCounter = 0;
-
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_EXP_VAR_SIMPLE(String name)
+	public AST_VAR_SIMPLE(int line, String name)
 	{
+		super(line);
 		/******************************/
 		/* SET A UNIQUE SERIAL NUMBER */
 		/******************************/
 		SerialNumber = AST_Node_Serial_Number.getFresh();
-
+	
+		/***************************************/
+		/* PRINT CORRESPONDING DERIVATION RULE */
+		/***************************************/
 		System.out.format("====================== var -> ID( %s )\n",name);
+
+		/*******************************/
+		/* COPY INPUT DATA MEMBERS ... */
+		/*******************************/
 		this.name = name;
 	}
 
@@ -42,21 +41,18 @@ public class AST_EXP_VAR_SIMPLE extends AST_EXP_VAR
 		/**********************************/
 		System.out.format("AST NODE SIMPLE VAR( %s )\n",name);
 
-		/***************************************/
-		/* PRINT Node to AST GRAPHVIZ DOT file */
-		/***************************************/
+		/*********************************/
+		/* Print to AST GRAPHIZ DOT file */
+		/*********************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			String.format("SIMPLE\nVAR\n(%s)",name));
+			String.format("SIMPLE\nVAR\n( %s )",name));
 	}
-	public TEMP IRme()
-	{
-		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
-		IR.getInstance().Add_IRcommand(new IRcommand_Load(t,name));
-		return t;
-	}
-	public TYPE SemantMe()
-	{
-		return SYMBOL_TABLE.getInstance().find(name);
+
+	public TYPE SemantMe(){
+		// might need to add a check to id type is not func
+		TYPE id_type = SYMBOL_TABLE.getInstance().find(name);
+		if(id_type == null) return new TYPE_ERROR(line);
+		return id_type;
 	}
 }

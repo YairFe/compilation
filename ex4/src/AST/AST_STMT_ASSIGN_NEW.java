@@ -2,13 +2,15 @@ package AST;
 import SYMBOL_TABLE.*;
 import TYPES.*;
 
-public class AST_STMT_RETURN extends AST_STMT {
-	public AST_EXP exp;
-	
+public class AST_STMT_ASSIGN_NEW extends AST_STMT 
+{
+	public AST_VAR var;
+	public AST_NEW_EXP exp;
+
 	/*******************/
 	/*  CONSTRUCTOR(S) */
 	/*******************/
-	public AST_STMT_RETURN(int line, AST_EXP exp)
+	public AST_STMT_ASSIGN_NEW(int line, AST_VAR var, AST_NEW_EXP exp)
 	{
 		super(line);
 		/******************************/
@@ -19,28 +21,27 @@ public class AST_STMT_RETURN extends AST_STMT {
 		/***************************************/
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
-		if(exp != null) System.out.print("====================== stmt -> RETURN exp SEMICOLON\n");
-		if(exp == null) System.out.print("====================== stmt -> RETURN SEMICOLON\n");
-
+		System.out.print("====================== stmt -> var ASSIGN newExp SEMICOLON\n");
 		/*******************************/
 		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
+		this.var = var;
 		this.exp = exp;
 	}
-	
+
 	/*********************************************************/
-	/* The printing message for a return statement AST node */
+	/* The printing message for a new exp assign statement AST node */
 	/*********************************************************/
 	public void PrintMe()
 	{
 		/********************************************/
-		/* AST NODE TYPE = AST RETURN STATEMENT */
+		/* AST NODE TYPE = AST NEW EXP ASSIGNMENT STATEMENT */
 		/********************************************/
-		System.out.print("AST NODE RETURN STMT\n");
-
+		System.out.print("AST NODE ASSIGN NEW STMT\n");
 		/***********************************/
-		/* RECURSIVELY PRINT EXP ... */
+		/* RECURSIVELY PRINT VAR + EXP ... */
 		/***********************************/
+		if (var != null) var.PrintMe();
 		if (exp != null) exp.PrintMe();
 
 		/***************************************/
@@ -48,27 +49,24 @@ public class AST_STMT_RETURN extends AST_STMT {
 		/***************************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			"RETURN\n");
+			"ASSIGN\nvar := newexp\n");
 		
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
 		/****************************************/
+		if (var != null ) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
 		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
 
 	public TYPE SemantMe(){
 		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
-		if(exp != null) {
-			TYPE exp_type = exp.SemantMe();
-			if(exp_type.isError()){
-				return exp_type;
-			}
-			if(exp_type == TYPE_VOID.getInstance() || !s.canReturnType(exp_type))
-				return new TYPE_ERROR(exp.line);
-		} else {
-			if(!s.canReturnType(TYPE_VOID.getInstance()))
-				return new TYPE_ERROR(line-1);
-		}
-		return TYPE_VOID.getInstance();
+		TYPE var_type = var.SemantMe();
+		if(var_type.isError()) return var_type;
+		TYPE exp_type = exp.SemantMe();
+		if(exp_type.isError()) return exp_type;
+		if(s.canAssignValueToVar(var_type,exp_type))
+			return TYPE_VOID.getInstance();
+		return new TYPE_ERROR(var.line);
 	}
+	
 }

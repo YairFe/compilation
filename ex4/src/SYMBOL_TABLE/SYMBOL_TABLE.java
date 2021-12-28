@@ -12,13 +12,13 @@ import java.io.PrintWriter;
 /* PROJECT IMPORTS */
 /*******************/
 import TYPES.*;
-
+import AST.*;
 /****************/
 /* SYMBOL TABLE */
 /****************/
 public class SYMBOL_TABLE
 {
-	private int hashArraySize = 13;
+	private int hashArraySize = 100;
 	
 	/**********************************************/
 	/* The actual symbol table data structure ... */
@@ -26,21 +26,16 @@ public class SYMBOL_TABLE
 	private SYMBOL_TABLE_ENTRY[] table = new SYMBOL_TABLE_ENTRY[hashArraySize];
 	private SYMBOL_TABLE_ENTRY top;
 	private int top_index = 0;
+	private int cur_scope_depth = 0;
+	public TYPE_CLASS curClass = null;
+	private TYPE returnType = null;
 	
 	/**************************************************************/
 	/* A very primitive hash function for exposition purposes ... */
 	/**************************************************************/
 	private int hash(String s)
 	{
-		if (s.charAt(0) == 'l') {return 1;}
-		if (s.charAt(0) == 'm') {return 1;}
-		if (s.charAt(0) == 'r') {return 3;}
-		if (s.charAt(0) == 'i') {return 6;}
-		if (s.charAt(0) == 'd') {return 6;}
-		if (s.charAt(0) == 'k') {return 6;}
-		if (s.charAt(0) == 'f') {return 6;}
-		if (s.charAt(0) == 'S') {return 6;}
-		return 12;
+		return Math.abs(s.hashCode()) % hashArraySize;
 	}
 
 	/****************************************************************************/
@@ -62,7 +57,7 @@ public class SYMBOL_TABLE
 		/**************************************************************************/
 		/* [3] Prepare a new symbol table entry with name, type, next and prevtop */
 		/**************************************************************************/
-		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name,t,hashValue,next,top,top_index++);
+		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name,t,hashValue,next,cur_scope_depth,top,top_index++);
 
 		/**********************************************/
 		/* [4] Update the top of the symbol table ... */
@@ -74,32 +69,144 @@ public class SYMBOL_TABLE
 		/****************************************/
 		table[hashValue] = e;
 		
+		if(curClass != null && cur_scope_depth==1){
+			curClass.data_members = new TYPE_CLASS_VAR_DEC_LIST(
+												new TYPE_CLASS_VAR_DEC(t,name),
+												curClass.data_members);
+		}
+
 		/**************************/
 		/* [6] Print Symbol Table */
 		/**************************/
 		PrintMe();
 	}
 
-	/***********************************************/
-	/* Find the inner-most scope element with name */
-	/***********************************************/
-	public TYPE find(String name)
+	/****************************************************/
+	/* Find the inner-most scope element with name 		*/
+	/* if we are in class context then look at 			*/
+	/* child scope then fathers scope then Global 		*/
+	/****************************************************/
+	public TYPE find(String name) 
 	{
 		SYMBOL_TABLE_ENTRY e;
-				
+		TYPE result_type = null;
 		for (e = table[hash(name)]; e != null; e = e.next)
 		{
 			if (name.equals(e.name))
-			{
+			{	
+				/* scope_depth will be zero if there is only 	**
+				** a global variable with this name				*/
+				if ((curClass != null) && (e.scope_depth == 0)){
+					break;
+				}
 				return e.type;
 			}
 		}
-		
+		if (curClass != null){
+			/* look for the name in the class scope	*/
+			if (curClass != null)
+				result_type = curClass.findInClassScope(name);
+			if (result_type != null){
+				return result_type;
+			} else if (e != null){
+				return e.type;
+			}
+		}
 		return null;
 	}
+	/************************************************************/
+	/* function that check if value can be assign to var		*/
+	/* with the following conditions							*/
+	/* nil can be assign to both array and class type			*/
+	/* value class is a child class of var class				*/
+	/* var and value are array type with the same type			*/
+	/* value is a function with return value of var type		*/
+	/* value and var are of the same type						*/
+	/************************************************************/
+	public boolean canAssignValueToVar(TYPE var, TYPE value){
+		if(value.isNil())
+			if(var.isClass() || var.isArray() || var.isNil())
+				return true;
+			else
+				return false;
+		if(var.isClass() && value.isClass())
+			return ((TYPE_CLASS) var).isFatherOf((TYPE_CLASS) value);
+		if(var.isArray() && value.isArray()){
+			TYPE_ARRAY arr1 = (TYPE_ARRAY) var;
+			TYPE_ARRAY arr2 = (TYPE_ARRAY) value;
+			if(arr2.name == null){
+				if(arr1.array_type.isClass() && arr2.array_type.isClass())
+					return ((TYPE_CLASS) arr1.array_type).isFatherOf((TYPE_CLASS) arr2.array_type);
+				return arr1.array_type.name.equals(arr2.array_type.name);
+			}
+			return arr1.name.equals(arr2.name);
+		}
+		if(value.isFunc())
+			value = ((TYPE_FUNCTION) value).returnType;
+		return var.name.equals(value.name);
+	}
 
+	public boolean shadowingVariable(String id, TYPE id_type){
+		if(curClass != null && cur_scope_depth == 1) {
+			TYPE d = curClass.findInClassScope(id);
+			if(d != null) {
+				// found match with a different type name
+				if(!d.name.equals(id_type.name)) return true; 
+			}
+		}
+		return false;
+	}
+	/************************************************************/
+	/* function that check if exp can be assign to var			*/
+	/* when we are at class scope								*/
+	/* with the following conditions							*/
+	/* class type vaiables can only be assign with nil			*/
+	/* int type variables can only be assign with const			*/
+	/* string type can only be assign with string const			*/
+	/* array cant be declared in class so not implemented		*/
+	/************************************************************/
+	public boolean canAssignExpToVar(TYPE var, AST_Node exp){
+		// this policy is only for class variables declarations
+		if(curClass != null && cur_scope_depth == 1){
+			// cant use new exp at the class declaration scope
+			if(exp instanceof AST_NEW_EXP) return false;
+			if(var.isClass())
+				return exp instanceof AST_EXP_NIL;
+			if(var == TYPE_INT.getInstance())
+				return exp instanceof AST_EXP_INT;
+			if(var == TYPE_STRING.getInstance())
+				return exp instanceof AST_EXP_STRING;
+		}
+		return true;	
+	}
+	/************************************************************/
+	/* function which check if the type provided can be 		*/
+	/* returned by the function in the scope					*/
+	/* if not in function scope return false					*/
+	/************************************************************/
+	public boolean canReturnType(TYPE other){
+		if (this.returnType == null)
+			return false;
+		return canAssignValueToVar(this.returnType, other);
+	}
+	/************************************************************/
+	/* function to look if the name exist in current scope		*/
+	/* use to check if we can declare the variable on the scope	*/
+	/************************************************************/
+	public boolean existInScope(String name)
+	{
+		SYMBOL_TABLE_ENTRY  e;
+		for (e = table[hash(name)]; e != null; e = e.next)
+		{
+			if (name.equals(e.name))
+			{	
+				return e.scope_depth == cur_scope_depth;
+			}
+		}
+		return false;
+	}
 	/***************************************************************************/
-	/* begine scope = Enter the <SCOPE-BOUNDARY> element to the data structure */
+	/* begin scope = Enter the <SCOPE-BOUNDARY> element to the data structure */
 	/***************************************************************************/
 	public void beginScope()
 	{
@@ -112,13 +219,37 @@ public class SYMBOL_TABLE
 		enter(
 			"SCOPE-BOUNDARY",
 			new TYPE_FOR_SCOPE_BOUNDARIES("NONE"));
-
+		cur_scope_depth++;
 		/*********************************************/
 		/* Print the symbol table after every change */
 		/*********************************************/
 		PrintMe();
 	}
+	/********************************************************************/
+	/* begin class scope 												*/
+	/* Enter the <SCOPE-BOUNDARY> element to the data structure 		*/
+	/* initializing class context parameters: 							*/
+	/* curClass an instance of the type of the father				*/
+	/* classContext value which indicate that we're in class scope		*/
+	/********************************************************************/
+	public void beginClassScope(TYPE_CLASS curClass)
+	{
+		beginScope();
+		this.curClass = curClass;
 
+	}
+	/********************************************************************/
+	/* begin function scope												*/
+	/* Enter the <SCOPE-BOUNDARY> element to the data structure 		*/
+	/* initializing function type parameters: 							*/
+	/* returnType an instance of the return type of the function		*/
+	/********************************************************************/
+	public void beginFuncScope(TYPE returnType)
+	{
+		beginScope();
+		this.returnType = returnType;
+
+	}
 	/********************************************************************************/
 	/* end scope = Keep popping elements out of the data structure,                 */
 	/* from most recent element entered, until a <NEW-SCOPE> element is encountered */
@@ -140,13 +271,26 @@ public class SYMBOL_TABLE
 		table[top.index] = top.next;
 		top_index = top_index-1;
 		top = top.prevtop;
-
+		cur_scope_depth--;
 		/*********************************************/
 		/* Print the symbol table after every change */		
 		/*********************************************/
 		PrintMe();
 	}
-	
+	/************************************************************/
+	/* end class scope and enter the class to symbol table   	*/
+	/************************************************************/
+	public void endClassScope()
+	{
+		endScope();
+		enter(curClass.name,curClass);
+		this.curClass = null;
+	}
+	public void endFuncScope(){
+		endScope();
+		this.returnType = null;
+	}
+
 	public static int n=0;
 	
 	public void PrintMe()
@@ -268,6 +412,20 @@ public class SYMBOL_TABLE
 					new TYPE_LIST(
 						TYPE_INT.getInstance(),
 						null)));
+			instance.enter(
+				"PrintString",
+				new TYPE_FUNCTION(
+					TYPE_VOID.getInstance(),
+					"PrintString",
+					new TYPE_LIST(
+						TYPE_STRING.getInstance(),
+						null)));
+			instance.enter(
+				"PrintTrace",
+				new TYPE_FUNCTION(
+					TYPE_VOID.getInstance(),
+					"PrintTrace",
+					null));
 			
 		}
 		return instance;
