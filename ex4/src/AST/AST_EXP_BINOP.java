@@ -1,5 +1,4 @@
-package AST; import TYPES.*;
-import SYMBOL_TABLE.*;
+package AST; import TYPES.*; import TEMP.*; import IR.*; import SYMBOL_TABLE.*; import TEMP.*; import IR.*;
 
 public class AST_EXP_BINOP extends AST_EXP
 {
@@ -100,5 +99,63 @@ public class AST_EXP_BINOP extends AST_EXP
 		}
 		// otherwise, error
 		return new TYPE_ERROR(line);
+	}
+	
+	/**********************************/
+	/*          IR function           */
+	/**********************************/
+	public TEMP IRme()
+	{
+		// STATUS: integer binops dealt with.
+		// TODO: implement non-integer binops. 
+		
+		TEMP t1 = null;
+		TEMP t2 = null;
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+				
+		if (left  != null) t1 = left.IRme();
+		if (right != null) t2 = right.IRme();
+		
+		switch(OP.OP) {
+			case 1: {
+				// case: addition
+				// TODO: deal with string concatenation
+				IR.getInstance().Add_IRcommand(new IRcommand_Binop_Add_Integers(dst,t1,t2));
+				break;
+			}
+			case 2: {
+				// case: subtraction
+				IR.getInstance().Add_IRcommand(new IRcommand_Binop_Sub_Integers(dst,t1,t2));
+				break;
+			}
+			case 3: {
+				// case: multiplication
+				IR.getInstance().Add_IRcommand(new IRcommand_Binop_Mul_Integers(dst,t1,t2));
+				break;
+			}
+			case 4: {
+				// case: division
+				IR.getInstance().Add_IRcommand(new IRcommand_Binop_Div_Integers(dst,t1,t2));
+				break;
+			}
+			case 5: {
+				// case: equality testing
+				// TODO: deal with equality testing between non-integers
+				IR.getInstance().Add_IRcommand(new IRcommand_Binop_EQ_Integers(dst,t1,t2));
+				break;
+			}
+			case 6: {	
+				// case: LT testing
+				IR.getInstance().Add_IRcommand(new IRcommand_Binop_LT_Integers(dst,t1,t2));
+				break;
+			}
+			case 7: {	
+				// case: GT testing (equivalent to LT testing with swapped parameters)
+				IR.getInstance().Add_IRcommand(new IRcommand_Binop_LT_Integers(dst,t2,t1));
+				break;
+			}
+		}
+		
+		return dst;
 	}
 }

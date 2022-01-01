@@ -1,6 +1,7 @@
 package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
+import TEMP.*; import IR.*;
 
 public class AST_EXP_FUNC extends AST_EXP {
 
@@ -72,6 +73,15 @@ public class AST_EXP_FUNC extends AST_EXP {
 		}
 		if(!((TYPE_FUNCTION) id_type).isSameArgs((TYPE_LIST) exp_type)) return new TYPE_ERROR(exps.line);
 		return ((TYPE_FUNCTION) id_type).returnType;
+	}
+	
+	public TEMP IRme() {
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		TEMP_LIST args = null;
+		if (exps != null) args = exps.IRme();
+		IR.getInstance().Add_IRcommand(new IRcommand_Call_Func(this.fn, args));
+		return dst;
+		
 	}
 	
 }
