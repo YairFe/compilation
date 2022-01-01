@@ -1,4 +1,4 @@
-package AST; import TYPES.*;
+package AST; import TYPES.*; import TEMP.*; import IR.*;
 
 public class AST_EXP_LIST extends AST_Node 
 {
@@ -76,5 +76,16 @@ public class AST_EXP_LIST extends AST_Node
 		}
 		
 		return new TYPE_LIST(t1, (TYPE_LIST)t2);
+	}
+	
+	/**********************************/
+	/*          IR function           */
+	/**********************************/
+	public TEMP_LIST IRme() {
+		// return a linked list of IR-ed expressions
+		TEMP t_head = head.IRme();
+		TEMP_LIST t_tail = null;
+		if (tail != null) t_tail = tail.IRme();
+		return new TEMP_LIST (t_head, t_tail);
 	}
 }

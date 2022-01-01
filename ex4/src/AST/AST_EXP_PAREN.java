@@ -1,4 +1,4 @@
-package AST; import TYPES.*;
+package AST; import TYPES.*; import TEMP.*; import IR.*;
 
 public class AST_EXP_PAREN extends AST_EXP {
 	
@@ -54,4 +54,5 @@ public class AST_EXP_PAREN extends AST_EXP {
 	
 	public TYPE SemantMe() { return exp.SemantMe(); }
 
+	public TEMP IRMe() { return exp.IRme(); }
 }
