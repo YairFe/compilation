@@ -113,9 +113,8 @@ public class AST_FUNC_DEC extends AST_Node {
 		// add function label
 		IR.getInstance().Add_IRcommand(new IRcommand_Label(this.id));
 		
-		IRcommandList t2 = null;
 		// process statements (should have a list of commands representing the function body)
-		if(stmts != null) t2 = stmts.IRme();
+		if(stmts != null) stmts.IRme();
 		
 		IR.getInstance().Add_IRcommand(new IRcommand_Dec_Func(this.id, t1, t2));
 		return null; // a function declaration is not placed in a temporary variable
