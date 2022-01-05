@@ -71,9 +71,8 @@ public class AST_CLASS_CONT extends AST_Node {
 	}
 	
 	public TEMP IRme() {
-		if( tail != null ) { tail.IRme(); }
 		head.IRme();
-		
+		if( tail != null )  tail.IRme();
 		return null;
 	}
 	

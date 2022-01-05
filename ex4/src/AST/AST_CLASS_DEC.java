@@ -1,4 +1,4 @@
-package AST; import TYPES.*; import SYMBOL_TABLE.*;
+package AST; import TYPES.*; import TEMP.*; import IR.*; import SYMBOL_TABLE.*;
 
 public class AST_CLASS_DEC extends AST_Node {
 
@@ -122,5 +122,11 @@ public class AST_CLASS_DEC extends AST_Node {
 		/* [5] Return value is irrelevant for class declarations */
 		/*********************************************************/
 		return TYPE_VOID.getInstance();		
+	}
+	
+	public TEMP IRme() {
+		IR.getInstance().Add_IRcommand(new IRcommand_Label(this.id1));
+		if(this.cont != null) this.cont.SemantMe();
+		return null;
 	}
 }
