@@ -1,4 +1,4 @@
-package AST; import TYPES.*;
+package AST; import TYPES.*; import TEMP.*; import IR.*;
 
 public class AST_DEC extends AST_Node {
 
@@ -138,5 +138,13 @@ public class AST_DEC extends AST_Node {
 		if (classDec != null) return classDec.SemantMe();
 		if (arrayTypedef != null) return arrayTypedef.SemantMe();
 		return new TYPE_ERROR(line);
+	}
+	
+	public TEMP IRme() {
+		if (varDec != null) return varDec.IRme();
+		if (funcDec != null) return funcDec.IRme();
+		if (classDec != null) return classDec.IRme();
+		if (arrayTypedef != null) return arrayTypedef.IRme();
+		return null;
 	}
 }

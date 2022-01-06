@@ -1,4 +1,4 @@
-package AST; import TYPES.*;
+package AST; import TYPES.*; import TEMP.*;
 
 public class AST_CLASS_CONT extends AST_Node {
 
@@ -68,6 +68,12 @@ public class AST_CLASS_CONT extends AST_Node {
 		}
 		
 		return TYPE_VOID.getInstance();
+	}
+	
+	public TEMP IRme() {
+		head.IRme();
+		if( tail != null )  tail.IRme();
+		return null;
 	}
 	
 }

@@ -1,10 +1,11 @@
-package AST; import TYPES.*; import TEMP.*; import IR.*; import SYMBOL_TABLE.*; import TEMP.*; import IR.*;
+package AST; import TYPES.*; import TEMP.*; import IR.*; import SYMBOL_TABLE.*;
 
 public class AST_EXP_BINOP extends AST_EXP
 {
 	AST_BINOP OP;
 	public AST_EXP left;
 	public AST_EXP right;
+	boolean stringConcat = false;
 	
 	/******************/
 	/* CONSTRUCTOR(S) */
@@ -88,6 +89,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		if ((t1 == TYPE_STRING.getInstance()) && (t2 == TYPE_STRING.getInstance()))
 		{
 			if(OP.OP == 1)
+				this.stringConcat = true;
 				return TYPE_STRING.getInstance();
 		}
 		
@@ -119,8 +121,8 @@ public class AST_EXP_BINOP extends AST_EXP
 		switch(OP.OP) {
 			case 1: {
 				// case: addition
-				// TODO: deal with string concatenation
-				IR.getInstance().Add_IRcommand(new IRcommand_Binop_Add_Integers(dst,t1,t2));
+				if (this.stringConcat) { IR.getInstance().Add_IRcommand(new IRcommand_Binop_String_Concat(dst, t1,t2)); }
+				else { IR.getInstance().Add_IRcommand(new IRcommand_Binop_Add_Integers(dst,t1,t2)); }
 				break;
 			}
 			case 2: {
@@ -140,7 +142,8 @@ public class AST_EXP_BINOP extends AST_EXP
 			}
 			case 5: {
 				// case: equality testing
-				// TODO: deal with equality testing between non-integers
+				// NOTE: equality testing between objects is similar to integer equality testing
+				// (we compare pointers instead of values)
 				IR.getInstance().Add_IRcommand(new IRcommand_Binop_EQ_Integers(dst,t1,t2));
 				break;
 			}

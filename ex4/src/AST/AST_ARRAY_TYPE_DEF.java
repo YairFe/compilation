@@ -1,5 +1,5 @@
-package AST; import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.*;
+package AST; import SYMBOL_TABLE.*;
+import TYPES.*;  import TEMP.*; import IR.*; 
 
 public class AST_ARRAY_TYPE_DEF extends AST_Node {
 	public String id;
@@ -58,8 +58,7 @@ public class AST_ARRAY_TYPE_DEF extends AST_Node {
 		 * Note that we should only check the local scope,
 		 * since arrays can only be defined in the global scope. */
 		if (s.existInScope(id)) return new TYPE_ERROR(type.line);
-		// if (s.curClass != null) return null; // arrays cannot be defined in class context
-		
+
 		TYPE t = type.SemantMe();
 		if (t.isError()) return t;
 		else if(t.name.equals("void")) return new TYPE_ERROR(type.line);
@@ -67,5 +66,11 @@ public class AST_ARRAY_TYPE_DEF extends AST_Node {
 		TYPE_ARRAY t1 = new TYPE_ARRAY(id, t);
 		s.enter(id, t1);
 		return t1; // can return void as well
+	}
+	
+	public TEMP IRme() { 
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		IR.getInstance().Add_IRcommand(new IRcommand_Array_Def(dst));
+		return dst;
 	}
 }

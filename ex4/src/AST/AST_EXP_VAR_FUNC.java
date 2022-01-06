@@ -1,5 +1,5 @@
-package AST; import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.*;
+package AST; import SYMBOL_TABLE.*;
+import TYPES.*; import TEMP.*; import IR.*;
 
 public class AST_EXP_VAR_FUNC extends AST_EXP {
 
@@ -85,6 +85,15 @@ public class AST_EXP_VAR_FUNC extends AST_EXP {
 		if(!(((TYPE_FUNCTION) t2).isSameArgs((TYPE_LIST) t3))) return new TYPE_ERROR(line);
 		
 		return ((TYPE_FUNCTION) t2).returnType;
+	}
+	
+	public TEMP IRme() {
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		TEMP t1 = var.IRme();
+		TEMP_LIST t2 = null;
+		if(exps != null ) { t2 = exps.IRme(); }
+		IR.getInstance().Add_IRcommand(new IRcommand_Virtual_Call(dst, t1, t2, this.fn));
+		return dst;
 	}
 	
 }

@@ -1,4 +1,4 @@
-package AST; import TYPES.*;
+package AST; import TYPES.*; import TEMP.*;
 
 public class AST_C_FIELD extends AST_Node {
 
@@ -79,5 +79,12 @@ public class AST_C_FIELD extends AST_Node {
 		if (funcDec != null) return funcDec.SemantMe();
 		
 		return new TYPE_ERROR(line);
+	}
+	
+	public TEMP IRme() {
+		if (varDec != null) return varDec.IRme();
+		if (funcDec != null) return funcDec.IRme();
+		
+		return null;
 	}
 }
