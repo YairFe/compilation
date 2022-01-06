@@ -51,4 +51,11 @@ public class AST_EXP_STRING extends AST_EXP {
 	{
 		return TYPE_STRING.getInstance();
 	}
+	
+	public TEMP IRme()
+	{
+		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
+		IR.getInstance().Add_IRcommand(new IRcommandConstString(t,value));
+		return t;
+	}
 }
