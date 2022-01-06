@@ -2,6 +2,7 @@ package IR; import TEMP.*; import MIPS.*;
 
 public class IRcommand_Call_Func extends IRcommand {
 
+	public TEMP dst;
 	public String name;
 	public TEMP_LIST args;
 	
