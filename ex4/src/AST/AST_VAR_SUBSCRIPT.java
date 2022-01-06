@@ -1,5 +1,6 @@
 package AST;
 import TYPES.*;
+import TEMP.*; import IR.*;
 
 public class AST_VAR_SUBSCRIPT extends AST_VAR
 {
@@ -71,5 +72,16 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		else if(!exp_type.name.equals("int"))
 			return new TYPE_ERROR(line);
 		return ((TYPE_ARRAY) var_type).array_type;
+	}
+
+	public TEMP IRme(){
+		TEMP offset = exp.IRme();
+		TEMP arr = var.IRme();
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		if(arr == null){
+			
+		}
+		IR.getInstance.Add_IRcommand(new IRcommand_ArrayAccess(dst,arr,offset));
+		return dst;
 	}
 }

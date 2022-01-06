@@ -1,4 +1,5 @@
 package AST; import TYPES.*; 
+import TEMP.*; import IR.*;
 
 public class AST_NEW_EXP extends AST_Node {
 
@@ -68,9 +69,22 @@ public class AST_NEW_EXP extends AST_Node {
 			if(t2 != TYPE_INT.getInstance()) return new TYPE_ERROR(type.line);
 			if(exp instanceof AST_EXP_INT && ((AST_EXP_INT) exp).value <= 0) return new TYPE_ERROR(type.line); 
 			return new TYPE_ARRAY(null,t1);
+		} else if(type.t != 4){
+			return new TYPE_ERROR(type.line);
 		}
 		return t1;
+	}
 
+	public TEMP IRme(){
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		if(exp != null){
+			TEMP size = exp.IRme();
+			IR.getInstance().Add_IRcommand(new IRcommandNewArray(dst, size));
+		} else {
+			// if exp is null than type must be Identifier
+			IR.getInstance().Add_IRcommand(new IRcommandNewClass(dst, type.id));
+		}
+		return dst;
 	}
 	
 }

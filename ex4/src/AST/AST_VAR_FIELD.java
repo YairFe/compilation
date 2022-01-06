@@ -1,15 +1,16 @@
 package AST;
 import TYPES.*;
+import TEMP.*; import IR.*;
+import TEMP.*; import IR.*;
 
 public class AST_VAR_FIELD extends AST_VAR
 {
 	public AST_VAR var;
-	public String fieldName;
 	
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_VAR_FIELD(int line, AST_VAR var,String fieldName)
+	public AST_VAR_FIELD(int line, AST_VAR var,String name)
 	{
 		super(line);
 		/******************************/
@@ -20,13 +21,13 @@ public class AST_VAR_FIELD extends AST_VAR
 		/***************************************/
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
-		System.out.format("====================== var -> var DOT ID( %s )\n",fieldName);
+		System.out.format("====================== var -> var DOT ID( %s )\n",name);
 
 		/*******************************/
 		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
 		this.var = var;
-		this.fieldName = fieldName;
+		this.name = name;
 	}
 
 	/*************************************************/
@@ -43,14 +44,14 @@ public class AST_VAR_FIELD extends AST_VAR
 		/* RECURSIVELY PRINT VAR, then FIELD NAME ... */
 		/**********************************************/
 		if (var != null) var.PrintMe();
-		System.out.format("FIELD NAME( %s )\n",fieldName);
+		System.out.format("FIELD NAME( %s )\n",name);
 
 		/***************************************/
 		/* PRINT Node to AST GRAPHVIZ DOT file */
 		/***************************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			String.format("FIELD\nVAR\n...->%s",fieldName));
+			String.format("FIELD\nVAR\n...->%s",name));
 		
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
@@ -63,8 +64,15 @@ public class AST_VAR_FIELD extends AST_VAR
 		if (var_type.isError())
 			return var_type;
 		else if(!var_type.isClass()) return new TYPE_ERROR(line);
-		TYPE t = ((TYPE_CLASS) var_type).findInClassScope(fieldName);
+		TYPE t = ((TYPE_CLASS) var_type).findInClassScope(name);
 		if(t == null) return new TYPE_ERROR(line);
 		return t;
+	}
+
+	public TEMP IRme(){
+		TEMP t = var.IRme();
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		IR.getInstance().Add_IRcommand(new IRcommand_ClassFieldAccess(dst,t,name));
+		return dst;
 	}
 }

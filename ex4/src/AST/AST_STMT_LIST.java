@@ -1,5 +1,6 @@
 package AST;
 import TYPES.*;
+import TEMP.*; import IR.*;
 
 public class AST_STMT_LIST extends AST_Node
 {
@@ -73,7 +74,11 @@ public class AST_STMT_LIST extends AST_Node
 			if(tail_type.isError()) return tail_type;
 		}
 		return TYPE_VOID.getInstance();
-		
 	}
+	 public TEMP IRme(){
+		 head.IRme();
+		 if(tail != null) tail.IRme();
+		 return null
+	 }
 	
 }

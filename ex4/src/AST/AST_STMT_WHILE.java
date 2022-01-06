@@ -1,6 +1,7 @@
 package AST;
 import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*; import IR.*;
 
 public class AST_STMT_WHILE extends AST_STMT
 {
@@ -76,4 +77,15 @@ public class AST_STMT_WHILE extends AST_STMT
 		s.endScope();
 		return TYPE_VOID.getInstance();
     }
+
+	public TEMP IRme(){
+		IR.getInstance().Add_IRcommand(new IRcommand_Label("loop_start"));
+		TEMP t = cond.IRme();
+		IR.getInstance().Add_IRcommand(new IRcommand_Jump_If_Eq_To_Zero(t, "loop_end"));
+		if(body != null) body.IRme();
+		IR.getInstance().Add_IRcommand(new IRcommand_Jump_Label("loop_start"));
+		IR.getInstance().Add_IRcommand(new IRcommand_Label("loop_end"));
+		
+		return null;
+	}
 }

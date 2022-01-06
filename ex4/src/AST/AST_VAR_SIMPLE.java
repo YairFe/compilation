@@ -1,13 +1,10 @@
 package AST;
 import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*; import IR.*;
 
 public class AST_VAR_SIMPLE extends AST_VAR
 {
-	/************************/
-	/* simple variable name */
-	/************************/
-	public String name;
 	
 	/******************/
 	/* CONSTRUCTOR(S) */
@@ -51,8 +48,16 @@ public class AST_VAR_SIMPLE extends AST_VAR
 
 	public TYPE SemantMe(){
 		// might need to add a check to id type is not func
-		TYPE id_type = SYMBOL_TABLE.getInstance().find(name);
+		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
+		TYPE id_type = s.find(name);
 		if(id_type == null) return new TYPE_ERROR(line);
+		if(s.isGlobal(name)) this.scope_type = "global";
+		else { this.scope_type = "local"; this.index = s.getLocalIndex(name); }
 		return id_type;
+	}
+
+	public TEMP IRme(){
+		// doesn't have any ir command
+		return null;
 	}
 }

@@ -68,6 +68,8 @@ public class AST_NEW_EXP extends AST_Node {
 			if(t2 != TYPE_INT.getInstance()) return new TYPE_ERROR(type.line);
 			if(exp instanceof AST_EXP_INT && ((AST_EXP_INT) exp).value <= 0) return new TYPE_ERROR(type.line); 
 			return new TYPE_ARRAY(null,t1);
+		} else if(type.t != 4){
+			return new TYPE_ERROR(type.line);
 		}
 		return t1;
 

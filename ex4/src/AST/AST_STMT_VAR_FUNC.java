@@ -1,6 +1,7 @@
 package AST;
 import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*; import IR.*;
 
 public class AST_STMT_VAR_FUNC extends AST_STMT {
 	
@@ -95,6 +96,27 @@ public class AST_STMT_VAR_FUNC extends AST_STMT {
 		}
 		if(!((TYPE_FUNCTION) id_type).isSameArgs((TYPE_LIST) exp_type)) return new TYPE_ERROR(line);
 		return ((TYPE_FUNCTION) id_type).returnType;
+	}
+
+	public TEMP IRme(){
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		if(var == null){
+			if(multiExp == null) {
+				IR.getInstance().Add_IRcommand(new IRcommand_Call_Func(dst,fn,null));
+			} else {
+				TEMP_LIST args = multiExp.IRme();
+				IR.getInstance().Add_IRcommand(new IRcommand_Call_Func(dst,fn,args));
+			}
+		} else {
+			TEMP class = var.IRme();
+			if(multiExp == null) {
+				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(dst,class,fn,null));
+			} else {
+				TEMP_LIST args = multiExp.IRme();
+				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(dst,class,fn,args));
+			}
+		}
+		return dst;
 	}
 	
 }

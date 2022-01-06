@@ -1,5 +1,6 @@
 package AST;
 import TYPES.*;
+import TEMP.*; import IR.*;
 
 public class AST_STMT_VAR_DEC extends AST_STMT {
 
@@ -50,5 +51,9 @@ public class AST_STMT_VAR_DEC extends AST_STMT {
 
 	public TYPE SemantMe(){
 		return varDec.SemantMe();
+	}
+
+	public TEMP IRme(){
+		return varDec.IRme();
 	}
 }

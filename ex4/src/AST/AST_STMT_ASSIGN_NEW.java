@@ -1,6 +1,7 @@
 package AST;
 import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*; import IR.*;
 
 public class AST_STMT_ASSIGN_NEW extends AST_STMT 
 {
@@ -67,6 +68,24 @@ public class AST_STMT_ASSIGN_NEW extends AST_STMT
 		if(s.canAssignValueToVar(var_type,exp_type))
 			return TYPE_VOID.getInstance();
 		return new TYPE_ERROR(var.line);
+	}
+
+	public TEMP IRme(){
+		TEMP t = exp.IRme();
+		TEMP dst;
+		if(var instanceof AST_VAR_SIMPLE){
+			IR.getInstance().Add_IRcommand(new IRcommand_Store((AST_VAR_SIMPLE) var).name,t));
+		} else if(var instanceof AST_VAR_FIELD){
+			dst = ((AST_VAR_FIELD) var).var.IRme();
+			IR.getInstance().Add_IRcommand(new IRcommand_ClassFieldSet(dst,((AST_VAR_FIELD) var).name,t));
+		} else if(var instanceof AST_VAR_SUBSCRIPT){
+			dst = ((AST_VAR_SUBSCRIPT) var).var.IRme(); 
+			TEMP index = ((AST_VAR_SUBSCRIPT) var).exp.IRme();
+			IR.getInstance().Add_IRcommand(new IRcommand_ArraySet(dst,index,t));
+		}
+		
+		return null;
+
 	}
 	
 }
