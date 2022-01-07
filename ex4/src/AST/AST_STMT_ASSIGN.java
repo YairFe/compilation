@@ -80,6 +80,7 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		 TEMP t = exp.IRme();
 		 TEMP dst;
 		 if(var instanceof AST_VAR_SIMPLE){
+			// need to enter the offset if var is not global
 			IR.getInstance().Add_IRcommand(new IRcommand_Store((AST_VAR_SIMPLE) var).name,t);
 		} else if(var instanceof AST_VAR_FIELD){
 			dst = ((AST_VAR_FIELD) var).var.IRme();

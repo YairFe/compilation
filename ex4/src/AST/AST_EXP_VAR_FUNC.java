@@ -92,7 +92,7 @@ public class AST_EXP_VAR_FUNC extends AST_EXP {
 		TEMP t1 = var.IRme();
 		TEMP_LIST t2 = null;
 		if(exps != null ) { t2 = exps.IRme(); }
-		IR.getInstance().Add_IRcommand(new IRcommand_Virtual_Call(dst, t1, t2, this.fn));
+		IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(dst, t1, this.fn, t2));
 		return dst;
 	}
 	

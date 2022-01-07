@@ -79,12 +79,14 @@ public class AST_STMT_WHILE extends AST_STMT
     }
 
 	public TEMP IRme(){
-		IR.getInstance().Add_IRcommand(new IRcommand_Label("loop_start"));
+		String loop_start = IRcommand.getFreshLabel("loop_start");
+		String loop_end = IRcommand.getFreshLabel("loop_end");
+		IR.getInstance().Add_IRcommand(new IRcommand_Label(loop_start));
 		TEMP t = cond.IRme();
-		IR.getInstance().Add_IRcommand(new IRcommand_Jump_If_Eq_To_Zero(t, "loop_end"));
+		IR.getInstance().Add_IRcommand(new IRcommand_Jump_If_Eq_To_Zero(t, loop_end));
 		if(body != null) body.IRme();
-		IR.getInstance().Add_IRcommand(new IRcommand_Jump_Label("loop_start"));
-		IR.getInstance().Add_IRcommand(new IRcommand_Label("loop_end"));
+		IR.getInstance().Add_IRcommand(new IRcommand_Jump_Label(loop_start));
+		IR.getInstance().Add_IRcommand(new IRcommand_Label(loop_end));
 		
 		return null;
 	}

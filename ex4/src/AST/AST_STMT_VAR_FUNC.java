@@ -99,24 +99,24 @@ public class AST_STMT_VAR_FUNC extends AST_STMT {
 	}
 
 	public TEMP IRme(){
-		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		// statement will never be assigned to var so no need assign temp
 		if(var == null){
 			if(multiExp == null) {
-				IR.getInstance().Add_IRcommand(new IRcommand_Call_Func(dst,fn,null));
+				IR.getInstance().Add_IRcommand(new IRcommand_Call_Func(null,fn,null));
 			} else {
 				TEMP_LIST args = multiExp.IRme();
-				IR.getInstance().Add_IRcommand(new IRcommand_Call_Func(dst,fn,args));
+				IR.getInstance().Add_IRcommand(new IRcommand_Call_Func(null,fn,args));
 			}
 		} else {
 			TEMP class = var.IRme();
 			if(multiExp == null) {
-				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(dst,class,fn,null));
+				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(null,class,fn,null));
 			} else {
 				TEMP_LIST args = multiExp.IRme();
-				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(dst,class,fn,args));
+				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(null,class,fn,args));
 			}
 		}
-		return dst;
+		return null;
 	}
 	
 }

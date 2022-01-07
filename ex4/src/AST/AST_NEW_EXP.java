@@ -79,10 +79,10 @@ public class AST_NEW_EXP extends AST_Node {
 		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
 		if(exp != null){
 			TEMP size = exp.IRme();
-			IR.getInstance().Add_IRcommand(new IRcommandNewArray(dst, size));
+			IR.getInstance().Add_IRcommand(new IRcommand_ArrayNew(dst, size));
 		} else {
 			// if exp is null than type must be Identifier
-			IR.getInstance().Add_IRcommand(new IRcommandNewClass(dst, type.id));
+			IR.getInstance().Add_IRcommand(new IRcommand_ClassNew(dst, type.id));
 		}
 		return dst;
 	}
