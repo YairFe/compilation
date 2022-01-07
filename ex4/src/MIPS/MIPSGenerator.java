@@ -55,6 +55,12 @@ public class MIPSGenerator
 		fileWriter.format(".data\n");
 		fileWriter.format("\tglobal_%s: .word 721\n",var_name);
 	}
+	public void malloc(int numOfBytes)
+	{
+		fileWriter.format("\tli $a0,%d\n",numOfBytes);
+		fileWriter.format("\tli $v0,9\n");
+		fileWriter.format("\tsyscall\n");
+	}
 	public void load(TEMP dst,String var_name)
 	{
 		int idxdst=dst.getSerialNumber();
@@ -69,6 +75,28 @@ public class MIPSGenerator
 	{
 		int idx=t.getSerialNumber();
 		fileWriter.format("\tli Temp_%d,%d\n",idx,value);
+	}
+	public void lw(TEMP dst,TEMP memAdd, int offset)
+	{
+		int idx1=dst.getSerialNumber();
+		int idx2=memAdd.getSerialNumber();
+		fileWriter.format("\tlw Temp_%d, %d(Temp_%d)",idx1,offset,idx2);
+	}
+	public void mov(TEMP dst,TEMP src)
+	{
+		int idx1=dst.getSerialNumber();
+		int idx2=memAdd.getSerialNumber();
+		file_writer.format("\tmov Temp_%d, Temp_%d",id1,idx2);
+	}
+	public void getFuncResult(TEMP dst)
+	{
+		int idx1=dst.getSerialNumber();
+		file_writer.format("\tmov Temp_%d, $v0",id1);
+	}
+	public void setFuncResult(TEMP dst)
+	{
+		int idx1=dst.getSerialNumber();
+		file_writer.format("\tmov $v0, Temp_%d",id1);
 	}
 	public void add(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
@@ -152,7 +180,19 @@ public class MIPSGenerator
 				
 		fileWriter.format("\tbeq Temp_%d,$zero,%s\n",i1,label);				
 	}
-	
+	public void jalr(TEMP t)
+	{
+		int id =t.getSerialNumber();
+		fileWriter.format("\tjalr Temp_%d\n",t);				
+	}
+	public void jal(String label)
+	{
+		fileWriter.format("\tjal %s\n",label);				
+	}
+	public void jr()
+	{
+		fileWriter.format("\tjr $ra\n");				
+	}
 	/**************************************/
 	/* USUAL SINGLETON IMPLEMENTATION ... */
 	/**************************************/
@@ -198,7 +238,7 @@ public class MIPSGenerator
 			/*****************************************************/
 			instance.fileWriter.print(".data\n");
 			instance.fileWriter.print("string_access_violation: .asciiz \"Access Violation\"\n");
-			instance.fileWriter.print("string_illegal_div_by_0: .asciiz \"Illegal Division By Zero\"\n");
+			instance.fileWriter.print("string_illegal_div_by_0: .asciiz \"Division By Zero\"\n");
 			instance.fileWriter.print("string_invalid_ptr_dref: .asciiz \"Invalid Pointer Dereference\"\n");
 		}
 		return instance;

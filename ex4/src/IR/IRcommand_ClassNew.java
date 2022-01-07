@@ -21,7 +21,7 @@ public class IRcommand_ClassNew extends IRcommand
 	public IRcommand_ClassNew(TEMP dst, String name)
 	{
 		this.dst = dst;
-		this.anem = name;
+		this.name = name;
 	}
 	
 	/***************/
@@ -29,6 +29,9 @@ public class IRcommand_ClassNew extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		//TODO
+		// jump to class allocation function
+		MIPSGenerator.getInstance().jal(name);
+		// move the pointer of the new class to dst
+		MIPSGenerator.getInstance().getFuncResult(dst);
 	}
 }

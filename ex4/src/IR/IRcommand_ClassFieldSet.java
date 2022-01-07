@@ -31,6 +31,6 @@ public class IRcommand_ClassFieldSet extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		//TODO
+		MIPSGenerator.getInstance().sw(value,field_name /* offset */, class);
 	}
 }

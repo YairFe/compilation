@@ -27,6 +27,10 @@ public class IRcommand_FuncReturn extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		//TODO
+		if(value != null)
+			// move value to $v0
+			MIPSGenerator.getInstance().setFuncResult(value);
+		// junp to the address in $ra
+		MIPSGenerator.getInstance().jr();
 	}
 }
