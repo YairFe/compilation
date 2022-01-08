@@ -50,6 +50,17 @@ public class MIPSGenerator
 	//	
 	//	return t;
 	//}
+	
+	public void dec_sp(int offset) {
+		fileWriter.format("addu $sp,$sp,%d\n",offset);
+	}
+	
+	public void push_temp_to_stack(TEMP src,int offset, int size) {
+		int idxsrc = src.getSerialNumber();
+		fileWriter.format("subu $sp,$sp,%d\n",size);
+		fileWriter.format("sw Temp_%d,%d($sp)\n", idxsrc, offset);
+	}
+	
 	public void allocate(String var_name)
 	{
 		fileWriter.format(".data\n");
