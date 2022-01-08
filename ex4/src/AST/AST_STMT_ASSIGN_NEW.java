@@ -74,17 +74,15 @@ public class AST_STMT_ASSIGN_NEW extends AST_STMT
 		TEMP t = exp.IRme();
 		TEMP dst;
 		if(var instanceof AST_VAR_SIMPLE){
-			// need to enter the offset if var is not global
-			IR.getInstance().Add_IRcommand(new IRcommand_Store((AST_VAR_SIMPLE) var).name,t));
+			IR.getInstance().Add_IRcommand(new IRcommand_Store(var.name,t,var.scope_type,var.index));
 		} else if(var instanceof AST_VAR_FIELD){
 			dst = ((AST_VAR_FIELD) var).var.IRme();
-			IR.getInstance().Add_IRcommand(new IRcommand_ClassFieldSet(dst,((AST_VAR_FIELD) var).name,t));
+			IR.getInstance().Add_IRcommand(new IRcommand_ClassFieldSet(dst,var.name,t,var.index));
 		} else if(var instanceof AST_VAR_SUBSCRIPT){
 			dst = ((AST_VAR_SUBSCRIPT) var).var.IRme(); 
-			TEMP index = ((AST_VAR_SUBSCRIPT) var).exp.IRme();
+			TEMP index = ((AST_VAR_SUBSCRIPT) var).subscript.IRme();
 			IR.getInstance().Add_IRcommand(new IRcommand_ArraySet(dst,index,t));
 		}
-		
 		return null;
 
 	}

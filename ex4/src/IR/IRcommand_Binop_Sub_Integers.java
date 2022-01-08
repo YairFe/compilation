@@ -43,5 +43,4 @@ public class IRcommand_Binop_Sub_Integers extends IRcommand
 		MIPSGenerator.getInstance().li(dst,min);
 		MIPSGenerator.getInstance().label(label_end_min);
 	}
-	}
 }

@@ -9,7 +9,7 @@ public class IRcommand_Call_Func extends IRcommand {
 	public IRcommand_Call_Func(TEMP dst, String name, TEMP_LIST args) {
 		this.name = name;
 		this.args = args;
-		this dst = dst;
+		this.dst = dst;
 	}
 	
 	public void MIPSme() { /* TODO Auto-generated method stub */ }

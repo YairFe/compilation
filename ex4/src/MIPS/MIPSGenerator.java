@@ -50,10 +50,15 @@ public class MIPSGenerator
 	//	
 	//	return t;
 	//}
-	public void allocate(String var_name)
+	public void allocate(String var_name,int value)
 	{
 		fileWriter.format(".data\n");
-		fileWriter.format("\tglobal_%s: .word 721\n",var_name);
+		fileWriter.format("\tglobal_%s: .word %d\n",var_name, value);
+	}
+	public void allocate(String var_name, String value)
+	{
+		fileWriter.format(".data\n");
+		fileWriter.format("\tglobal_%s: .asciiz \"%s\"\n",var_name, value);
 	}
 	public void malloc(int numOfBytes)
 	{
@@ -85,18 +90,18 @@ public class MIPSGenerator
 	public void mov(TEMP dst,TEMP src)
 	{
 		int idx1=dst.getSerialNumber();
-		int idx2=memAdd.getSerialNumber();
-		file_writer.format("\tmov Temp_%d, Temp_%d",id1,idx2);
+		int idx2=src.getSerialNumber();
+		fileWriter.format("\tmov Temp_%d, Temp_%d",idx1,idx2);
 	}
 	public void getFuncResult(TEMP dst)
 	{
 		int idx1=dst.getSerialNumber();
-		file_writer.format("\tmov Temp_%d, $v0",id1);
+		fileWriter.format("\tmov Temp_%d, $v0",idx1);
 	}
 	public void setFuncResult(TEMP dst)
 	{
 		int idx1=dst.getSerialNumber();
-		file_writer.format("\tmov $v0, Temp_%d",id1);
+		fileWriter.format("\tmov $v0, Temp_%d",idx1);
 	}
 	public void add(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
@@ -240,6 +245,8 @@ public class MIPSGenerator
 			instance.fileWriter.print("string_access_violation: .asciiz \"Access Violation\"\n");
 			instance.fileWriter.print("string_illegal_div_by_0: .asciiz \"Division By Zero\"\n");
 			instance.fileWriter.print("string_invalid_ptr_dref: .asciiz \"Invalid Pointer Dereference\"\n");
+			instance.fileWriter.print(String.format("max: .word %d\n",32767));
+			instance.fileWriter.print(String.format("min: .word %d\n",-32768));
 		}
 		return instance;
 	}

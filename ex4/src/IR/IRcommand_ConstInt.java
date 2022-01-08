@@ -13,12 +13,12 @@ package IR;
 import TEMP.*;
 import MIPS.*;
 
-public class IRcommandConstInt extends IRcommand
+public class IRcommand_ConstInt extends IRcommand
 {
 	TEMP t;
 	int value;
 	
-	public IRcommandConstInt(TEMP t,int value)
+	public IRcommand_ConstInt(TEMP t,int value)
 	{
 		this.t = t;
 		this.value = value;

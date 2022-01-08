@@ -80,7 +80,7 @@ public class AST_STMT_IF extends AST_STMT
 		return TYPE_VOID.getInstance();
 	}
 
-	public IRme(){
+	public TEMP IRme(){
 		TEMP t1 = cond.IRme();
 		String end_label = IRcommand.getFreshLabel("end_label");
 		IR.getInstance().Add_IRcommand(new IRcommand_Jump_If_Eq_To_Zero(t1,end_label));

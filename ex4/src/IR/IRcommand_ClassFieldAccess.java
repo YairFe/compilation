@@ -15,15 +15,17 @@ import MIPS.*;
 
 public class IRcommand_ClassFieldAccess extends IRcommand
 {
-	TEMP class;
+	TEMP my_class;
 	String field_name;
 	TEMP dst;
+	int index;
 
-	public IRcommand_ClassFieldAccess(TEMP dst, TEMP class, String field_name)
+	public IRcommand_ClassFieldAccess(TEMP dst, TEMP my_class, String field_name,int index)
 	{
 		this.dst = dst;
-		this.class = class;
+		this.my_class = my_class;
 		this.field_name = field_name;
+		this.index = index;
 	}
 	
 	/***************/
@@ -31,6 +33,6 @@ public class IRcommand_ClassFieldAccess extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		MIPSGenerator.getInstance().lw(dst,field_name /* offset */ , class);
+		MIPSGenerator.getInstance().lw(dst, my_class,(index+1)*4);
 	}
 }

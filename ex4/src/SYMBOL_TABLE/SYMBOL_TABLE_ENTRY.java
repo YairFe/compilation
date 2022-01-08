@@ -40,11 +40,12 @@ public class SYMBOL_TABLE_ENTRY
 	public int prevtop_index;
 	
 	int scope_depth;
-	
+	int local_index;
+	String var_scope;
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public SYMBOL_TABLE_ENTRY( String name, TYPE type, int index, SYMBOL_TABLE_ENTRY next, int scope_depth, SYMBOL_TABLE_ENTRY prevtop,
+	public SYMBOL_TABLE_ENTRY(int local_index,String var_scope, String name, TYPE type, int index, SYMBOL_TABLE_ENTRY next, int scope_depth, SYMBOL_TABLE_ENTRY prevtop,
     int prevtop_index)
 	{
 		this.index = index;
@@ -54,5 +55,7 @@ public class SYMBOL_TABLE_ENTRY
 		this.scope_depth = scope_depth;
 		this.prevtop = prevtop;
 		this.prevtop_index = prevtop_index;
+		this.local_index = local_index;
+		this.var_scope = var_scope;
 	}
 }

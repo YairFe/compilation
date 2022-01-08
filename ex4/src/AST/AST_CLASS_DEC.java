@@ -5,7 +5,8 @@ public class AST_CLASS_DEC extends AST_Node {
 	public String id1;
 	public String id2;
 	public AST_CLASS_CONT cont;
-	
+	public TYPE_CLASS decClass;
+
 	public AST_CLASS_DEC(int line, String id1, AST_CLASS_CONT cont) 
 	{
 		super(line);
@@ -117,7 +118,8 @@ public class AST_CLASS_DEC extends AST_Node {
 		/* [4] End Scope */
 		/*****************/
 		SYMBOL_TABLE.getInstance().endClassScope();
-
+		this.decClass = t;
+		// need to implement a function to return a list of method names
 		/*********************************************************/
 		/* [5] Return value is irrelevant for class declarations */
 		/*********************************************************/
@@ -125,8 +127,9 @@ public class AST_CLASS_DEC extends AST_Node {
 	}
 	
 	public TEMP IRme() {
+		// declare class ir command
 		IR.getInstance().Add_IRcommand(new IRcommand_Label(this.id1));
-		if(this.cont != null) this.cont.SemantMe();
+		if(this.cont != null) this.cont.IRme();
 		return null;
 	}
 }

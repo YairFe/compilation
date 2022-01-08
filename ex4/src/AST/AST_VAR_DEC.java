@@ -1,6 +1,7 @@
 package AST;
 import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*; import IR.*;
 
 public class AST_VAR_DEC extends AST_Node {
 
@@ -8,6 +9,9 @@ public class AST_VAR_DEC extends AST_Node {
 	public String id;
 	public AST_EXP exp;
 	public AST_NEW_EXP newexp;
+	public String scope_type;
+	public int index;
+	public TYPE_CLASS var_class;
 	
 	public AST_VAR_DEC(int line, AST_Type type, String id) {
 		super(line);
@@ -128,7 +132,46 @@ public class AST_VAR_DEC extends AST_Node {
 		if(exp != null && !s.canAssignExpToVar(var_type,exp)) return new TYPE_ERROR(type.line);
 		else if(newexp != null && !s.canAssignExpToVar(var_type,newexp)) return new TYPE_ERROR(type.line);
 
+		this.scope_type = s.getVarScope(id);
+		if(this.scope_type.equals("local_func")){
+			this.index = s.getLocalIndex(id);
+		} else if(this.scope_type.equals("local_class")){
+			this.index = s.getAttributeIndex(id);
+		}
+		
 		return new TYPE_CLASS_VAR_DEC(var_type,id);
 	}
-	
+	public TEMP IRme(){
+		/* if the variable is global need to set it in data section */
+		if(this.scope_type.equals("global")){
+			if(this.type.t == 1){ // type int
+				// we expect contant int when initiallize global int
+				int value = 0;
+				if(exp != null)
+					value = ((AST_EXP_INT) exp).value;
+				IR.getInstance().Add_IRcommand(new IRcommand_Allocate(id,value));	
+			} else if(this.type.t == 2)	{ // type string
+				// we expect contant string when initiallize global string
+				String value = "";
+				if(exp != null)
+					value = ((AST_EXP_STRING) exp).value;
+				IR.getInstance().Add_IRcommand(new IRcommand_Allocate(id,value));	
+			} else { // pointer
+				// we expect nil value when initiallize global pointer
+				IR.getInstance().Add_IRcommand(new IRcommand_Allocate(id,0));	
+			}	
+		} else{
+			TEMP t1;
+			if(exp != null) t1 = exp.IRme();
+			else if (newexp != null) t1 = exp.IRme();
+			else t1 = null;
+			if(this.scope_type.equals("param"))
+				IR.getInstance().Add_IRcommand(new IRcommand_Store(id,t1,this.scope_type,this.index));
+			else if(this.scope_type.equals("local_func"))
+				IR.getInstance().Add_IRcommand(new IRcommand_Store(id,t1,this.scope_type,this.index));
+			else if(this.scope_type.equals("local_class"))
+				IR.getInstance().Add_IRcommand(new IRcommand_ClassFieldSet(null,id,t1,this.index));		
+		}	
+		return null;
+	}
 }

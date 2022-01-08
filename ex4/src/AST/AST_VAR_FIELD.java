@@ -1,6 +1,6 @@
 package AST;
 import TYPES.*;
-import TEMP.*; import IR.*;
+import SYMBOL_TABLE.*;
 import TEMP.*; import IR.*;
 
 public class AST_VAR_FIELD extends AST_VAR
@@ -66,13 +66,15 @@ public class AST_VAR_FIELD extends AST_VAR
 		else if(!var_type.isClass()) return new TYPE_ERROR(line);
 		TYPE t = ((TYPE_CLASS) var_type).findInClassScope(name);
 		if(t == null) return new TYPE_ERROR(line);
+		this.scope_type = SYMBOL_TABLE.getInstance().getVarScope(name); 
+		this.index = SYMBOL_TABLE.getInstance().getAttributeIndex(name);
 		return t;
 	}
 
 	public TEMP IRme(){
 		TEMP t = var.IRme();
 		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
-		IR.getInstance().Add_IRcommand(new IRcommand_ClassFieldAccess(dst,t,name));
+		IR.getInstance().Add_IRcommand(new IRcommand_ClassFieldAccess(dst,t,name,index));
 		return dst;
 	}
 }

@@ -97,26 +97,24 @@ public class AST_STMT_VAR_FUNC extends AST_STMT {
 		if(!((TYPE_FUNCTION) id_type).isSameArgs((TYPE_LIST) exp_type)) return new TYPE_ERROR(line);
 		return ((TYPE_FUNCTION) id_type).returnType;
 	}
-
+	// statement will never be assigned to var so dont need to assign temp
 	public TEMP IRme(){
-		// statement will never be assigned to var so no need assign temp
 		if(var == null){
-			if(multiExp == null) {
+			if(this.exps == null)
 				IR.getInstance().Add_IRcommand(new IRcommand_Call_Func(null,fn,null));
-			} else {
-				TEMP_LIST args = multiExp.IRme();
+			else {
+				TEMP_LIST args = this.exps.IRme();
 				IR.getInstance().Add_IRcommand(new IRcommand_Call_Func(null,fn,args));
 			}
 		} else {
-			TEMP class = var.IRme();
-			if(multiExp == null) {
-				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(null,class,fn,null));
-			} else {
-				TEMP_LIST args = multiExp.IRme();
-				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(null,class,fn,args));
+			TEMP t1 = var.IRme();
+			if(this.exps == null)
+				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(null,t1,fn,null));
+			else{
+				TEMP_LIST args = this.exps.IRme();
+				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(null,t1,fn,args));
 			}
 		}
 		return null;
 	}
-	
 }

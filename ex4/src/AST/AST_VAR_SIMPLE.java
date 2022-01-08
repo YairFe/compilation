@@ -51,13 +51,14 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		SYMBOL_TABLE s = SYMBOL_TABLE.getInstance();
 		TYPE id_type = s.find(name);
 		if(id_type == null) return new TYPE_ERROR(line);
-		if(s.isGlobal(name)) this.scope_type = "global";
-		else { this.scope_type = "local"; this.index = s.getLocalIndex(name); }
+		this.scope_type = s.getVarScope(name);
+		this.index = s.getLocalIndex(name);
 		return id_type;
 	}
 
 	public TEMP IRme(){
-		// doesn't have any ir command
-		return null;
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		IR.getInstance().Add_IRcommand(new IRcommand_Load(dst, name, this.scope_type, this.index));
+		return dst;
 	}
 }

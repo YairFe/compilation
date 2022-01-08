@@ -1,6 +1,7 @@
 package AST;
 import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*; import IR.*;
 
 public class AST_VAR_LIST extends AST_Node {
 	/****************/
@@ -77,11 +78,15 @@ public class AST_VAR_LIST extends AST_Node {
 			return new TYPE_ERROR(line);
 		}
 		if(s.existInScope(head)) return new TYPE_ERROR(line);
-		s.enter(head,head_type);
+		s.enter(head,head_type,"param");
 		if(tail != null){
 			tail_type = tail.SemantMe();
 			if(tail_type.isError()) return tail_type;
 		}
 		return new TYPE_LIST(head_type,(TYPE_LIST) tail_type);
+	}
+
+	public TEMP IRme(){
+		return null;
 	}
 }

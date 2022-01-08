@@ -387,3 +387,6 @@ ex3/output/SYMBOL_TABLE_59_IN_GRAPHVIZ_DOT_FORMAT.txt
 ex3/output/SYMBOL_TABLE_60_IN_GRAPHVIZ_DOT_FORMAT.txt
 ex3/ourinputs/TEST_FILE.txt
 ex3/ouroutputs/TEST_FILE.txt
+ex4/src/Lexer.java
+ex4/src/Parser.java
+ex4/src/TokenNames.java

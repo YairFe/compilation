@@ -29,7 +29,9 @@ public class SYMBOL_TABLE
 	private int cur_scope_depth = 0;
 	public TYPE_CLASS curClass = null;
 	private TYPE returnType = null;
-	
+	private int func_local_index; // the local index of a var inside a function
+	private int param_local_index; // the local index of a param in a function 
+
 	/**************************************************************/
 	/* A very primitive hash function for exposition purposes ... */
 	/**************************************************************/
@@ -42,6 +44,15 @@ public class SYMBOL_TABLE
 	/* Enter a variable, function, class type or array type to the symbol table */
 	/****************************************************************************/
 	public void enter(String name,TYPE t)
+	{
+		if (this.cur_scope_depth == 0) this.enter(name,t,"global");
+		else this.enter(name,t,"local");
+	}
+	/****************************************************************************/
+	/* Enter a variable, function, class type or array type to the symbol table */
+	/* var_scope can be one of this values: "global", "local", "param"			*/
+	/****************************************************************************/
+	public void enter(String name,TYPE t,String var_scope)
 	{
 		/*************************************************/
 		/* [1] Compute the hash value for this new entry */
@@ -57,7 +68,21 @@ public class SYMBOL_TABLE
 		/**************************************************************************/
 		/* [3] Prepare a new symbol table entry with name, type, next and prevtop */
 		/**************************************************************************/
-		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name,t,hashValue,next,cur_scope_depth,top,top_index++);
+		int local_index = 0;
+		if(var_scope.equals("param"))
+			local_index = param_local_index++;
+		else if(var_scope.equals("global"))
+			local_index = 0;
+			// the index doesn't matter if this is global var
+		else if(var_scope.equals("local")){
+			if(returnType != null){
+				var_scope = "local_func";
+				func_local_index++;
+			} else {
+				var_scope = "local_class";
+			}
+		}
+		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(local_index,var_scope,name,t,hashValue,next,cur_scope_depth,top,top_index++);
 
 		/**********************************************/
 		/* [4] Update the top of the symbol table ... */
@@ -80,7 +105,38 @@ public class SYMBOL_TABLE
 		/**************************/
 		PrintMe();
 	}
-
+	/*****************************************/
+	/* return true if the variable is global */
+	/*****************************************/
+	public String getVarScope(String name){
+		for (SYMBOL_TABLE_ENTRY e = table[hash(name)]; e != null; e = e.next)
+		{
+			if (name.equals(e.name))
+			{	
+				return e.var_scope;
+			}
+		}
+		return null;
+	}
+	/****************************************************/
+	/* get the local index of the variable              */
+	/****************************************************/
+	public int getLocalIndex(String name){
+		for (SYMBOL_TABLE_ENTRY e = table[hash(name)]; e != null; e = e.next)
+		{
+			if (name.equals(e.name))
+			{	
+				return e.local_index;
+			}
+		}
+		return -1;
+	}
+	/****************************************************/
+	/* get the attribute index in a class               */
+	/****************************************************/
+	public int getAttributeIndex(String name){
+		return curClass.getAttributeIndex(name);
+	}
 	/****************************************************/
 	/* Find the inner-most scope element with name 		*/
 	/* if we are in class context then look at 			*/
@@ -246,6 +302,10 @@ public class SYMBOL_TABLE
 	/********************************************************************/
 	public void beginFuncScope(TYPE returnType)
 	{
+		// we can do it because there isn't nested functions
+		this.func_local_index = 0; 
+		// if we are in class scope then class pointer is the first parameter
+		this.param_local_index = curClass != null ? 1 : 0; 
 		beginScope();
 		this.returnType = returnType;
 
