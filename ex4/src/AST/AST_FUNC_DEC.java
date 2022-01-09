@@ -106,7 +106,6 @@ public class AST_FUNC_DEC extends AST_Node {
 	}
 	
 	public TEMP IRme() { 
-				
 		// add function label
 		IR.getInstance().Add_IRcommand(new IRcommand_Label(this.id,2));// 2 is for label of type text
 		

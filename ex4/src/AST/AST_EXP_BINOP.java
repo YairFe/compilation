@@ -142,9 +142,15 @@ public class AST_EXP_BINOP extends AST_EXP
 			}
 			case 5: {
 				// case: equality testing
-				// NOTE: equality testing between objects is similar to integer equality testing
-				// (we compare pointers instead of values)
-				IR.getInstance().Add_IRcommand(new IRcommand_Binop_EQ_Integers(dst,t1,t2));
+				if(this.stringConcat) { 
+					// string equality testing
+					IR.getInstance().Add_IRcommand(new IRcommand_Binop_String_EQ(dst,t1,t2)); 
+				}
+				else { 
+					// NOTE: equality testing between arrays and class instances is similar to integer equality testing
+					// (we compare pointers instead of values)
+					IR.getInstance().Add_IRcommand(new IRcommand_Binop_EQ_Integers(dst,t1,t2)); 
+				}
 				break;
 			}
 			case 6: {	
