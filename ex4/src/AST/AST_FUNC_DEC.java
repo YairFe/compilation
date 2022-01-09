@@ -106,9 +106,6 @@ public class AST_FUNC_DEC extends AST_Node {
 	}
 	
 	public TEMP IRme() { 
-		// process variables (should have a TEMP_LIST with the registers where the variables are stored)
-		if(vars != null) vars.IRme();
-				
 		// add function label
 		IR.getInstance().Add_IRcommand(new IRcommand_Label(this.id));
 		
