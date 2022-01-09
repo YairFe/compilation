@@ -6,7 +6,7 @@ public class IRcommand_Call_Func extends IRcommand {
 	public TEMP_LIST args;
 	public TEMP dst;
 	
-	public IRcommand_Call_Func(String name, TEMP_LIST args, TEMP dst) {
+	public IRcommand_Call_Func(TEMP dst, String name, TEMP_LIST args) {
 		this.name = name;
 		this.args = args;
 		this.dst = dst;

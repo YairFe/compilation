@@ -1,4 +1,4 @@
-package AST; import TYPES.*;
+package AST; import TYPES.*; import TEMP.*; import IR.*;
 
 public class AST_EXP_STRING extends AST_EXP {
 	

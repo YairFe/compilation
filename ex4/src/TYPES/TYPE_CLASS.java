@@ -83,26 +83,26 @@ public class TYPE_CLASS extends TYPE
 		if(father != null){
 			lst = father.getFuncList();
 		} else {
-			lst =  = new LinkedList<String>();
+			lst = new LinkedList<String>();
 		}
 		for(TYPE_CLASS_VAR_DEC_LIST e=this.data_members;e!=null;e=e.tail){
-			if(e.head.type.isFunc() && !lst.contains(e.head.name))
+			if(e.head.t.isFunc() && !lst.contains(e.head.name))
 				lst.add(e.head.name);
 		}
-		return lst
+		return lst;
 	}
 	public LinkedList<String> getAttributeList(){
 		LinkedList<String> lst;
 		if(father != null){
 			lst = father.getAttributeList();
 		} else {
-			lst =  = new LinkedList<String>();
+			lst = new LinkedList<String>();
 		}
 		for(TYPE_CLASS_VAR_DEC_LIST e=this.data_members;e!=null;e=e.tail){
-			if(!e.head.type.isFunc() && !lst.contains(e.head.name))
+			if(!e.head.t.isFunc() && !lst.contains(e.head.name))
 				lst.add(e.head.name);
 		}
-		return lst
+		return lst;
 	}
 
 	public boolean isClass () { return true; }

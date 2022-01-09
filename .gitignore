@@ -390,3 +390,4 @@ ex3/ouroutputs/TEST_FILE.txt
 ex4/src/Lexer.java
 ex4/src/Parser.java
 ex4/src/TokenNames.java
+ex4/bin/Lexer.class

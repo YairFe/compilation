@@ -33,7 +33,7 @@ public class IRcommand_ClassFieldSet extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		int offset = (index+1)*4
+		int offset = (index+1)*4;
 		if(my_class != null)
 			MIPSGenerator.getInstance().sw(value, my_class, offset);
 		else
