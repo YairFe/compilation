@@ -41,6 +41,20 @@ public class MIPSGenerator
 		fileWriter.format("\tli $v0,11\n");
 		fileWriter.format("\tsyscall\n");
 	}
+	public void funcPrologue(){
+		// there is 10 temp registers we want to save
+		for(int i=0;i<10;i++){
+			fileWriter.format("subu $sp,$sp,4\n");
+			fileWriter.format("sw $t%d,0($sp)\n", i);
+		}
+	}
+	public void funcEpilogue(){
+		// there is 10 temp registers we want to load
+		for(int i=0;i<10;i++){
+			fileWriter.format("lw $t%d,0($sp)\n", i);
+			fileWriter.format("addu $sp,$sp,4\n");			
+		}
+	}
 	//public TEMP addressLocalVar(int serialLocalVarNum)
 	//{
 	//	TEMP t  = TEMP_FACTORY.getInstance().getFreshTEMP();
@@ -60,7 +74,10 @@ public class MIPSGenerator
 		fileWriter.format("subu $sp,$sp,%d\n",size);
 		fileWriter.format("sw Temp_%d,%d($sp)\n", idxsrc, offset);
 	}
-	
+	public void allocate_func(String var_name)
+	{
+		fileWriter.format("\t.word %s\n",var_name);
+	}
 	public void allocate(String var_name,int value)
 	{
 		fileWriter.format(".data\n");
@@ -148,15 +165,17 @@ public class MIPSGenerator
 	}
 	public void label(String inlabel)
 	{
-		if (inlabel.equals("main"))
-		{
-			fileWriter.format(".text\n");
-			fileWriter.format("%s:\n",inlabel);
-		}
-		else
-		{
-			fileWriter.format("%s:\n",inlabel);
-		}
+		fileWriter.format("%s:\n",inlabel);
+	}	
+	public void label_text(String inlabel)
+	{
+		fileWriter.format(".text\n");
+		fileWriter.format("%s:\n",inlabel);
+	}	
+	public void label_data(String inlabel)
+	{
+		fileWriter.format(".data\n");
+		fileWriter.format("%s:\n",inlabel);
 	}	
 	public void jump(String inlabel)
 	{

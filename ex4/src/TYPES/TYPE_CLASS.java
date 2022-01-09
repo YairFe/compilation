@@ -59,14 +59,7 @@ public class TYPE_CLASS extends TYPE
 		return false;
 	}
 	public int getNumOfAttribute(){
-		int result = (father != null ? father.getNumOfAttribute() : 0);
-		for (TYPE_CLASS_VAR_DEC_LIST e=this.data_members;e!=null;e=e.tail){
-			// counting the number of args which is not function to set the size of the class
-			if(!this.existInFatherScope(e.head.name) && !e.head.t.isFunc()){
-				result++;
-			}
-		}
-		return result;
+		return this.getAttributeList().size;
 	}
 	/* 
 	function to get the index of an attribute inside a class
@@ -87,7 +80,7 @@ public class TYPE_CLASS extends TYPE
 		}
 		for(TYPE_CLASS_VAR_DEC_LIST e=this.data_members;e!=null;e=e.tail){
 			if(e.head.t.isFunc() && !lst.contains(e.head.name))
-				lst.add(e.head.name);
+				lst.add(String.format("%s_%s",this.name,e.head.name));
 		}
 		return lst;
 	}

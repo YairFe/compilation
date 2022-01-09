@@ -106,15 +106,13 @@ public class AST_FUNC_DEC extends AST_Node {
 	}
 	
 	public TEMP IRme() { 
-		// process variables (should have a TEMP_LIST with the registers where the variables are stored)
-		if(vars != null) vars.IRme();
 				
 		// add function label
-		IR.getInstance().Add_IRcommand(new IRcommand_Label(this.id));
+		IR.getInstance().Add_IRcommand(new IRcommand_Label(this.id,2));// 2 is for label of type text
 		
 		// process statements (should have a list of commands representing the function body)
 		if(stmts != null) stmts.IRme();
-
+		IR.getInstance().Add_IRcommand(new IRcommand_FuncReturn(null));
 		return null; // a function declaration is not placed in a temporary variable
 	}
 	

@@ -41,11 +41,11 @@ public class IRcommand_ClassVirtualCall extends IRcommand
 		MIPSGenerator.getInstance().subStack(4);
 		stack_offset += 4;
 		MIPSGenerator.getInstance().saveToStack(my_class);
-		// save ra to stack
+		// save ra to stack might need to do inside the function declartion
 		MIPSGenerator.getInstance().subStack(4);
 		stack_offset += 4;
 		MIPSGenerator.getInstance().saveReturnAddressToStack();
-		// save fp to stack
+		// save fp to stack might need to do inside the function declartion
 		MIPSGenerator.getInstance().subStack(4);
 		stack_offset += 4;
 		MIPSGenerator.getInstance().sw("$fp","$sp",0);
@@ -80,19 +80,5 @@ public class IRcommand_ClassVirtualCall extends IRcommand
 		MIPSGenerator.getInstance().subStack(4);
 		MIPSGenerator.getInstance().saveToStack(lst.head);
 		return stack_offset + 4;
-	}
-	public void funcPrologue(){
-		// there is 10 temp registers we want to save
-		for(int i=0;i<10;i++){
-			MIPSGenerator.getInstance().subStack(4);
-			MIPSGenerator.getInstance().saveToStack(String.format("$t%d",i));
-		}
-	}
-	public void funcEpilogue(){
-		// there is 10 temp registers we want to save
-		for(int i=0;i<10;i++){
-			MIPSGenerator.getInstance().lw(String.format("$t%d",i),"$sp",0);
-			MIPSGenerator.getInstance().addu("$sp",4);
-		}
 	}
 }

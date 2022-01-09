@@ -13,24 +13,21 @@ package IR;
 import TEMP.*;
 import MIPS.*;
 
-public class IRcommand_Jump_Label extends IRcommand
+public class IRcommand_Allocate_VT_Entry extends IRcommand
 {
-	String label_name;
-	
-	public IRcommand_Jump_Label(String label_name)
+	String funcNames;
+
+	public IRcommand_Allocate_VT_Entry(String funcName)
 	{
-		this.label_name = label_name;
+		this.funcNames = funcNames;
 	}
+	
 	
 	/***************/
 	/* MIPS me !!! */
 	/***************/
 	public void MIPSme()
 	{
-		if(label_name == null){
-			MIPSGenerator.getInstance().jr();	
-		} else {
-			MIPSGenerator.getInstance().jump(label_name);
-		}
+		MIPSGenerator.getInstance().allocate_func(funcNames);
 	}
 }

@@ -30,7 +30,9 @@ public class IRcommand_FuncReturn extends IRcommand
 		if(value != null)
 			// move value to $v0
 			MIPSGenerator.getInstance().setFuncResult(value);
-		// junp to the address in $ra
+		// jump to the address in $ra
+		MIPSGenerator.getInstance().lw("$ra","$fp",4);
+		MIPSGenerator.getInstance().lw("$fp","$fp",0);
 		MIPSGenerator.getInstance().jr();
 	}
 }

@@ -165,11 +165,11 @@ public class AST_VAR_DEC extends AST_Node {
 			if(exp != null) t1 = exp.IRme();
 			else if (newexp != null) t1 = exp.IRme();
 			else t1 = null;
-			if(this.scope_type.equals("param"))
+			if(this.scope_type.equals("local_func")){
+				// #TODO need to add IRcommand for declaring local func argument 
+				// which increase the stack and by that declare local func var
 				IR.getInstance().Add_IRcommand(new IRcommand_Store(id,t1,this.scope_type,this.index));
-			else if(this.scope_type.equals("local_func"))
-				IR.getInstance().Add_IRcommand(new IRcommand_Store(id,t1,this.scope_type,this.index));
-			else if(this.scope_type.equals("local_class"))
+			} else if(this.scope_type.equals("local_class"))
 				IR.getInstance().Add_IRcommand(new IRcommand_ClassFieldSet(null,id,t1,this.index));		
 		}	
 		return null;

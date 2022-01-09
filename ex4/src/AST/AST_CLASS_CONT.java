@@ -70,9 +70,13 @@ public class AST_CLASS_CONT extends AST_Node {
 		return TYPE_VOID.getInstance();
 	}
 	
-	public TEMP IRme() {
-		head.IRme();
-		if( tail != null )  tail.IRme();
+	public TEMP IRme(boolean irFunction) {
+		if(irFunction && head.funcDec != null){
+			head.funcDec.IRme();
+		} else if(!irFunction && head.varDec != null){
+			head.varDec.IRme();
+		}
+		if( tail != null )  tail.IRme(irFunction);
 		return null;
 	}
 	
