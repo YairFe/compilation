@@ -144,7 +144,7 @@ public class AST_EXP_BINOP extends AST_EXP
 				// case: equality testing
 				if(this.stringConcat) { 
 					// string equality testing
-					IR.getInstance().Add_IRcommand(new IRcommand_Binop_EQ_Strings(dst,t1,t2)); 
+					IR.getInstance().Add_IRcommand(new IRcommand_Binop_String_EQ(dst,t1,t2)); 
 				}
 				else { 
 					// NOTE: equality testing between arrays and class instances is similar to integer equality testing
