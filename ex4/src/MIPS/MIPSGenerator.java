@@ -186,12 +186,9 @@ public class MIPSGenerator
 	{
 		fileWriter.format("\tj %s\n",inlabel);
 	}	
-	public void blt(TEMP oprnd1,TEMP oprnd2,String label)
+	public void blt(String oprnd1,String oprnd2,String label)
 	{
-		int i1 =oprnd1.getSerialNumber();
-		int i2 =oprnd2.getSerialNumber();
-		
-		fileWriter.format("\tblt Temp_%d,Temp_%d,%s\n",i1,i2,label);				
+		fileWriter.format("\tblt %s,%s,%s\n",oprnd1,oprnd2,label);				
 	}
 	
 	public void bge(String oprnd1,String oprnd2,String label)
