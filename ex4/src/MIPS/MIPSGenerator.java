@@ -217,7 +217,12 @@ public class MIPSGenerator
 	
 	public void beqz(String oprnd1,String label)
 	{		
-		fileWriter.format("\tbeqz %s,$zero,%s\n",oprnd1,label);				
+		fileWriter.format("\tbeqz %s,%s\n",oprnd1,label);				
+	}
+	
+	public void bltz(String oprnd1,String label)
+	{		
+		fileWriter.format("\tbltz %s,%s\n",oprnd1,label);				
 	}
 	
 	public void jalr(TEMP t)
