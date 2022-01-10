@@ -31,6 +31,30 @@ public class IRcommand_ArraySet extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		//TODO
+		// same code as in recitation 11, with saving instead of loading a value
+		
+		String abort = getFreshLabel("abort");
+		String ok = getFreshLabel("ok");
+		// save $s0
+		MIPSGenerator.getInstance().push_to_stack("$s0", 4, 0);
+		MIPSGenerator.getInstance().bltz(index.toString(), abort);
+		MIPSGenerator.getInstance().lw("$s0", arr.toString(), 0);
+		MIPSGenerator.getInstance().bge(index.toString(), "$s0", abort);
+		MIPSGenerator.getInstance().mov("$s0", index.toString());
+		MIPSGenerator.getInstance().add("$s0", "$s0", "1");
+		MIPSGenerator.getInstance().mul("$s0", "$s0", "4");
+		MIPSGenerator.getInstance().add("$s0", arr.toString(), "$s0");
+		// here, $s0 has the address of the requested array element
+		MIPSGenerator.getInstance().sw(value.toString(), "$s0", 0);
+		// after saving the value, restore $s0
+		MIPSGenerator.getInstance().lw("$s0", "$sp", 0);
+		// pop old $s0 value from stack
+		MIPSGenerator.getInstance().addu("$sp", "$sp", 4);
+		// jump to OK label
+		MIPSGenerator.getInstance().jump(ok);
+		MIPSGenerator.getInstance().label(abort);
+		MIPSGenerator.getInstance().li("$v0", 10);
+		MIPSGenerator.getInstance().syscall();
+		MIPSGenerator.getInstance().label(ok);
 	}
 }

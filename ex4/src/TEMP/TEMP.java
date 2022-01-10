@@ -24,4 +24,8 @@ public class TEMP
 	{
 		return serial;
 	}
+	
+	public String toString() {
+		return String.format("Temp_%d", this.serial);
+	}
 }
