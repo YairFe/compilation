@@ -69,6 +69,10 @@ public class MIPSGenerator
 		fileWriter.format("addu $sp,$sp,%d\n",offset);
 	}
 	
+	public void syscall() {
+		fileWriter.print("\tsyscall\n");
+	}
+	
 	public void push_to_stack(String src,int offset, int size) {
 		fileWriter.format("subu $sp,$sp,%d\n",size);
 		fileWriter.format("sw %s,%d($sp)\n", src, offset);
