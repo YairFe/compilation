@@ -35,7 +35,7 @@ public class IRcommand_Binop_EQ_Strings extends IRcommand
 		String label_end        = getFreshLabel("end");
 		String label_AssignOne  = getFreshLabel("AssignOne");
         // assume not equal at the start
-        MIPSGenerator.getInstance().li(dst,0);
+        MIPSGenerator.getInstance().li(String.format("Temp_%d", dst.getSerialNumber()),0);
         // label_start
         MIPSGenerator.getInstance().label(label_start);
 
@@ -45,16 +45,16 @@ public class IRcommand_Binop_EQ_Strings extends IRcommand
 		*/
 
         // if not equal end
-		MIPSGenerator.getInstance().bne(t1,t2,label_end);
+		MIPSGenerator.getInstance().bne(String.format("Temp_%d", t1.getSerialNumber()),String.format("Temp_%d", t2.getSerialNumber()),label_end);
 
         // assign 1 because end of both the string and they are equals
-        MIPSGenerator.getInstance().beqz(t1,label_AssignOne);
+        MIPSGenerator.getInstance().beqz(String.format("Temp_%d", t1.getSerialNumber()),label_AssignOne);
 
 		MIPSGenerator.getInstance().jump(label_start);
 
         // label_AssignOne
 		MIPSGenerator.getInstance().label(label_AssignOne);
-		MIPSGenerator.getInstance().li(dst,1);
+		MIPSGenerator.getInstance().li(String.format("Temp_%d", dst.getSerialNumber()),1);
 
         
 
