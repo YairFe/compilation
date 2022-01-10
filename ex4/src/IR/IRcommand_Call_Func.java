@@ -21,7 +21,7 @@ public class IRcommand_Call_Func extends IRcommand {
 		
 		while(argsp != null) {
 			// push arguments to stack
-			MIPSGenerator.getInstance().push_temp_to_stack(argsp.value, 0, 4);
+			MIPSGenerator.getInstance().push_to_stack(argsp.value.toString(),0, 0);
 			argsp = argsp.prev;
 		}
 		
