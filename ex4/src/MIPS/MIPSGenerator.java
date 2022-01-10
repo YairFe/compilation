@@ -139,13 +139,9 @@ public class MIPSGenerator
 	{
 		fileWriter.format("\tadd %s,%s,%s\n",dst,oprnd1,oprnd2);
 	}
-	public void mul(TEMP dst,TEMP oprnd1,TEMP oprnd2)
+	public void mul(String dst,String oprnd1,String oprnd2)
 	{
-		int i1 =oprnd1.getSerialNumber();
-		int i2 =oprnd2.getSerialNumber();
-		int dstidx=dst.getSerialNumber();
-
-		fileWriter.format("\tmul Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
+		fileWriter.format("\tmul %s,%s,%s\n",dst,oprnd1,oprnd2);
 	}
 	public void div(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
