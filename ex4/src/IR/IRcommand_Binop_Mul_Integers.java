@@ -33,14 +33,14 @@ public class IRcommand_Binop_Mul_Integers extends IRcommand
 		// #TODO need to define max / min values
 		String label_end_max = getFreshLabel("label_end_max");
 		String label_end_min = getFreshLabel("label_end_min");
-		MIPSGenerator.getInstance().mul(dst,t1,t2);
+		MIPSGenerator.getInstance().mul(dst.toString(),t1.toString(),t2.toString());
 		// if the division product greater than max assign max to dst
-		MIPSGenerator.getInstance().ble(dst,max,label_end_max);
-		MIPSGenerator.getInstance().li(dst,max);
+		MIPSGenerator.getInstance().ble(dst.toString(),max,label_end_max);
+		MIPSGenerator.getInstance().li(dst.toString(),max);
 		MIPSGenerator.getInstance().label(label_end_max);
 		// if the division product less than min assign min to dst
-		MIPSGenerator.getInstance().bge(dst,min,label_end_min);
-		MIPSGenerator.getInstance().li(dst,min);
+		MIPSGenerator.getInstance().bge(dst.toString(),min,label_end_min);
+		MIPSGenerator.getInstance().li(dst.toString(),min);
 		MIPSGenerator.getInstance().label(label_end_min);
 	}
 }
