@@ -34,15 +34,15 @@ public class IRcommand_Load extends IRcommand
 	public void MIPSme()
 	{
 		if(scope_type.equals("global"))
-			MIPSGenerator.getInstance().load(dst,var_name);
+			MIPSGenerator.getInstance().load(dst.toString(),var_name);
 		else if(scope_type.equals("param"))
-			MIPSGenerator.getInstance().lw(dst,"$fp",(index+2)*4);
+			MIPSGenerator.getInstance().lw(dst.toString(),"$fp",(index+2)*4);
 		else if(scope_type.equals("local_func"))
-			MIPSGenerator.getInstance().lw(dst,"$fp",(index+1)*-4);
+			MIPSGenerator.getInstance().lw(dst.toString(),"$fp",(index+1)*-4);
 		else if(scope_type.equals("local_class")){
 			// first argument of a method is the class pointer
-			MIPSGenerator.getInstance().lw(dst,"$fp",8);
-			MIPSGenerator.getInstance().lw(dst,dst,(index+1)*4);
+			MIPSGenerator.getInstance().lw(dst.toString(),"$fp",8);
+			MIPSGenerator.getInstance().lw(dst.toString(),dst.toString(),(index+1)*4);
 		}
 	}
 }
