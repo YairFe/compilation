@@ -199,6 +199,11 @@ public class MIPSGenerator
 		fileWriter.format("\tbge %s,%s,%s\n",oprnd1,oprnd2,label);				
 	}
 	
+	public void ble(String oprnd1,String oprnd2,String label)
+	{
+		fileWriter.format("\tble %s,%s,%s\n",oprnd1,oprnd2,label);				
+	}
+	
 	public void bne(String oprnd1,String oprnd2,String label)
 	{
 		fileWriter.format("\tbne %s,%s,%s\n",oprnd1,oprnd2,label);				
