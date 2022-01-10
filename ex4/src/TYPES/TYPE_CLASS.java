@@ -59,7 +59,7 @@ public class TYPE_CLASS extends TYPE
 		return false;
 	}
 	public int getNumOfAttribute(){
-		return this.getAttributeList().size;
+		return this.getAttributeList().size();
 	}
 	/* 
 	function to get the index of an attribute inside a class
@@ -71,6 +71,13 @@ public class TYPE_CLASS extends TYPE
 	public int getFuncIndex(String name){
 		return this.getFuncList().indexOf(name);
 	}
+	public String getClassNameWithAttribute(String name){
+		for(TYPE_CLASS_VAR_DEC_LIST e=this.data_members;e!=null;e=e.tail){
+			if(e.head.name.equals(name))
+				return this.name;
+		}
+		return this.father.getClassNameWithAttribute(name);
+	}
 	public LinkedList<String> getFuncList(){
 		LinkedList<String> lst;
 		if(father != null){
@@ -80,7 +87,7 @@ public class TYPE_CLASS extends TYPE
 		}
 		for(TYPE_CLASS_VAR_DEC_LIST e=this.data_members;e!=null;e=e.tail){
 			if(e.head.t.isFunc() && !lst.contains(e.head.name))
-				lst.add(String.format("%s_%s",this.name,e.head.name));
+				lst.add(String.format("%s",this.name,e.head.name));
 		}
 		return lst;
 	}

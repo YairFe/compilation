@@ -83,7 +83,7 @@ public class AST_EXP_VAR_FUNC extends AST_EXP {
 			if(t3.isError()) return t3;
 		}
 		if(!(((TYPE_FUNCTION) t2).isSameArgs((TYPE_LIST) t3))) return new TYPE_ERROR(line);
-		
+		this.func_offset = ((TYPE_CLASS) t1).getFuncIndex(fn);
 		return ((TYPE_FUNCTION) t2).returnType;
 	}
 	

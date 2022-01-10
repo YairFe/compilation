@@ -391,3 +391,15 @@ ex4/src/Lexer.java
 ex4/src/Parser.java
 ex4/src/TokenNames.java
 ex4/bin/Lexer.class
+ex4/bin/Main.class
+ex4/bin/Parser.class
+ex4/bin/Parser$CUP$Parser$actions.class
+ex4/bin/TokenNames.class
+ex4/bin/IR/IR.class
+ex4/bin/IR/IRcommand_Allocate_VT_Entry.class
+ex4/bin/IR/IRcommand_Allocate.class
+ex4/bin/IR/IRcommand.class
+ex4/bin/IR/IRcommandConstNil.class
+ex4/bin/IR/IRcommandConstString.class
+ex4/bin/IR/IRcommandList.class
+ex4/bin/TEMP/TEMP.class

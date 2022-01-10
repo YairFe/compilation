@@ -29,10 +29,14 @@ public class IRcommand_FuncReturn extends IRcommand
 	{
 		if(value != null)
 			// move value to $v0
-			MIPSGenerator.getInstance().setFuncResult(value);
-		// jump to the address in $ra
-		MIPSGenerator.getInstance().lw("$ra","$fp",4);
-		MIPSGenerator.getInstance().lw("$fp","$fp",0);
+			MIPSGenerator.getInstance().mov("$v0",value);
+		// pop out all local func variables from stack
+		MIPSGenerator.getInstance().mov("$sp","$fp");
+		// pop fp from stack
+		MIPSGenerator.getInstance().popStackTo("$fp");
+		// pop return address from stack
+		MIPSGenerator.getInstance().popStackTo("$ra");
+		// jump to the return address
 		MIPSGenerator.getInstance().jr();
 	}
 }

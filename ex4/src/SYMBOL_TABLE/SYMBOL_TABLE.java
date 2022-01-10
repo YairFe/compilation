@@ -131,11 +131,20 @@ public class SYMBOL_TABLE
 		}
 		return -1;
 	}
+	public String getClassNameWithAttribute(String funcName){
+		return this.curClass.getClassNameWithAttribute(funcName);
+	}
 	/****************************************************/
 	/* get the attribute index in a class               */
 	/****************************************************/
 	public int getAttributeIndex(String name){
 		return curClass.getAttributeIndex(name);
+	}
+	/****************************************************/
+	/* get the func index in a class               */
+	/****************************************************/
+	public int getFuncIndex(String name){
+		return curClass.getFuncIndex(name);
 	}
 	/****************************************************/
 	/* Find the inner-most scope element with name 		*/

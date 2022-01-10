@@ -1,5 +1,4 @@
 package AST; import TYPES.*; import TEMP.*; import IR.*; import SYMBOL_TABLE.*;
-import java.util.*;
 
 public class AST_CLASS_DEC extends AST_Node {
 
@@ -129,14 +128,8 @@ public class AST_CLASS_DEC extends AST_Node {
 	
 	public TEMP IRme() {
 		if(this.cont != null) this.cont.IRme(true); // when true IR only the functions false IR only the variables
-		// building virtual_table
-		IR.getInstance().Add_IRcommand(new IRcommand_Label(String.format("vt_%s",this.id1),1));
-		List<String> funcList = decClass.getFuncList();
-		for(String funcName : funcList){
-			IR.getInstance().Add_IRcommand(new IRcommand_Allocate_VT_Entry(funcName));
-		}
-		IR.getInstance().Add_IRcommand(new IRcommand_Label(String.format("class_%s",this.id1),2));
-		IR.getInstance().Add_IRcommand(new IRcommand_Allocate(this.decClass.getNumOfAttribute() + 1));
+		// build new class flow save pointer on the stack
+		IR.getInstance().Add_IRcommand(new IRcommand_Allocate_Class(this.decClass);
 		// visit all AST_VAR_DEC of the class
 		if(this.cont != null) this.cont.IRme(false);
 		// jumping back to the main flow with $ra address

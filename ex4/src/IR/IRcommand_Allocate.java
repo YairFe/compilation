@@ -15,22 +15,23 @@ import MIPS.*;
 
 public class IRcommand_Allocate extends IRcommand
 {
+	String scope_type;
 	String var_name = null;
 	int var_value_word = 0;
 	String var_value_string = null;
-	int size = 0;
 
-	public IRcommand_Allocate(int size)
-	{
-		this.size = size;
+	public IRcommand_Allocate(String scope_type){
+		this.scope_type = scope_type;
 	}
-	public IRcommand_Allocate(String var_name,int var_value)
+	public IRcommand_Allocate(String scope_type,String var_name,int var_value)
 	{
+		this(scope_type);
 		this.var_name = var_name;
 		this.var_value_word = var_value;
 	}
-	public IRcommand_Allocate(String var_name,String var_value)
+	public IRcommand_Allocate(String scope_type,String var_name,String var_value)
 	{
+		this(scope_type);
 		this.var_name = var_name;
 		this.var_value_string = var_value;
 	}
@@ -40,11 +41,15 @@ public class IRcommand_Allocate extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		if(var_name == null)
-			MIPSGenerator.getInstance().malloc(size);
-		else if(var_value_string != null)
-			MIPSGenerator.getInstance().allocate(var_name,var_value_string);
-		else
-			MIPSGenerator.getInstance().allocate(var_name,var_value_word);
+		if(scope_type.equals("global")){
+			if(var_value_string != null){
+				MIPSGenerator.getInstance().allocate(var_name,var_value_string);
+			} else {
+				MIPSGenerator.getInstance().allocate(var_name,var_value_word);
+			}
+		} else if(scope_type.equals("local_func")){
+			// increasing the stack to save local var
+			MIPSGenerator.getInstance().pushToStack("$zero");
+		}	
 	}
 }

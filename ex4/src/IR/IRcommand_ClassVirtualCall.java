@@ -19,13 +19,15 @@ public class IRcommand_ClassVirtualCall extends IRcommand
 	TEMP my_class;
     String method_name;
     TEMP_LIST args;
+	int index;
 	
-	public IRcommand_ClassVirtualCall(TEMP dst, TEMP my_class, String name, TEMP_LIST args)
+	public IRcommand_ClassVirtualCall(TEMP dst, TEMP my_class, String name, TEMP_LIST args, int index)
 	{
 		this.dst = dst;
 		this.my_class = my_class;
         this.method_name = name;
         this.args = args;
+		this.index = index;
 	}
 
 	/***************/
@@ -53,7 +55,7 @@ public class IRcommand_ClassVirtualCall extends IRcommand
 		MIPSGenerator.getInstance().mov("$fp","$sp");
 		// get the function address from class pointer
 		MIPSGenerator.getInstance().lw(t,my_class,0);
-		MIPSGenerator.getInstance().lw(t,t,func_offset); // missing func offset
+		MIPSGenerator.getInstance().lw(t,t,index*4);
 		
 		MIPSGenerator.getInstance().jalr(t);
 

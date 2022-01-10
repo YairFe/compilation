@@ -8,7 +8,7 @@ public class AST_STMT_VAR_FUNC extends AST_STMT {
 	public AST_VAR var;
 	public String fn;
 	public AST_EXP_LIST exps;
-	
+	public TYPE_CLASS class_type;
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
@@ -84,6 +84,7 @@ public class AST_STMT_VAR_FUNC extends AST_STMT {
 				return new TYPE_ERROR(line);
 			}
 			id_type = ((TYPE_CLASS) var_type).findInClassScope(fn);
+			this.class_type = ((TYPE_CLASS) var_type);
 		} else {
 			id_type = s.find(fn);
 		}
@@ -108,11 +109,12 @@ public class AST_STMT_VAR_FUNC extends AST_STMT {
 			}
 		} else {
 			TEMP t1 = var.IRme();
+			int func_index = class_type.getFuncIndex();
 			if(this.exps == null)
-				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(null,t1,fn,null));
+				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(null,t1,fn,null,func_index));
 			else{
 				TEMP_LIST args = this.exps.IRme();
-				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(null,t1,fn,args));
+				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(null,t1,fn,args,func_index));
 			}
 		}
 		return null;

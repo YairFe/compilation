@@ -29,6 +29,8 @@ public class IRcommand_ArrayNew extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		//TODO
+		MIPSGenerator.getInstance().malloc(size);
+		MIPSGenerator.getInstance().mov(dst,"$v0");
+		MIPSGenerator.getInstance().sw(size,dst,0);
 	}
 }

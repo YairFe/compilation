@@ -36,9 +36,17 @@ public class IRcommand_ClassFieldSet extends IRcommand
 		int offset = (index+1)*4;
 		if(my_class != null)
 			MIPSGenerator.getInstance().sw(value, my_class, offset);
-		else
-			// my_class is null only when initiallizing class attributes
-			MIPSGenerator.getInstance().sw(src,"$v0",offset);
-
+		else{ // my_class is null only when initiallizing class attributes
+			MIPSGenerator.getInstance().saveToStack("$s0");
+			// we expect the sp to point to class pointer
+			MIPSGenerator.getInstance().lw("$s0","$sp",4);
+			if(value != null){
+				// #TODO need to change $v0 to a different register
+				MIPSGenerator.getInstance().sw(value,"$s0",offset);
+			} else {
+				MIPSGenerator.getInstance().sw("$zero","$s0",offset);
+			}
+			MIPSGenerator.getInstance().popStackTo("$s0");
+		}			
 	}
 }
