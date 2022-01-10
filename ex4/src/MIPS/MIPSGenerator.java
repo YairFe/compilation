@@ -119,6 +119,11 @@ public class MIPSGenerator
 		fileWriter.format("\tlw %s, %d(%s)",dst,offset,src);
 	}
 	
+	public void sw(String src,String dst, int offset)
+	{
+		fileWriter.format("\tsw %s, %d(%s)",src,offset,dst);
+	}
+	
 	public void lb(String dst,String src,int offset)
 	{
 		fileWriter.format("\tlb %s, %d(%s)",dst,offset,src);
