@@ -69,11 +69,11 @@ public class MIPSGenerator
 		fileWriter.format("addu $sp,$sp,%d\n",offset);
 	}
 	
-	public void push_temp_to_stack(TEMP src,int offset, int size) {
-		int idxsrc = src.getSerialNumber();
+	public void push_to_stack(String src,int offset, int size) {
 		fileWriter.format("subu $sp,$sp,%d\n",size);
-		fileWriter.format("sw Temp_%d,%d($sp)\n", idxsrc, offset);
+		fileWriter.format("sw %s,%d($sp)\n", src, offset);
 	}
+	
 	public void allocate_func(String var_name)
 	{
 		fileWriter.format("\t.word %s\n",var_name);
