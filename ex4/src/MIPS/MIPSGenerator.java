@@ -110,12 +110,11 @@ public class MIPSGenerator
 		fileWriter.format("\tli %s,%d\n",t,value);
 	}
 	
-	public void lw(TEMP dst,TEMP memAdd, int offset)
+	public void lw(String dst,String src, int offset)
 	{
-		int idx1=dst.getSerialNumber();
-		int idx2=memAdd.getSerialNumber();
-		fileWriter.format("\tlw Temp_%d, %d(Temp_%d)",idx1,offset,idx2);
+		fileWriter.format("\tlw %s, %d(%s)",dst,offset,src);
 	}
+	
 	public void lb(String dst,String src,int offset)
 	{
 		fileWriter.format("\tlb %s, %d(%s)",dst,offset,src);
