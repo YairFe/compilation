@@ -145,10 +145,10 @@ public class MIPSGenerator
 	{
 		fileWriter.format("\tmov %s, %s",dst,src);
 	}
-	public void getFuncResult(TEMP dst)
+	
+	public void getFuncResult(String dst)
 	{
-		int idx1=dst.getSerialNumber();
-		fileWriter.format("\tmov Temp_%d, $v0",idx1);
+		fileWriter.format("\tmov %s, $v0",dst);
 	}
 	
 	public void setFuncResult(TEMP dst)
