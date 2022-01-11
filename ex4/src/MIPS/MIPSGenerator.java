@@ -30,15 +30,15 @@ public class MIPSGenerator
 		fileWriter.print("\tsyscall\n");
 		fileWriter.close();
 	}
-	public void print_int(TEMP t)
-	{
-		int idx=t.getSerialNumber();
-		// fileWriter.format("\taddi $a0,Temp_%d,0\n",idx);
-		fileWriter.format("\tmove $a0,Temp_%d\n",idx);
-		fileWriter.format("\tli $v0,1\n");
+	public void print_string(String error_msg){
+		fileWriter.format("\tla %s\n",error_msg);
+		fileWriter.format("\tli $v0,4\n");
 		fileWriter.format("\tsyscall\n");
-		fileWriter.format("\tli $a0,32\n");
-		fileWriter.format("\tli $v0,11\n");
+	}
+	public void print_int(String t)
+	{
+		fileWriter.format("\tmove $a0,%s\n",t);
+		fileWriter.format("\tli $v0,1\n");
 		fileWriter.format("\tsyscall\n");
 	}
 	public void funcPrologue(){
@@ -69,13 +69,14 @@ public class MIPSGenerator
 		fileWriter.format("addu $sp,$sp,%d\n",offset);
 	}
 	
-	public void syscall() {
-		fileWriter.print("\tsyscall\n");
+	public void push_to_stack(String src) {
+		fileWriter.format("subu $sp,$sp,4\n");
+		fileWriter.format("sw %s,0($sp)\n", src);
 	}
-	
-	public void push_to_stack(String src,int offset, int size) {
-		fileWriter.format("subu $sp,$sp,%d\n",size);
-		fileWriter.format("sw %s,%d($sp)\n", src, offset);
+	public void popStackTo(String src) {
+		fileWriter.format("lw %s,0($sp)\n", src);
+		fileWriter.format("addu $sp,$sp,4\n");
+		
 	}
 	
 	public void allocate_func(String var_name)
@@ -87,10 +88,20 @@ public class MIPSGenerator
 		fileWriter.format(".data\n");
 		fileWriter.format("\tglobal_%s: .word %d\n",var_name, value);
 	}
-	public void allocate(String var_name, String value)
+	public void allocate_string(String var_name, String value)
 	{
 		fileWriter.format(".data\n");
-		fileWriter.format("\tglobal_%s: .asciiz \"%s\"\n",var_name, value);
+		fileWriter.format("\t%s:\n",var_name);
+		fileWriter.format("\t .word %d\n",value.length());
+		fileWriter.format("\t .asciiz \"%s\"\n",value);
+	}
+	public void text_segment(){
+		fileWriter.format(".text\n");
+	}
+	public void malloc()
+	{
+		fileWriter.format("\tli $v0,9\n");
+		fileWriter.format("\tsyscall\n");
 	}
 	public void malloc(int numOfBytes)
 	{
@@ -103,22 +114,23 @@ public class MIPSGenerator
 		int idxdst=dst.getSerialNumber();
 		fileWriter.format("\tlw Temp_%d,global_%s\n",idxdst,var_name);
 	}
-	public void store(String var_name,TEMP src)
+	public void store(String var_name,String src)
 	{
-		int idxsrc=src.getSerialNumber();
-		fileWriter.format("\tsw Temp_%d,global_%s\n",idxsrc,var_name);		
+		fileWriter.format("\tsw %s,global_%s\n",src,var_name);		
 	}
-	
+	public void la(String dst,String src)
+	{
+		fileWriter.format("\tla %s, %s\n",dst,src);
+	}
 	public void li(String t,int value)
 	{
-		fileWriter.format("\tli %s,%d\n",t,value);
+		fileWriter.format("\tli %s, %d\n",t,value);
 	}
 	
 	public void lw(String dst,String src, int offset)
 	{
 		fileWriter.format("\tlw %s, %d(%s)",dst,offset,src);
 	}
-	
 	public void sw(String src,String dst, int offset)
 	{
 		fileWriter.format("\tsw %s, %d(%s)",src,offset,dst);
@@ -168,6 +180,13 @@ public class MIPSGenerator
 
 		fileWriter.format("\tsub Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
 	}
+	public void addu(String dst, String src, int val) {
+		fileWriter.format("\taddu %s,%s,%d\n", dst, src, val);
+	}
+	public void subu(String dst,String src,int offset)
+	{
+		fileWriter.format("\tsubu %s,%s,$d\n",dst,src,offset);
+	}
 	public void label(String inlabel)
 	{
 		fileWriter.format("%s:\n",inlabel);
@@ -210,33 +229,27 @@ public class MIPSGenerator
 	{
 		fileWriter.format("\tbeq %s,%s,%s\n",oprnd1,oprnd2,label);				
 	}
-	
-	public void addu(String op1, String dst, int val) {
-		fileWriter.format("\taddu %s,%s,%d\n", dst, op1, val);
-	}
-	
 	public void beqz(String oprnd1,String label)
 	{		
 		fileWriter.format("\tbeqz %s,%s\n",oprnd1,label);				
 	}
-	
+
 	public void bltz(String oprnd1,String label)
 	{		
 		fileWriter.format("\tbltz %s,%s\n",oprnd1,label);				
 	}
 	
-	public void jalr(TEMP t)
+	public void jalr(String dst)
 	{
-		int id =t.getSerialNumber();
-		fileWriter.format("\tjalr Temp_%d\n",t);				
+		fileWriter.format("\tjalr %s\n",dst);				
 	}
 	public void jal(String label)
 	{
 		fileWriter.format("\tjal %s\n",label);				
 	}
-	public void jr()
+	public void jr(String dst)
 	{
-		fileWriter.format("\tjr $ra\n");				
+		fileWriter.format("\tjr %s\n",dst);				
 	}
 	/**************************************/
 	/* USUAL SINGLETON IMPLEMENTATION ... */

@@ -36,7 +36,7 @@ public class IRcommand_ArraySet extends IRcommand
 		String abort = getFreshLabel("abort");
 		String ok = getFreshLabel("ok");
 		// save $s0
-		MIPSGenerator.getInstance().push_to_stack("$s0", 4, 0);
+		MIPSGenerator.getInstance().push_to_stack("$s0");
 		MIPSGenerator.getInstance().bltz(index.toString(), abort);
 		MIPSGenerator.getInstance().lw("$s0", arr.toString(), 0);
 		MIPSGenerator.getInstance().bge(index.toString(), "$s0", abort);
@@ -53,8 +53,8 @@ public class IRcommand_ArraySet extends IRcommand
 		// jump to OK label
 		MIPSGenerator.getInstance().jump(ok);
 		MIPSGenerator.getInstance().label(abort);
-		MIPSGenerator.getInstance().li("$v0", 10);
-		MIPSGenerator.getInstance().syscall();
+		MIPSGenerator.getInstance().print_string("string_access_violation");
+		MIPSGenerator.getInstance().finalizeFile();
 		MIPSGenerator.getInstance().label(ok);
 	}
 }

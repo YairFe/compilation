@@ -40,7 +40,7 @@ public class IRcommand_Binop_EQ_Integers extends IRcommand
 		/******************************************/
 		/* [2] if (t1==t2) goto label_AssignOne;  */
 		/******************************************/
-		MIPSGenerator.getInstance().beq(String.format("Temp_%d", t1.getSerialNumber()),String.format("Temp_%d", t2.getSerialNumber()),label_AssignOne);
+		MIPSGenerator.getInstance().beq(t1.toString(),t2.toString(),label_AssignOne);
 
 		/*************************/
 		/* [3] label_AssignZero: */
@@ -49,7 +49,7 @@ public class IRcommand_Binop_EQ_Integers extends IRcommand
 		/*         goto end;     */
 		/*                       */
 		/*************************/
-		MIPSGenerator.getInstance().li(String.format("Temp_%d", dst.getSerialNumber()),0);
+		MIPSGenerator.getInstance().li(dst.toString(),0);
 		MIPSGenerator.getInstance().jump(label_end);
 
 		/************************/
@@ -59,7 +59,7 @@ public class IRcommand_Binop_EQ_Integers extends IRcommand
 		/*                      */
 		/************************/
 		MIPSGenerator.getInstance().label(label_AssignOne);
-		MIPSGenerator.getInstance().li(String.format("Temp_%d", dst.getSerialNumber()),1);
+		MIPSGenerator.getInstance().li(dst.toString(),1);
 
 		/******************/
 		/* [5] label_end: */

@@ -36,8 +36,8 @@ public class IRcommand_Allocate_Func extends IRcommand
             MIPSGenerator.getInstance().label_text(String.format("%s_%s",class_name,func_name));
         else
             MIPSGenerator.getInstance().label_text(String.format("func_%s",func_name));
-        MIPSGenerator.getInstance().saveToStack("$ra");
-        MIPSGenerator.getInstance().saveToStack("$fp");
+        MIPSGenerator.getInstance().push_to_stack("$ra");
+        MIPSGenerator.getInstance().push_to_stack("$fp");
         MIPSGenerator.getInstance().mov("$fp","$sp");
 
 	}

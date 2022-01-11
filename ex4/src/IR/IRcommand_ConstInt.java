@@ -29,6 +29,6 @@ public class IRcommand_ConstInt extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		MIPSGenerator.getInstance().li(String.format("Temp_%d", t.getSerialNumber()),value);
+		MIPSGenerator.getInstance().li(t.toString(),value);
 	}
 }

@@ -34,15 +34,15 @@ public class IRcommand_Store extends IRcommand
 	public void MIPSme()
 	{
 		if(scope_type.equals("global"))
-			MIPSGenerator.getInstance().store(var_name,src);
+			MIPSGenerator.getInstance().store(var_name,src.toString());
 		else if(scope_type.equals("param"))
-			MIPSGenerator.getInstance().sw(src,"$fp",(index+2)*4);
+			MIPSGenerator.getInstance().sw(src.toString(),"$fp",(index+2)*4);
 		else if(scope_type.equals("local_func"))			
-			MIPSGenerator.getInstance().sw(src,"$fp",(index+1)*-4);
+			MIPSGenerator.getInstance().sw(src.toString(),"$fp",(index+1)*-4);
 		else if(scope_type.equals("local_class")){
 			// the first param of a method is the class pointer
 			MIPSGenerator.getInstance().lw("$s0","$fp",8);
-			MIPSGenerator.getInstance().sw(src,"$s0",(index+1)*4);
+			MIPSGenerator.getInstance().sw(src.toString(),"$s0",(index+1)*4);
 		}
 
 	}

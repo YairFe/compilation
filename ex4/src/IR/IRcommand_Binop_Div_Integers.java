@@ -17,20 +17,27 @@ public class IRcommand_Binop_Div_Integers extends IRcommand {
 	}
 	
 	public void MIPSme() { 
-		// #TODO need to define max / min values
+		int max = 32767;
+		int min = -32768;
 		String label_end_max = getFreshLabel("label_end_max");
 		String label_end_min = getFreshLabel("label_end_min");
+		
+		MIPSGenerator.getInstance().push_to_stack("$s0");
 		// if t2 equal to zero print message and exit
 		MIPSGenerator.getInstance().beqz(t2,label_division_by_zero);
 		MIPSGenerator.getInstance().div(dst,t1,t2);
 		// if the division product greater than max assign max to dst
-		MIPSGenerator.getInstance().ble(dst,max,label_end_max);
-		MIPSGenerator.getInstance().li(dst,max);
+		MIPSGenerator.getInstance().li("$s0",max);
+		MIPSGenerator.getInstance().ble(dst,"$s0",label_end_max);
+		MIPSGenerator.getInstance().mov(dst,"$s0");
+		MIPSGenerator.getInstance().jump(label_end_min);
 		MIPSGenerator.getInstance().label(label_end_max);
 		// if the division product less than min assign min to dst
-		MIPSGenerator.getInstance().bge(dst,min,label_end_min);
-		MIPSGenerator.getInstance().li(dst,min);
+		MIPSGenerator.getInstance().li("$s0",min);
+		MIPSGenerator.getInstance().bge(dst,"$s0",label_end_min);
+		MIPSGenerator.getInstance().mov(dst,"$s0");
 		MIPSGenerator.getInstance().label(label_end_min);
+		MIPSGenerator.getInstance().popStackTo("$s0");
 	}
 
 }

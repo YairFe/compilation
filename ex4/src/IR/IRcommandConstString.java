@@ -12,6 +12,15 @@ public class IRcommandConstString extends IRcommand {
 		this.value = value;
 	}
 	
-	public void MIPSme() { /* TODO Auto-generated method stub */ }
+	public void MIPSme() { 
+		String str_name = getFreshLabel(value);
+		// allocate new constant string in the data segment
+		MIPSGenerator.getInstance().allocate_string(str_name,value);
+		// move back to text segment
+		MIPSGenerator.getInstance().text_segment();
+		// load the address of the string to register
+		MIPSGenerator.getInstance().la(t.toString(),str_name);
+		
+	}
 
 }

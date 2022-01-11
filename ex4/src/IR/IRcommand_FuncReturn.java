@@ -27,9 +27,8 @@ public class IRcommand_FuncReturn extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		if(value != null)
-			// move value to $v0
-			MIPSGenerator.getInstance().mov("$v0",value);
+		// move value to $v0
+		if(value != null) MIPSGenerator.getInstance().mov("$v0",value);	
 		// pop out all local func variables from stack
 		MIPSGenerator.getInstance().mov("$sp","$fp");
 		// pop fp from stack
@@ -37,6 +36,6 @@ public class IRcommand_FuncReturn extends IRcommand
 		// pop return address from stack
 		MIPSGenerator.getInstance().popStackTo("$ra");
 		// jump to the return address
-		MIPSGenerator.getInstance().jr();
+		MIPSGenerator.getInstance().jr("$ra");
 	}
 }

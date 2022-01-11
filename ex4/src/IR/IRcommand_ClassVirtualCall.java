@@ -42,7 +42,7 @@ public class IRcommand_ClassVirtualCall extends IRcommand
 		// save class pointer to stack as first param
 		MIPSGenerator.getInstance().subStack(4);
 		stack_offset += 4;
-		MIPSGenerator.getInstance().saveToStack(my_class);
+		MIPSGenerator.getInstance().push_to_stack(my_class);
 		// save ra to stack might need to do inside the function declartion
 		MIPSGenerator.getInstance().subStack(4);
 		stack_offset += 4;
@@ -79,8 +79,7 @@ public class IRcommand_ClassVirtualCall extends IRcommand
 			return 0;
 		}
 		int stack_offset = this.saveToStack(lst.tail);
-		MIPSGenerator.getInstance().subStack(4);
-		MIPSGenerator.getInstance().saveToStack(lst.head);
+		MIPSGenerator.getInstance().push_to_stack(lst.head.toString());
 		return stack_offset + 4;
 	}
 }

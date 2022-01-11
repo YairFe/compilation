@@ -28,7 +28,7 @@ public class IRcommand_Jump_Label extends IRcommand
 	public void MIPSme()
 	{
 		if(label_name == null){
-			MIPSGenerator.getInstance().jr();	
+			MIPSGenerator.getInstance().jr("$ra");	
 		} else {
 			MIPSGenerator.getInstance().jump(label_name);
 		}

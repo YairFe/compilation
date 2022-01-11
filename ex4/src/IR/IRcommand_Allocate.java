@@ -43,13 +43,13 @@ public class IRcommand_Allocate extends IRcommand
 	{
 		if(scope_type.equals("global")){
 			if(var_value_string != null){
-				MIPSGenerator.getInstance().allocate(var_name,var_value_string);
+				MIPSGenerator.getInstance().allocate_string(String.format("global_%s",var_name),var_value_string);
 			} else {
 				MIPSGenerator.getInstance().allocate(var_name,var_value_word);
 			}
 		} else if(scope_type.equals("local_func")){
 			// increasing the stack to save local var
-			MIPSGenerator.getInstance().pushToStack("$zero");
+			MIPSGenerator.getInstance().push_to_stack("$zero");
 		}	
 	}
 }

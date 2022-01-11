@@ -33,6 +33,6 @@ public class IRcommand_ClassFieldAccess extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		MIPSGenerator.getInstance().lw(dst, my_class,(index+1)*4);
+		MIPSGenerator.getInstance().lw(dst.toString(), my_class.toString(),(index+1)*4);
 	}
 }

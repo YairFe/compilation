@@ -34,30 +34,41 @@ public class IRcommand_Binop_EQ_Strings extends IRcommand
         String label_start      = getFreshLabel("start");
 		String label_end        = getFreshLabel("end");
 		String label_AssignOne  = getFreshLabel("AssignOne");
-        // assume not equal at the start
-        MIPSGenerator.getInstance().li(String.format("Temp_%d", dst.getSerialNumber()),0);
+		int offset = 0;
+        
+		// save $s0-$s3 to stack
+		MIPSGenerator.getInstance().push_to_stack("$s0");
+		MIPSGenerator.getInstance().push_to_stack("$s1");
+		MIPSGenerator.getInstance().push_to_stack("$s2");
+		MIPSGenerator.getInstance().push_to_stack("$s3");
+		// mov the pointer of the 2 string to a register
+		MIPSGenerator.getInstance().mov("$s2",t1.toString());
+		MIPSGenerator.getInstance().mov("$s3",t2.toString());
+		// assume not equal at the start
+        MIPSGenerator.getInstance().li(dst.toString(),0);
         // label_start
         MIPSGenerator.getInstance().label(label_start);
-
-		/* 
-		#TODO compare between char and not words
-		by lb $s0,$t1 and lb $s1,$t2 and then compare them 
-		*/
-
+		
+		// compare char instead of byte
+		MIPSGenerator.getInstance().lb("$s0","$s2",0);
+		MIPSGenerator.getInstance().lb("$s1","$s3",0);
         // if not equal end
-		MIPSGenerator.getInstance().bne(String.format("Temp_%d", t1.getSerialNumber()),String.format("Temp_%d", t2.getSerialNumber()),label_end);
+		MIPSGenerator.getInstance().bne("$s0","$s1",label_end);
 
-        // assign 1 because end of both the string and they are equals
-        MIPSGenerator.getInstance().beqz(String.format("Temp_%d", t1.getSerialNumber()),label_AssignOne);
-
+        // assign 1 if one of the string is null because they are equal at this point
+        MIPSGenerator.getInstance().beqz("$s0",label_AssignOne);
+		MIPSGenerator.getInstance().addu("$s2","$s2",1);
+		MIPSGenerator.getInstance().addu("$s3","$s3",1);
 		MIPSGenerator.getInstance().jump(label_start);
 
         // label_AssignOne
 		MIPSGenerator.getInstance().label(label_AssignOne);
-		MIPSGenerator.getInstance().li(String.format("Temp_%d", dst.getSerialNumber()),1);
-
-        
+		MIPSGenerator.getInstance().li(dst.toString(),1);      
 
 		MIPSGenerator.getInstance().label(label_end);
+		MIPSGenerator.getInstance().popStackTo("$s3");
+		MIPSGenerator.getInstance().popStackTo("$s2");
+		MIPSGenerator.getInstance().popStackTo("$s1");
+		MIPSGenerator.getInstance().popStackTo("$s0");
 	}
 }

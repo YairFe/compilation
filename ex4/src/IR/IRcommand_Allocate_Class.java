@@ -42,12 +42,12 @@ public class IRcommand_Allocate_Class extends IRcommand
 		MIPSGenerator.getInstance().malloc(my_class.getNumOfAttribute()+1);
 
 		// saves virtual table to class pointer
-		MIPSGenerator.getInstance().pushToStack("$s0");
+		MIPSGenerator.getInstance().push_to_stack("$s0");
 		MIPSGenerator.getInstance().la("$s0",String.format("vt_%s",my_class.name));
-		MIPSGenerator.getInstance().lw("$s0","$v0",0);
+		MIPSGenerator.getInstance().sw("$s0","$v0",0);
 		MIPSGenerator.getInstance().popStackTo("$s0");
 		// saves pointer to stack
-		MIPSGenerator.getInstance().pushToStack("$v0");
+		MIPSGenerator.getInstance().push_to_stack("$v0");
 
 	}
 }

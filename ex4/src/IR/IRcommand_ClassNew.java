@@ -32,6 +32,6 @@ public class IRcommand_ClassNew extends IRcommand
 		// jump to class allocation function
 		MIPSGenerator.getInstance().jal(String.format("class_%s",name));
 		// move the pointer of the new class to dst
-		MIPSGenerator.getInstance().mov(dst,"$v0");
+		MIPSGenerator.getInstance().popStackTo(dst.toString());
 	}
 }
