@@ -103,9 +103,9 @@ public class AST_FUNC_DEC extends AST_Node {
 		if(t3.isError()) return t3;
 		s.endFuncScope();
 		s.enter(id, t);
-		this.scope_type = s.getVarScope();
+		this.scope_type = s.getVarScope(id);
 		if(this.scope_type.equals("local_class")){
-			this.class_name = s.getClassName(id);
+			this.class_name = s.curClass.name;
 		}
 		return t;
 		

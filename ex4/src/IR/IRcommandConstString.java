@@ -1,5 +1,6 @@
 package IR;
 import TEMP.*;
+import MIPS.*;
 
 public class IRcommandConstString extends IRcommand {
 

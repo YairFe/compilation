@@ -28,7 +28,7 @@ public class IRcommand_FuncReturn extends IRcommand
 	public void MIPSme()
 	{
 		// move value to $v0
-		if(value != null) MIPSGenerator.getInstance().mov("$v0",value);	
+		if(value != null) MIPSGenerator.getInstance().mov("$v0",value.toString());	
 		// pop out all local func variables from stack
 		MIPSGenerator.getInstance().mov("$sp","$fp");
 		// pop fp from stack

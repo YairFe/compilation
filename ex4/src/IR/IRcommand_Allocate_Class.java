@@ -13,7 +13,7 @@ import java.util.*;
 /*******************/
 import TEMP.*;
 import MIPS.*;
-import TYPEs.*;
+import TYPES.*;
 
 public class IRcommand_Allocate_Class extends IRcommand
 {
@@ -35,7 +35,7 @@ public class IRcommand_Allocate_Class extends IRcommand
 		List<String> funcList = my_class.getFuncList();
 		for(String func : funcList){
 			String father_name = my_class.getClassNameWithAttribute(func);
-			MIPSGenerator.getInstance().allocate_func(String.format("%s_%s",father_name,func);
+			MIPSGenerator.getInstance().allocate_func(String.format("%s_%s",father_name,func));
 		}
 		// build class allocation function
 		MIPSGenerator.getInstance().label_text(String.format("class_%s",my_class.name));

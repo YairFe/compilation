@@ -6,7 +6,7 @@ public class AST_EXP_VAR_FUNC extends AST_EXP {
 	public AST_VAR var;
 	public String fn;
 	public AST_EXP_LIST exps;
-
+	public int func_offset;
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
@@ -92,7 +92,7 @@ public class AST_EXP_VAR_FUNC extends AST_EXP {
 		TEMP t1 = var.IRme();
 		TEMP_LIST t2 = null;
 		if(exps != null ) { t2 = exps.IRme(); }
-		IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(dst, t1, this.fn, t2));
+		IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(dst, t1, this.fn, t2, func_offset));
 		return dst;
 	}
 	

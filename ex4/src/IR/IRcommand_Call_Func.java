@@ -16,25 +16,29 @@ public class IRcommand_Call_Func extends IRcommand {
 		TEMP_LIST argsp = this.args;
 		int args_num = 0;
 
+		// push temps to stack
+		MIPSGenerator.getInstance().funcPrologue();
 		// arguments should be pushed in reverse order, so cycle to the end of the list
 		while((argsp != null) && (argsp.next != null)) { args_num += 1; argsp = argsp.next; }
 		
 		while(argsp != null) {
 			// push arguments to stack
-			MIPSGenerator.getInstance().push_to_stack(argsp.value.toString(),0, 0);
+			MIPSGenerator.getInstance().push_to_stack(argsp.value.toString());
 			argsp = argsp.prev;
 		}
 		
 		// jump to function
-		MIPSGenerator.getInstance().jal(name);
+		MIPSGenerator.getInstance().jal(String.format("func_%s",name));
 		
-		// save return value
-		MIPSGenerator.getInstance().getFuncResult(dst);
+		if(dst != null)
+			// save return value
+			MIPSGenerator.getInstance().mov(dst.toString(),"$v0");
 		
 		// clear arguments from stack
-		MIPSGenerator.getInstance().dec_sp(4*args_num);
+		MIPSGenerator.getInstance().addu("$sp","$sp",4*args_num);
 		
-		
+		// pop temps from stack
+		MIPSGenerator.getInstance().funcEpilogue();
 		
 	}
 

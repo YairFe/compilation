@@ -1,6 +1,7 @@
 package IR;
 
-import TEMP.TEMP;
+import TEMP.*;
+import MIPS.*;
 
 public class IRcommand_Binop_String_Concat extends IRcommand {
 

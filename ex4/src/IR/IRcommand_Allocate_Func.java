@@ -13,7 +13,7 @@ import java.util.*;
 /*******************/
 import TEMP.*;
 import MIPS.*;
-import TYPEs.*;
+import TYPES.*;
 
 public class IRcommand_Allocate_Func extends IRcommand
 {

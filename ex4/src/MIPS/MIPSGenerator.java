@@ -134,7 +134,10 @@ public class MIPSGenerator
 	{
 		fileWriter.format("\tsw %s, %d(%s)",src,offset,dst);
 	}
-	
+	public void sb(String dst,String src,int offset)
+	{
+		fileWriter.format("\tsb %s, %d(%s)",dst,offset,src);
+	}
 	public void lb(String dst,String src,int offset)
 	{
 		fileWriter.format("\tlb %s, %d(%s)",dst,offset,src);
@@ -144,10 +147,9 @@ public class MIPSGenerator
 	{
 		fileWriter.format("\tmov %s, %s",dst,src);
 	}
-	
-	public void getFuncResult(String dst)
+	public void sll(String dst,String oprnd1,int times)
 	{
-		fileWriter.format("\tmov %s, $v0",dst);
+		fileWriter.format("\tsll %s,%s,%d\n",dst,oprnd1,times);
 	}
 	public void add(String dst,String oprnd1,String oprnd2)
 	{
@@ -164,6 +166,9 @@ public class MIPSGenerator
 	public void sub(String dst,String oprnd1,String oprnd2)
 	{
 		fileWriter.format("\tsub %s,%s,%s\n",dst,oprnd1,oprnd2);
+	}
+	public void addi(String dst, String src, int val) {
+		fileWriter.format("\taddi %s,%s,%d\n", dst, src, val);
 	}
 	public void addu(String dst, String src, int val) {
 		fileWriter.format("\taddu %s,%s,%d\n", dst, src, val);

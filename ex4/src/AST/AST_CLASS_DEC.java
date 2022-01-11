@@ -129,7 +129,7 @@ public class AST_CLASS_DEC extends AST_Node {
 	public TEMP IRme() {
 		if(this.cont != null) this.cont.IRme(true); // when true IR only the functions false IR only the variables
 		// build new class flow save pointer on the stack
-		IR.getInstance().Add_IRcommand(new IRcommand_Allocate_Class(this.decClass);
+		IR.getInstance().Add_IRcommand(new IRcommand_Allocate_Class(this.decClass));
 		// visit all AST_VAR_DEC of the class
 		if(this.cont != null) this.cont.IRme(false);
 		// jumping back to the main flow with $ra address

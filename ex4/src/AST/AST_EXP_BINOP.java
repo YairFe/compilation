@@ -98,7 +98,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		if(OP.OP == 5) 
 		{	
 			/* check for string equality testing */
-			if((t1 == TYPE_STRING.getInstance()) && (t2 == TYPE_STRING.getInstance())) { this.stringEQ = true; return TYPE_INT.getInstance(); }
+			if((t1 == TYPE_STRING.getInstance()) && (t2 == TYPE_STRING.getInstance())) { this.stringEQ = true;}
 			/* check that the compared values have similar types */
 			if(s.canAssignValueToVar(t1,t2) || s.canAssignValueToVar(t2, t1) || (t1 == TYPE_VOID.getInstance() && t2 == TYPE_VOID.getInstance())) return TYPE_INT.getInstance();
 			
@@ -122,7 +122,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		switch(OP.OP) {
 			case 1: {
 				// case: addition
-				if (this.stringConcat) { IR.getInstance().Add_IRcommand(new IRcommand_Binop_String_Concat(dst, t1, t2, ((AST_EXP_STRING)left).length,  ((AST_EXP_STRING)right).length)); }
+				if (this.stringConcat) { IR.getInstance().Add_IRcommand(new IRcommand_Binop_String_Concat(dst, t1, t2)); }
 				else { IR.getInstance().Add_IRcommand(new IRcommand_Binop_Add_Integers(dst,t1,t2)); }
 				break;
 			}
@@ -145,7 +145,7 @@ public class AST_EXP_BINOP extends AST_EXP
 				// case: equality testing
 				if(this.stringEQ) { 
 					// string equality testing
-					IR.getInstance().Add_IRcommand(new IRcommand_Binop_String_EQ(dst,t1,t2)); 
+					IR.getInstance().Add_IRcommand(new IRcommand_Binop_EQ_Strings(dst,t1,t2)); 
 				}
 				else { 
 					// NOTE: equality testing between arrays and class instances is similar to integer equality testing

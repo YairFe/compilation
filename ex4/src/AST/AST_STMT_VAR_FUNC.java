@@ -109,7 +109,7 @@ public class AST_STMT_VAR_FUNC extends AST_STMT {
 			}
 		} else {
 			TEMP t1 = var.IRme();
-			int func_index = class_type.getFuncIndex();
+			int func_index = class_type.getFuncIndex(fn);
 			if(this.exps == null)
 				IR.getInstance().Add_IRcommand(new IRcommand_ClassVirtualCall(null,t1,fn,null,func_index));
 			else{

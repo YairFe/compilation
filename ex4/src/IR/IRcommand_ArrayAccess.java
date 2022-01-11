@@ -32,15 +32,15 @@ public class IRcommand_ArrayAccess extends IRcommand
 	public void MIPSme()
 	{
 		// put in dst the size of the array
-		MIPSGenerator.getInstance().lw(dst,array,0);
+		MIPSGenerator.getInstance().lw(dst.toString(),array.toString(),0);
 		// #TODO need to define abort
-		MIPSGenerator.getInstance().bge(dst,index,"abort");
+		MIPSGenerator.getInstance().bge(dst.toString(),index.toString(),"abort");
 		// put in dst the offset value
-		MIPSGenerator.getInstance().addi(dst,index,1);
-		MIPSGenerator.getInstance().sll(dst,dst,2);
+		MIPSGenerator.getInstance().addi(dst.toString(),index.toString(),1);
+		MIPSGenerator.getInstance().sll(dst.toString(),dst.toString(),2);
 		// put in dst the address value
-		MIPSGenerator.getInstance().add(dst,array,dst);
-		MIPSGenerator.getInstance().lw(dst,dst,0);
+		MIPSGenerator.getInstance().add(dst.toString(),array.toString(),dst.toString());
+		MIPSGenerator.getInstance().lw(dst.toString(),dst.toString(),0);
 		
 	}
 }
