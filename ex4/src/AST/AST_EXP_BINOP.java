@@ -112,9 +112,6 @@ public class AST_EXP_BINOP extends AST_EXP
 	/**********************************/
 	public TEMP IRme()
 	{
-		// STATUS: integer binops dealt with.
-		// TODO: implement non-integer binops. 
-		
 		TEMP t1 = null;
 		TEMP t2 = null;
 		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
