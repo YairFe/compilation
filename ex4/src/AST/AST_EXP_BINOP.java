@@ -6,6 +6,7 @@ public class AST_EXP_BINOP extends AST_EXP
 	public AST_EXP left;
 	public AST_EXP right;
 	boolean stringConcat = false;
+	boolean stringEQ = false;
 	
 	/******************/
 	/* CONSTRUCTOR(S) */
@@ -95,9 +96,12 @@ public class AST_EXP_BINOP extends AST_EXP
 		
 		// case: equality testing
 		if(OP.OP == 5) 
-		{
+		{	
+			/* check for string equality testing */
+			if((t1 == TYPE_STRING.getInstance()) && (t2 == TYPE_STRING.getInstance())) { this.stringEQ = true; return TYPE_INT.getInstance(); }
 			/* check that the compared values have similar types */
 			if(s.canAssignValueToVar(t1,t2) || s.canAssignValueToVar(t2, t1) || (t1 == TYPE_VOID.getInstance() && t2 == TYPE_VOID.getInstance())) return TYPE_INT.getInstance();
+			
 		}
 		// otherwise, error
 		return new TYPE_ERROR(line);
@@ -121,7 +125,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		switch(OP.OP) {
 			case 1: {
 				// case: addition
-				if (this.stringConcat) { IR.getInstance().Add_IRcommand(new IRcommand_Binop_String_Concat(dst, t1,t2)); }
+				if (this.stringConcat) { IR.getInstance().Add_IRcommand(new IRcommand_Binop_String_Concat(dst, t1, t2, ((AST_EXP_STRING)left).length,  ((AST_EXP_STRING)right).length)); }
 				else { IR.getInstance().Add_IRcommand(new IRcommand_Binop_Add_Integers(dst,t1,t2)); }
 				break;
 			}
@@ -142,7 +146,7 @@ public class AST_EXP_BINOP extends AST_EXP
 			}
 			case 5: {
 				// case: equality testing
-				if(this.stringConcat) { 
+				if(this.stringEQ) { 
 					// string equality testing
 					IR.getInstance().Add_IRcommand(new IRcommand_Binop_String_EQ(dst,t1,t2)); 
 				}
