@@ -3,6 +3,7 @@ package AST; import TYPES.*; import TEMP.*; import IR.*;
 public class AST_EXP_STRING extends AST_EXP {
 	
 	public String value;
+	public int length;
 
 	/******************/
 	/* CONSTRUCTOR(S) */
@@ -24,6 +25,7 @@ public class AST_EXP_STRING extends AST_EXP {
 		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
 		this.value = value;
+		this.length = value.length();
 	}
 	
 	/************************************************/
@@ -55,7 +57,7 @@ public class AST_EXP_STRING extends AST_EXP {
 	public TEMP IRme()
 	{
 		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
-		IR.getInstance().Add_IRcommand(new IRcommandConstString(t,value));
+		IR.getInstance().Add_IRcommand(new IRcommandConstString(t,value,length));
 		return t;
 	}
 }
