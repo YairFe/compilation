@@ -109,10 +109,9 @@ public class MIPSGenerator
 		fileWriter.format("\tli $v0,9\n");
 		fileWriter.format("\tsyscall\n");
 	}
-	public void load(TEMP dst,String var_name)
+	public void load(String dst,String var_name)
 	{
-		int idxdst=dst.getSerialNumber();
-		fileWriter.format("\tlw Temp_%d,global_%s\n",idxdst,var_name);
+		fileWriter.format("\tlw %s,global_%s\n",dst,var_name);
 	}
 	public void store(String var_name,String src)
 	{
@@ -150,12 +149,6 @@ public class MIPSGenerator
 	{
 		fileWriter.format("\tmov %s, $v0",dst);
 	}
-	
-	public void setFuncResult(TEMP dst)
-	{
-		int idx1=dst.getSerialNumber();
-		fileWriter.format("\tmov $v0, Temp_%d",idx1);
-	}
 	public void add(String dst,String oprnd1,String oprnd2)
 	{
 		fileWriter.format("\tadd %s,%s,%s\n",dst,oprnd1,oprnd2);
@@ -164,21 +157,13 @@ public class MIPSGenerator
 	{
 		fileWriter.format("\tmul %s,%s,%s\n",dst,oprnd1,oprnd2);
 	}
-	public void div(TEMP dst,TEMP oprnd1,TEMP oprnd2)
+	public void div(String dst,String oprnd1,String oprnd2)
 	{
-		int i1 =oprnd1.getSerialNumber();
-		int i2 =oprnd2.getSerialNumber();
-		int dstidx=dst.getSerialNumber();
-
-		fileWriter.format("\tdiv Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
+		fileWriter.format("\tdiv %s,$s,$s\n",dst,oprnd1,oprnd2);
 	}
-	public void sub(TEMP dst,TEMP oprnd1,TEMP oprnd2)
+	public void sub(String dst,String oprnd1,String oprnd2)
 	{
-		int i1 =oprnd1.getSerialNumber();
-		int i2 =oprnd2.getSerialNumber();
-		int dstidx=dst.getSerialNumber();
-
-		fileWriter.format("\tsub Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
+		fileWriter.format("\tsub %s,%s,%s\n",dst,oprnd1,oprnd2);
 	}
 	public void addu(String dst, String src, int val) {
 		fileWriter.format("\taddu %s,%s,%d\n", dst, src, val);
