@@ -48,4 +48,10 @@ public class IRcommand_ClassFieldSet extends IRcommand
 			MIPSGenerator.getInstance().popStackTo("$s0");
 		}			
 	}
+	public TEMP_LIST getLiveTemp(TEMP_LIST input){
+		TEMP_LIST result = input.clone();
+		result.add(my_class);
+		result.add(value);
+		return result;
+	}
 }

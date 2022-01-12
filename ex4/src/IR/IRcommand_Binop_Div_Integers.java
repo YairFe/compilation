@@ -1,7 +1,7 @@
 package IR;
 
 import MIPS.MIPSGenerator;
-import TEMP.TEMP;
+import TEMP.*;
 
 public class IRcommand_Binop_Div_Integers extends IRcommand {
 
@@ -38,6 +38,14 @@ public class IRcommand_Binop_Div_Integers extends IRcommand {
 		MIPSGenerator.getInstance().mov(dst.toString(),"$s0");
 		MIPSGenerator.getInstance().label(label_end_min);
 		MIPSGenerator.getInstance().popStackTo("$s0");
+	}
+	public TEMP_LIST getLiveTemp(TEMP_LIST input){
+		TEMP_LIST result = input.clone();
+		result.add(t1);
+		result.add(t2);
+		result.remove(dst);
+		if(result.value == null) return null;
+		return result;
 	}
 
 }

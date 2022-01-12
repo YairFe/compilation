@@ -31,4 +31,11 @@ public class IRcommand_ConstInt extends IRcommand
 	{
 		MIPSGenerator.getInstance().li(t.toString(),value);
 	}
+
+	public TEMP_LIST getLiveTemp(TEMP_LIST input){
+		TEMP_LIST result = input.clone();
+		result.remove(t);
+		if(result.value == null) return null;
+		return result;
+	}
 }

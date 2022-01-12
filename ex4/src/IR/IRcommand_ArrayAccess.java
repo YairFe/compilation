@@ -43,4 +43,12 @@ public class IRcommand_ArrayAccess extends IRcommand
 		MIPSGenerator.getInstance().lw(dst.toString(),dst.toString(),0);
 		
 	}
+	public TEMP_LIST getLiveTemp(TEMP_LIST input){
+		TEMP_LIST result = input.clone();
+		result.add(array);
+		result.add(index);
+		result.remove(dst);
+		if(result.value == null) return null;
+		return result;
+	}
 }

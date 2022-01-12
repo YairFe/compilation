@@ -68,4 +68,15 @@ public class IRcommand_ClassVirtualCall extends IRcommand
 		MIPSGenerator.getInstance().push_to_stack(lst.value.toString());
 		return stack_offset + 4;
 	}
+
+	public TEMP_LIST getLiveTemp(TEMP_LIST input){
+		TEMP_LIST result = input.clone();
+		result.add(my_class);
+		for(TEMP_LIST e=args;e!=null;e=e.next){
+			result.add(e.value);
+		}
+		if(dst != null) result.remove(dst);
+		if(result.value == null) return null;
+		return result;
+	}
 }

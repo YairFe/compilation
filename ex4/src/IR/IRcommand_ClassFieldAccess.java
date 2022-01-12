@@ -35,4 +35,12 @@ public class IRcommand_ClassFieldAccess extends IRcommand
 	{
 		MIPSGenerator.getInstance().lw(dst.toString(), my_class.toString(),(index+1)*4);
 	}
+
+	public TEMP_LIST getLiveTemp(TEMP_LIST input){
+		TEMP_LIST result = input.clone();
+		result.add(my_class);
+		result.remove(dst);
+		if(result.value == null) return null;
+		return result;
+	}
 }

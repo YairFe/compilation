@@ -41,5 +41,14 @@ public class IRcommand_Call_Func extends IRcommand {
 		MIPSGenerator.getInstance().funcEpilogue();
 		
 	}
+	public TEMP_LIST getLiveTemp(TEMP_LIST input){
+		TEMP_LIST result = input.clone();
+		for(TEMP_LIST e=args;e!=null;e=e.next){
+			result.add(e.value);
+		}
+		if(dst != null) result.remove(dst);
+		if(result.value == null) return null;
+		return result;
+	}
 
 }

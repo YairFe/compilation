@@ -10,6 +10,7 @@ package IR;
 /*******************/
 /* PROJECT IMPORTS */
 /*******************/
+import TEMP.*;
 
 public abstract class IRcommand
 {
@@ -20,6 +21,10 @@ public abstract class IRcommand
 	public    static String getFreshLabel(String msg)
 	{
 		return String.format("Label_%d_%s",label_counter++,msg);
+	}
+	public TEMP_LIST getLiveTemp(TEMP_LIST input){
+		TEMP_LIST result = input.clone();
+		return result;
 	}
 
 	/***************/

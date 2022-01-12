@@ -34,4 +34,10 @@ public class IRcommand_ClassNew extends IRcommand
 		// move the pointer of the new class to dst
 		MIPSGenerator.getInstance().popStackTo(dst.toString());
 	}
+	public TEMP_LIST getLiveTemp(TEMP_LIST input){
+		TEMP_LIST result = input.clone();
+		result.remove(dst);
+		if(result.value == null) return null;
+		return result;
+	}
 }

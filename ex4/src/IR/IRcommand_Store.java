@@ -46,4 +46,9 @@ public class IRcommand_Store extends IRcommand
 		}
 
 	}
+	public TEMP_LIST getLiveTemp(TEMP_LIST input){
+		TEMP_LIST result = input.clone();
+		result.add(src);
+		return result;
+	}
 }

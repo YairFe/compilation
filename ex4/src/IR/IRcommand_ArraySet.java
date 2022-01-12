@@ -57,4 +57,11 @@ public class IRcommand_ArraySet extends IRcommand
 		MIPSGenerator.getInstance().finalizeFile();
 		MIPSGenerator.getInstance().label(ok);
 	}
+	public TEMP_LIST getLiveTemp(TEMP_LIST input){
+		TEMP_LIST result = input.clone();
+		result.add(arr);
+		result.add(index);
+		result.add(value);
+		return result;
+	}
 }

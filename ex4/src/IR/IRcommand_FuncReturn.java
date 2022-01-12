@@ -38,4 +38,9 @@ public class IRcommand_FuncReturn extends IRcommand
 		// jump to the return address
 		MIPSGenerator.getInstance().jr("$ra");
 	}
+	public TEMP_LIST getLiveTemp(TEMP_LIST input){
+		TEMP_LIST result = input.clone();
+		if (value != null) result.add(value);
+		return result;
+	}
 }

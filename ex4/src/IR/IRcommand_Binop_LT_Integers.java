@@ -72,4 +72,12 @@ public class IRcommand_Binop_LT_Integers extends IRcommand
 		/******************/
 		MIPSGenerator.getInstance().label(label_end);
 	}
+	public TEMP_LIST getLiveTemp(TEMP_LIST input){
+		TEMP_LIST result = input.clone();
+		result.add(t1);
+		result.add(t2);
+		result.remove(dst);
+		if(result.value == null) return null;
+		return result;
+	}
 }
