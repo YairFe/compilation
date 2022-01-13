@@ -8,12 +8,16 @@ public class IRcommand_Binop_String_Concat extends IRcommand {
 	public TEMP t1;
 	public TEMP t2;
 	public TEMP dst;
+	public int t1_length;
+	public int t2_length;
 
-	public IRcommand_Binop_String_Concat(TEMP dst,TEMP t1,TEMP t2)
+	public IRcommand_Binop_String_Concat(TEMP dst,TEMP t1,TEMP t2, int t1_length, int t2_length)
 	{
 		this.dst = dst;
 		this.t1 = t1;
 		this.t2 = t2;
+		this.t1_length = t1_length;
+		this.t2_length = t2_length;
 	}
 	
 	public void MIPSme() { 
@@ -26,8 +30,8 @@ public class IRcommand_Binop_String_Concat extends IRcommand {
 		MIPSGenerator.getInstance().push_to_stack("$s1");
 		MIPSGenerator.getInstance().push_to_stack("$s2");
 		// load the size of the strings
-		MIPSGenerator.getInstance().lw("$s0",t1.toString(),0);
-		MIPSGenerator.getInstance().lw("$s1",t2.toString(),0);
+		MIPSGenerator.getInstance().li("$s0",t1_length);
+		MIPSGenerator.getInstance().li("$s1",t2_length);
 		// calculate the total size of the desired string
 		// save the size to $s0
 		MIPSGenerator.getInstance().add("$s0","$s0","$s1");
@@ -54,7 +58,7 @@ public class IRcommand_Binop_String_Concat extends IRcommand {
 		MIPSGenerator.getInstance().addu("$s0","$s0",1);
 		MIPSGenerator.getInstance().addu("$s2","$s2",1);
 		MIPSGenerator.getInstance().jump(assign_first);
-		// label assign scond
+		// label assign second
 		MIPSGenerator.getInstance().label(assign_second);
 		MIPSGenerator.getInstance().beqz("$s0",end_label);
 		// store the char
