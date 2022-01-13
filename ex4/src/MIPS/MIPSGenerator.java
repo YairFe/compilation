@@ -92,7 +92,6 @@ public class MIPSGenerator
 	{
 		fileWriter.format(".data\n");
 		fileWriter.format("\t%s:\n",var_name);
-		fileWriter.format("\t .word %d\n",value.length());
 		fileWriter.format("\t .asciiz \"%s\"\n",value);
 	}
 	public void text_segment(){
