@@ -1,7 +1,7 @@
 package TEMP;
 
 public class REG_ALLOC {
-	private TEMP_LIST all_temporaries = null; // a list of all created temporaries in sorted order
+	private TEMP_LIST all_temporaries = null; // a list of all created temporaries in sorted order (graph nodes)
 	
 	private TEMP_LIST stack = null; // will be used as a stack for the graph coloring algorithm
 					// NOTE: adding and removing temporaries from stack should be done
