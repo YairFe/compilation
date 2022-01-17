@@ -27,6 +27,11 @@ public class TEMP
 		return serial;
 	}
 	
+	public int numOfNeighbors() {
+		if(this.neighbors == null) return 0;
+		return this.neighbors.length;
+	}
+	
 	public void addNeighbor(TEMP n) { 
 		if(this.neighbors == null) this.neighbors = new TEMP_LIST(n, null);
 		else this.neighbors.add(n);
