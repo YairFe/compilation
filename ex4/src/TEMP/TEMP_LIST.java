@@ -5,15 +5,18 @@ public class TEMP_LIST {
 	public TEMP_LIST prev;
 	public TEMP value;
 	public TEMP_LIST next;
+	public int length = 1;
 	
 	public TEMP_LIST (TEMP value, TEMP_LIST next) {
+		// assumption: at initialization, value is never null
 		this.value = value;
 		this.next = next;
 		this.prev =  null;
-		if(this.next != null) { this.next.prev = this; }
+		if(this.next != null) { this.next.prev = this; this.length += this.next.length; }
 	}
-	// assume sorted lists
+	
 	public boolean equals(TEMP_LIST other){
+		// assume sorted lists
 		if(other == null)
 			return false;
 		// there is always one instance of every TEMP
@@ -27,10 +30,13 @@ public class TEMP_LIST {
 		}
 		return this.next.equals(other.next);
 	}
+	
 	public void remove(TEMP other){
 		if(other == null)
 			return;
+		
 		TEMP_LIST prevValue = null;
+		
 		for(TEMP_LIST e=this;e!= null;e=e.next){
 			if(e.value.getSerialNumber() == other.getSerialNumber()){
 				if(prevValue == null){
@@ -44,22 +50,33 @@ public class TEMP_LIST {
 				} else{
 					prevValue.next = e.next;
 				}
+				// element removed - decrease length
+				this.length -= 1;
 				return;
 			}
 			prevValue = e;
 		}
+		
+		// element not found
 		return;
 	}
+	
 	public void add(TEMP other){
 		if(other == null)
 			return;
+		
 		if(this.next == null){
 			this.next = new TEMP_LIST(other,this.next);
+			// element added - increase length
+			this.length += 1;
 			return;
 		}
+		
 		TEMP_LIST prevValue = null;
+		
 		for(TEMP_LIST e=this;e!=null;e=e.next){
 			if(e.value.getSerialNumber() == other.getSerialNumber())
+				// element already present
 				return;
 			else if(e.value.getSerialNumber() > other.getSerialNumber()){
 				if(prevValue == null){
@@ -68,6 +85,8 @@ public class TEMP_LIST {
 				} else{
 					prevValue.next = new TEMP_LIST(other,e);
 				}
+				// element added - increase length
+				this.length += 1;
 				return;
 			}
 			prevValue = e;
