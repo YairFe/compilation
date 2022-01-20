@@ -19,12 +19,14 @@ public class IRcommand_Binop_Div_Integers extends IRcommand {
 	public void MIPSme() { 
 		int max = 32767;
 		int min = -32768;
+		String abort = getFreshLabel("abort");
+		String end_label = getFreshLabel("end_label");
 		String label_end_max = getFreshLabel("label_end_max");
 		String label_end_min = getFreshLabel("label_end_min");
 		
 		MIPSGenerator.getInstance().push_to_stack("$s0");
 		// if t2 equal to zero print message and exit
-		MIPSGenerator.getInstance().beqz(t2.toString(),"label_division_by_zero");
+		MIPSGenerator.getInstance().beqz(t2.toString(),abort);
 		MIPSGenerator.getInstance().div(dst.toString(),t1.toString(),t2.toString());
 		// if the division product greater than max assign max to dst
 		MIPSGenerator.getInstance().li("$s0",max);
@@ -38,13 +40,18 @@ public class IRcommand_Binop_Div_Integers extends IRcommand {
 		MIPSGenerator.getInstance().mov(dst.toString(),"$s0");
 		MIPSGenerator.getInstance().label(label_end_min);
 		MIPSGenerator.getInstance().popStackTo("$s0");
+		// abort function
+		MIPSGenerator.getInstance().jump(end_label);
+		MIPSGenerator.getInstance().label(abort);
+		MIPSGenerator.getInstance().print_string("string_illegal_div_by_0");
+		MIPSGenerator.getInstance().exit();
+		MIPSGenerator.getInstance().label(end_label);
 	}
 	public TEMP_LIST getLiveTemp(TEMP_LIST input){
 		TEMP_LIST result = input.clone();
 		result.add(t1);
 		result.add(t2);
 		result.remove(dst);
-		if(result.value == null) return null;
 		return result;
 	}
 

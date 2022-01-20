@@ -49,7 +49,6 @@ public class IRcommand_Load extends IRcommand
 	public TEMP_LIST getLiveTemp(TEMP_LIST input){
 		TEMP_LIST result = input.clone();
 		result.remove(dst);
-		if(result.value == null) return null;
 		return result;
 	}
 }

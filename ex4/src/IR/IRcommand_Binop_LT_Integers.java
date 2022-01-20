@@ -77,7 +77,6 @@ public class IRcommand_Binop_LT_Integers extends IRcommand
 		result.add(t1);
 		result.add(t2);
 		result.remove(dst);
-		if(result.value == null) return null;
 		return result;
 	}
 }

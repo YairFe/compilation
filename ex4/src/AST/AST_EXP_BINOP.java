@@ -122,7 +122,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		switch(OP.OP) {
 			case 1: {
 				// case: addition
-				if (this.stringConcat) { IR.getInstance().Add_IRcommand(new IRcommand_Binop_String_Concat(dst, t1, t2, ((AST_EXP_STRING)left).length, ((AST_EXP_STRING)right).length)); }
+				if (this.stringConcat) { IR.getInstance().Add_IRcommand(new IRcommand_Binop_String_Concat(dst, t1, t2)); }
 				else { IR.getInstance().Add_IRcommand(new IRcommand_Binop_Add_Integers(dst,t1,t2)); }
 				break;
 			}

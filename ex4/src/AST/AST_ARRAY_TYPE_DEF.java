@@ -67,4 +67,7 @@ public class AST_ARRAY_TYPE_DEF extends AST_Node {
 		s.enter(id, t1);
 		return t1; // can return void as well
 	}
+	public TEMP IRme(){
+		return null;
+	}
 }

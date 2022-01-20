@@ -26,12 +26,16 @@ public class MIPSGenerator
 	/***********************/
 	public void finalizeFile()
 	{
-		fileWriter.print("\tli $v0,10\n");
-		fileWriter.print("\tsyscall\n");
+		this.exit();
 		fileWriter.close();
 	}
+	public void exit()
+	{
+		fileWriter.print("\tli $v0,10\n");
+		fileWriter.print("\tsyscall\n");
+	}
 	public void print_string(String error_msg){
-		fileWriter.format("\tla %s\n",error_msg);
+		fileWriter.format("\tla $a0,%s\n",error_msg);
 		fileWriter.format("\tli $v0,4\n");
 		fileWriter.format("\tsyscall\n");
 	}
@@ -253,7 +257,10 @@ public class MIPSGenerator
 	/******************************/
 	/* GET SINGLETON INSTANCE ... */
 	/******************************/
-	public static MIPSGenerator getInstance()
+	public static MIPSGenerator getInstance(){
+		return instance;
+	}
+	public static MIPSGenerator getInstance(String filename)
 	{
 		if (instance == null)
 		{
@@ -264,16 +271,11 @@ public class MIPSGenerator
 
 			try
 			{
-				/*********************************************************************************/
-				/* [1] Open the MIPS text file and write data section with error message strings */
-				/*********************************************************************************/
-				String dirname="./output/";
-				String filename=String.format("MIPS.txt");
 
 				/***************************************/
 				/* [2] Open MIPS text file for writing */
 				/***************************************/
-				instance.fileWriter = new PrintWriter(dirname+filename);
+				instance.fileWriter = new PrintWriter(filename);
 			}
 			catch (Exception e)
 			{
@@ -287,8 +289,13 @@ public class MIPSGenerator
 			instance.fileWriter.print("string_access_violation: .asciiz \"Access Violation\"\n");
 			instance.fileWriter.print("string_illegal_div_by_0: .asciiz \"Division By Zero\"\n");
 			instance.fileWriter.print("string_invalid_ptr_dref: .asciiz \"Invalid Pointer Dereference\"\n");
-			instance.fileWriter.print(String.format("max: .word %d\n",32767));
-			instance.fileWriter.print(String.format("min: .word %d\n",-32768));
+			instance.fileWriter.format("max: .word %d\n",32767);
+			instance.fileWriter.format("min: .word %d\n",-32768);
+
+			instance.text_segment();
+			instance.jump("func_main");
+
+
 		}
 		return instance;
 	}

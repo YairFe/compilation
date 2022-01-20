@@ -39,7 +39,6 @@ public class IRcommand_ArrayNew extends IRcommand
 		TEMP_LIST result = input.clone();
 		result.add(size);
 		result.remove(dst);
-		if(result.value == null) return null;
 		return result;
 	}
 }

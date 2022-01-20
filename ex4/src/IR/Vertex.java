@@ -29,7 +29,8 @@ public class Vertex
         if(command instanceof IRcommand_FuncReturn && ((IRcommand_FuncReturn)command).value != null){
             this.input = new TEMP_LIST(((IRcommand_FuncReturn)command).value,null);
         }else{
-            this.input = null;
+            // value is null when the list is empty
+            this.input = new TEMP_LIST(null,null);
         }
         this.output = null;
 	}
@@ -43,9 +44,11 @@ public class Vertex
             this.prev = new VertexList(other,prev);
     }
     public void liveness(){
-        if(this.next != null && this.next.head != null){
-            // start liveness from the end
-            this.next.head.liveness();
+        if(this.next != null){
+            this.input = this.next.head.output.clone();
+            for(VertexList e=this.next.tail;e!=null;e=e.tail){
+                this.input.union(e.head.output);
+            }
         }
         TEMP_LIST IRLiveTemp = command.getLiveTemp(this.input);
         // if after liveness there isn't any change dont do anything
@@ -54,15 +57,10 @@ public class Vertex
             return;
         }
         this.output = IRLiveTemp;
-        // first update every input
-        for(VertexList e=this.next;e!=null;e=e.tail){
-            e.head.input = IRLiveTemp;
-        }
-        // then run liveness for every node
+        // then run liveness for every neighbor
         for(VertexList e=this.next;e!=null;e=e.tail){
             e.head.liveness();
         }
-        
     }
 
     public void buildColoredGraph(){

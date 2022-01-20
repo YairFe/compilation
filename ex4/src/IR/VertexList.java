@@ -21,9 +21,8 @@ public class VertexList
 		this.head = head;
         this.tail = tail;
 	}
-
+    /* return the vertex in the graph with the povided label */
     public Vertex getVertexWithLabelName(String name){
-        VertexList prevVertex = null;
         VertexList curVertex = new VertexList(head,tail);
         while(curVertex != null && curVertex.head != null){
             if(curVertex.head.command instanceof IRcommand_Label &&
@@ -36,7 +35,6 @@ public class VertexList
             ((IRcommand_Jump_If_Eq_To_Zero) curVertex.head.command).label_name.equals(name)){
                 return curVertex.head;
             }
-            prevVertex = curVertex;
             curVertex = curVertex.tail;
         }
         return null;

@@ -14,40 +14,40 @@ public class IRcommand_Call_Func extends IRcommand {
 	
 	public void MIPSme() { 
 		TEMP_LIST argsp = this.args;
-		int args_num = 0;
 
 		// push temps to stack
 		MIPSGenerator.getInstance().funcPrologue();
-		// arguments should be pushed in reverse order, so cycle to the end of the list
-		while((argsp != null) && (argsp.next != null)) { args_num += 1; argsp = argsp.next; }
-		
-		while(argsp != null) {
-			// push arguments to stack
-			MIPSGenerator.getInstance().push_to_stack(argsp.value.toString());
-			argsp = argsp.prev;
-		}
-		
+		// save args to stack from last to first
+		int stack_offset = this.saveToStack(this.args);
 		// jump to function
 		MIPSGenerator.getInstance().jal(String.format("func_%s",name));
 		
 		if(dst != null)
 			// save return value
 			MIPSGenerator.getInstance().mov(dst.toString(),"$v0");
-		
 		// clear arguments from stack
-		MIPSGenerator.getInstance().addu("$sp","$sp",4*args_num);
-		
+		MIPSGenerator.getInstance().subu("$sp","$sp",stack_offset);
 		// pop temps from stack
 		MIPSGenerator.getInstance().funcEpilogue();
 		
 	}
+
+	/* recursive function to save the arguments from last to first*/
+	public int saveToStack(TEMP_LIST lst){
+		if(lst == null){
+			return 0;
+		}
+		int stack_offset = this.saveToStack(lst.next);
+		MIPSGenerator.getInstance().push_to_stack(lst.value.toString());
+		return stack_offset + 4;
+	}
+
 	public TEMP_LIST getLiveTemp(TEMP_LIST input){
 		TEMP_LIST result = input.clone();
 		for(TEMP_LIST e=args;e!=null;e=e.next){
 			result.add(e.value);
 		}
 		if(dst != null) result.remove(dst);
-		if(result.value == null) return null;
 		return result;
 	}
 

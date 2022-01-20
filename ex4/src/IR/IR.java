@@ -53,43 +53,52 @@ public class IR
 	/*	optimize me		*/
 	/********************/
 	public void OPTme(){
+		// using tmp to loop through the list
 		IRcommandList tmp = new IRcommandList(head,tail);
 		VertexList label_list = null;
-		VertexList return_list = null;
+		VertexList jump_list = null;
 		VertexList func_list = null;
+		VertexList return_list = null;
 		// vertex for looping through the graph
-		Vertex prevVertex = null;
-		Vertex curVertex = null;
+		Vertex prevVertex = null; // pointer to the previous vertex we saw
+		Vertex curVertex = null; // pointer to the current vertex we saw
 		// looping through the ir command from start to end
 		while(tmp != null && tmp.head != null){
 			prevVertex = curVertex;
 			curVertex = new Vertex(tmp.head);
 			if(tmp.head instanceof IRcommand_Allocate_Func){
+				// list of all the function in the program
 				func_list = new VertexList(curVertex, func_list);
 			} else {
 				if(prevVertex != null) prevVertex.addNext(curVertex);
 				curVertex.addPrev(prevVertex);
+				// if the command is of type jump we should add edge to the label
 				if(tmp.head instanceof IRcommand_Jump_Label){
 					Vertex labelVertex = label_list.getVertexWithLabelName(((IRcommand_Jump_Label)tmp.head).label_name);
 					if(labelVertex != null){
 						labelVertex.addPrev(curVertex);
 						curVertex.addNext(labelVertex);
 					} else {
-						return_list = new VertexList(curVertex,return_list);
+						jump_list = new VertexList(curVertex,jump_list);
 					}
 					curVertex = null;
+				// if the command is of type conditional jump add edge to the label
+				// without setting current to null
 				} else if(tmp.head instanceof IRcommand_Jump_If_Eq_To_Zero) {
 					Vertex labelVertex = label_list.getVertexWithLabelName(((IRcommand_Jump_If_Eq_To_Zero)tmp.head).label_name);
 					if(labelVertex != null){
 						labelVertex.addPrev(curVertex);
 						curVertex.addNext(labelVertex);
 					} else {
-						return_list = new VertexList(curVertex,return_list);
+						jump_list = new VertexList(curVertex,jump_list);
 					}
+				// if the command is return we should invalidate current vertex
 				} else if(tmp.head instanceof IRcommand_FuncReturn){
-					curVertex = null;	
+					curVertex = null;
+					return_list = new VertexList(curVertex,return_list);
+				// if the command is label we set a pointer the the right jump command
 				}else if(tmp.head instanceof IRcommand_Label){
-					Vertex returnVertex = return_list.getVertexWithLabelName(((IRcommand_Label)tmp.head).label_name);
+					Vertex returnVertex = jump_list.getVertexWithLabelName(((IRcommand_Label)tmp.head).label_name);
 					if(returnVertex != null){
 						returnVertex.addNext(curVertex);
 						curVertex.addPrev(returnVertex);
@@ -100,11 +109,10 @@ public class IR
 			}
 			tmp = tmp.tail;
 		}
-		for(VertexList e=func_list;e!= null;e=e.tail){
+		for(VertexList e=return_list;e!=null;e=e.tail){
 			if(e.head != null){
-				// running liveness on each function graph
+				// running liveness on each return command
 				e.head.liveness();
-				e.head.buildColoredGraph();
 			}
 		}
 	}

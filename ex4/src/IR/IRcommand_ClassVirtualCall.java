@@ -35,6 +35,10 @@ public class IRcommand_ClassVirtualCall extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
+		String abort = getFreshLabel("abort");
+		String end_label = getFreshLabel("end_label");
+		MIPSGenerator.getInstance().beqz(my_class.toString(), abort);
+
 		MIPSGenerator.getInstance().push_to_stack("$s0");
 		// save temp register to stack
 		MIPSGenerator.getInstance().funcPrologue();
@@ -57,6 +61,12 @@ public class IRcommand_ClassVirtualCall extends IRcommand
 		// poping out the temps back to their registers
 		MIPSGenerator.getInstance().funcEpilogue();
 		MIPSGenerator.getInstance().popStackTo("$s0");
+		// abort function
+		MIPSGenerator.getInstance().jump(end_label);
+		MIPSGenerator.getInstance().label(abort);
+		MIPSGenerator.getInstance().print_string("string_invalid_ptr_dref");
+		MIPSGenerator.getInstance().exit();
+		MIPSGenerator.getInstance().label(end_label);
 	}
 
 	/* recursive function to save the arguments from last to first*/
@@ -76,7 +86,6 @@ public class IRcommand_ClassVirtualCall extends IRcommand
 			result.add(e.value);
 		}
 		if(dst != null) result.remove(dst);
-		if(result.value == null) return null;
 		return result;
 	}
 }

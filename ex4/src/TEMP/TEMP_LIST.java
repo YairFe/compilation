@@ -37,7 +37,9 @@ public class TEMP_LIST {
 		
 		TEMP_LIST prevValue = null;
 		
-		for(TEMP_LIST e=this;e!= null;e=e.next){
+		for(TEMP_LIST e=this;e!=null;e=e.next){
+			// null value mean empty list
+			if(e.value == null) return;
 			if(e.value.getSerialNumber() == other.getSerialNumber()){
 				if(prevValue == null){
 					if(e.next == null){
@@ -65,17 +67,15 @@ public class TEMP_LIST {
 		if(other == null)
 			return;
 		
-		if(this.next == null){
-			this.next = new TEMP_LIST(other,this.next);
-			// element added - increase length
-			this.length += 1;
-			return;
-		}
-		
 		TEMP_LIST prevValue = null;
 		
 		for(TEMP_LIST e=this;e!=null;e=e.next){
-			if(e.value.getSerialNumber() == other.getSerialNumber())
+			if(e.value == null){
+				e.value = other;
+				e.next = new TEMP_LIST(null,null);
+				length += 1;
+				return;
+			} else if(e.value.getSerialNumber() == other.getSerialNumber())
 				// element already present
 				return;
 			else if(e.value.getSerialNumber() > other.getSerialNumber()){
@@ -91,8 +91,16 @@ public class TEMP_LIST {
 			}
 			prevValue = e;
 		}
+		// might have to remove that row
 		prevValue.next = new TEMP_LIST(other,null);
 	}
+
+	public void union(TEMP_LIST other){
+		for(TEMP_LIST e=other; e!= null;e=e.next){
+			this.add(e.value);
+		}
+	}
+
 	public TEMP_LIST clone(){
 		TEMP_LIST tmp = null;
 		if(this.next != null)

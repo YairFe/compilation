@@ -54,7 +54,6 @@ public class IRcommand_Binop_Sub_Integers extends IRcommand
 		result.add(t1);
 		result.add(t2);
 		result.remove(dst);
-		if(result.value == null) return null;
 		return result;
 	}
 }
