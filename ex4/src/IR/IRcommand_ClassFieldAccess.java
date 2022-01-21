@@ -41,7 +41,8 @@ public class IRcommand_ClassFieldAccess extends IRcommand
 		// abort function
 		MIPSGenerator.getInstance().jump(end_label);
 		MIPSGenerator.getInstance().label(abort);
-		MIPSGenerator.getInstance().print_string("string_invalid_ptr_dref");
+		MIPSGenerator.getInstance().la("$a0","string_invalid_ptr_dref");
+		MIPSGenerator.getInstance().print_string();
 		MIPSGenerator.getInstance().exit();
 		MIPSGenerator.getInstance().label(end_label);
 	}

@@ -34,8 +34,7 @@ public class MIPSGenerator
 		fileWriter.print("\tli $v0,10\n");
 		fileWriter.print("\tsyscall\n");
 	}
-	public void print_string(String error_msg){
-		fileWriter.format("\tla $a0,%s\n",error_msg);
+	public void print_string(){
 		fileWriter.format("\tli $v0,4\n");
 		fileWriter.format("\tsyscall\n");
 	}
@@ -48,15 +47,15 @@ public class MIPSGenerator
 	public void funcPrologue(){
 		// there is 10 temp registers we want to save
 		for(int i=0;i<10;i++){
-			fileWriter.format("subu $sp,$sp,4\n");
-			fileWriter.format("sw $t%d,0($sp)\n", i);
+			fileWriter.format("\tsubu $sp,$sp,4\n");
+			fileWriter.format("\tsw $t%d,0($sp)\n", i);
 		}
 	}
 	public void funcEpilogue(){
 		// there is 10 temp registers we want to load
 		for(int i=0;i<10;i++){
-			fileWriter.format("lw $t%d,0($sp)\n", i);
-			fileWriter.format("addu $sp,$sp,4\n");			
+			fileWriter.format("\tlw $t%d,0($sp)\n", i);
+			fileWriter.format("\taddu $sp,$sp,4\n");			
 		}
 	}
 	//public TEMP addressLocalVar(int serialLocalVarNum)
@@ -69,17 +68,13 @@ public class MIPSGenerator
 	//	return t;
 	//}
 	
-	public void dec_sp(int offset) {
-		fileWriter.format("addu $sp,$sp,%d\n",offset);
-	}
-	
 	public void push_to_stack(String src) {
-		fileWriter.format("subu $sp,$sp,4\n");
-		fileWriter.format("sw %s,0($sp)\n", src);
+		fileWriter.format("\tsubu $sp,$sp,4\n");
+		fileWriter.format("\tsw %s,0($sp)\n", src);
 	}
 	public void popStackTo(String src) {
-		fileWriter.format("lw %s,0($sp)\n", src);
-		fileWriter.format("addu $sp,$sp,4\n");
+		fileWriter.format("\tlw %s,0($sp)\n", src);
+		fileWriter.format("\taddu $sp,$sp,4\n");
 		
 	}
 	
@@ -148,7 +143,7 @@ public class MIPSGenerator
 	
 	public void mov(String dst,String src)
 	{
-		fileWriter.format("\tmov %s, %s",dst,src);
+		fileWriter.format("\tmov %s, %s\n",dst,src);
 	}
 	public void sll(String dst,String oprnd1,int times)
 	{

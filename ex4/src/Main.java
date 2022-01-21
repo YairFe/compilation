@@ -50,7 +50,7 @@ public class Main
 			/*************************/
 			/* [6] Print the AST ... */
 			/*************************/
-			AST.PrintMe();
+			//AST.PrintMe();
 			/*************************/
 			/* [7] check for errors  */
 			/*************************/
@@ -75,7 +75,7 @@ public class Main
 			/*************************************/
 			/* [10] Finalize AST GRAPHIZ DOT file */
 			/*************************************/
-			AST_GRAPHVIZ.getInstance().finalizeFile();
+			MIPSGenerator.getInstance().finalizeFile();
 			System.out.println("OK");
     	}
 		catch (IOException e){

@@ -51,7 +51,8 @@ public class IRcommand_ArraySet extends IRcommand
 		// jump to OK label
 		MIPSGenerator.getInstance().jump(end_label);
 		MIPSGenerator.getInstance().label(abort);
-		MIPSGenerator.getInstance().print_string("string_access_violation");
+		MIPSGenerator.getInstance().la("$a0","string_access_violation");
+		MIPSGenerator.getInstance().print_string();
 		MIPSGenerator.getInstance().exit();
 		MIPSGenerator.getInstance().label(end_label);
 	}

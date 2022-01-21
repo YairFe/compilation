@@ -79,7 +79,14 @@ public class AST_EXP_FUNC extends AST_EXP {
 		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
 		TEMP_LIST args = null;
 		if (exps != null) args = exps.IRme();
-		IR.getInstance().Add_IRcommand(new IRcommand_Call_Func(dst, this.fn, args));
+		if(fn.equals("PrintInt") && args != null && args.next == null){
+			IR.getInstance().Add_IRcommand(new IRcommand_PrintInt(args.value));
+		}else if(fn.equals("PrintString") && args != null && args.next == null){
+			IR.getInstance().Add_IRcommand(new IRcommand_PrintString(args.value));
+		}else {
+			IR.getInstance().Add_IRcommand(new IRcommand_Call_Func(dst, this.fn, args));
+		}
+		
 		return dst;
 		
 	}

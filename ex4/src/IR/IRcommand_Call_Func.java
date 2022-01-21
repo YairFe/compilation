@@ -13,8 +13,6 @@ public class IRcommand_Call_Func extends IRcommand {
 	}
 	
 	public void MIPSme() { 
-		TEMP_LIST argsp = this.args;
-
 		// push temps to stack
 		MIPSGenerator.getInstance().funcPrologue();
 		// save args to stack from last to first

@@ -105,7 +105,13 @@ public class AST_STMT_VAR_FUNC extends AST_STMT {
 				IR.getInstance().Add_IRcommand(new IRcommand_Call_Func(null,fn,null));
 			else {
 				TEMP_LIST args = this.exps.IRme();
-				IR.getInstance().Add_IRcommand(new IRcommand_Call_Func(null,fn,args));
+				if(fn.equals("PrintInt") && args != null && args.next == null){
+					IR.getInstance().Add_IRcommand(new IRcommand_PrintInt(args.value));
+				}else if(fn.equals("PrintString") && args != null && args.next == null){
+					IR.getInstance().Add_IRcommand(new IRcommand_PrintString(args.value));
+				} else {
+					IR.getInstance().Add_IRcommand(new IRcommand_Call_Func(null,fn,args));
+				}
 			}
 		} else {
 			TEMP t1 = var.IRme();

@@ -43,7 +43,8 @@ public class IRcommand_Binop_Div_Integers extends IRcommand {
 		// abort function
 		MIPSGenerator.getInstance().jump(end_label);
 		MIPSGenerator.getInstance().label(abort);
-		MIPSGenerator.getInstance().print_string("string_illegal_div_by_0");
+		MIPSGenerator.getInstance().la("$a0","string_illegal_div_by_0");
+		MIPSGenerator.getInstance().print_string();
 		MIPSGenerator.getInstance().exit();
 		MIPSGenerator.getInstance().label(end_label);
 	}
