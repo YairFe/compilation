@@ -50,8 +50,6 @@ public class REG_ALLOC {
 	public void allocate_registers() {
 		// Current implementation: the most basic version of the algorithm.
 		// We do not coalesce MOVs and we assume that the interference graph is 10-colorable (no spills required)
-		
-		boolean all_in_stack = false;
 		TEMP t;
 		TEMP_LIST temps = all_temporaries;
 		int i;
