@@ -52,7 +52,6 @@ public class Vertex
             }
         }
         TEMP_LIST IRLiveTemp = command.getLiveTemp(this.input);
-        System.out.println(this.command.getClass());
         // if after liveness there isn't any change dont do anything
         if(IRLiveTemp.equals(this.output)){
             return;

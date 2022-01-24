@@ -39,6 +39,7 @@ public class IR
 			}
 			it.tail = new IRcommandList(cmd,null);
 		}
+		System.out.println(cmd.getClass());
 	}
 	
 	/***************/

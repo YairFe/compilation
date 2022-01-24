@@ -49,6 +49,7 @@ public class IRcommand_Allocate extends IRcommand
 			}
 		} else if(scope_type.equals("local_func")){
 			// increasing the stack to save local var
+			// #TODO allocation inside a loop will keep increasing the stack!!!
 			MIPSGenerator.getInstance().push_to_stack("$zero");
 		}	
 	}

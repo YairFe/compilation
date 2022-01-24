@@ -36,7 +36,6 @@ public class IRcommand_ArrayAccess extends IRcommand
 
 		// put in dst the size of the array
 		MIPSGenerator.getInstance().lw(dst.toString(),array.toString(),0);
-		// #TODO need to define abort
 		MIPSGenerator.getInstance().bge(dst.toString(),index.toString(),abort);
 		// put in dst the offset value
 		MIPSGenerator.getInstance().addi(dst.toString(),index.toString(),1);
