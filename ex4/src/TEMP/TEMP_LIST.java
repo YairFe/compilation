@@ -15,6 +15,29 @@ public class TEMP_LIST {
 		if(this.next != null) { this.next.prev = this; this.length += this.next.length; }
 	}
 	
+	// ---- Stack functions ----
+	// assumption: add()/remove() and push()/pop() will not be used on the same list.
+	public void stack_push(TEMP other) {
+		TEMP_LIST new_next = new TEMP_LIST(this.value, this.next);
+		this.value = other;
+		this.next = new_next;
+		this.length += 1;
+	}
+	
+	public TEMP stack_pop() {
+		TEMP ret = this.value;
+		if(this.next != null) {
+			this.value = this.next.value;
+			this.next = this.next.next;
+		}
+		else {
+			this.value = null;
+			this.next = null;
+		}
+		this.length -= 1;
+		return ret;
+	}
+	
 	public boolean equals(TEMP_LIST other){
 		// assume sorted lists
 		if(other == null)
