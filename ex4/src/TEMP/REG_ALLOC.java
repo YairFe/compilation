@@ -5,7 +5,7 @@ public class REG_ALLOC {
 	private TEMP_LIST all_temporaries = new TEMP_LIST(null,null); // a list of all created temporaries in sorted order (graph nodes)
 	
 	private final String[] colors = {"$t0", "$t1", "$t2", "$t3", "$t4", 
-					 "$t5", "$t6", "$t7", "$t8", "$t9"}; // a list of register names to "color" the graph with
+							         "$t5", "$t6", "$t7", "$t8", "$t9"}; // a list of register names to "color" the graph with
 	
 	public void addTemp(TEMP t) {
 		this.all_temporaries.add(t);
