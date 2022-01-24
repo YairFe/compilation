@@ -19,6 +19,7 @@ public class Vertex
     public VertexList prev;
     public TEMP_LIST input;
     public TEMP_LIST output;
+    public boolean visitedVertex = false;
 
 	public Vertex(IRcommand command)
 	{
@@ -51,19 +52,32 @@ public class Vertex
             }
         }
         TEMP_LIST IRLiveTemp = command.getLiveTemp(this.input);
+        System.out.println(this.command.getClass());
         // if after liveness there isn't any change dont do anything
-        if((IRLiveTemp == null && this.output == null) || 
-            (IRLiveTemp != null && IRLiveTemp.equals(this.output))){
+        if(IRLiveTemp.equals(this.output)){
             return;
         }
         this.output = IRLiveTemp;
         // then run liveness for every neighbor
-        for(VertexList e=this.next;e!=null;e=e.tail){
+        for(VertexList e=this.prev;e!=null;e=e.tail){
             e.head.liveness();
         }
     }
 
-    public void buildColoredGraph(){
-        
+    public void buildDependancyGraph(){
+        if(!this.visitedVertex){
+            for(TEMP_LIST e=this.input;e.value!=null;e=e.next){
+                for(TEMP_LIST f=e.next;f.value!=null;f=f.next){
+                    f.value.addNeighbor(e.value);
+                    e.value.addNeighbor(f.value);
+                } 
+            }
+            this.visitedVertex = true;
+            // go to every neighbor and add his TEMPS
+            for(VertexList j=this.next;j!=null;j=j.tail){
+                if(j.head != null)
+                    j.head.buildDependancyGraph();
+            }
+        }
     }
 }

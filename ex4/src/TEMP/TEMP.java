@@ -14,7 +14,7 @@ package TEMP;
 public class TEMP
 {
 	private int serial=0;
-	public TEMP_LIST neighbors = null; // neighbor list for the interference graph - will be updated during liveness analysis
+	public TEMP_LIST neighbors = new TEMP_LIST(null,null); // neighbor list for the interference graph - will be updated during liveness analysis
 	public String color = null; // will contain the register assigned to this temporary variable
 	
 	public TEMP(int serial)
@@ -43,7 +43,11 @@ public class TEMP
 		// remove a node from the neighbor list
 		if(this.neighbors != null) this.neighbors.remove(n);
 	}
-	
+	public void disconnectFromNeighbors(){
+		for(TEMP_LIST e=this.neighbors;e.value!=null;e=e.next){
+			e.value.removeNeighbor(this);
+		}
+	}
 	public String toString() {
 		// return a "Temp_n" string if a register was not assigned yet.
 		// If there is an asigned register, return the register.

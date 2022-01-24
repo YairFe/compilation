@@ -1,18 +1,15 @@
 package TEMP;
 
 public class TEMP_LIST {
-
-	public TEMP_LIST prev;
 	public TEMP value;
 	public TEMP_LIST next;
-	public int length = 1;
+	public int length = 0;
 	
 	public TEMP_LIST (TEMP value, TEMP_LIST next) {
-		// assumption: at initialization, value is never null
 		this.value = value;
 		this.next = next;
-		this.prev =  null;
-		if(this.next != null) { this.next.prev = this; this.length += this.next.length; }
+		if(value != null) this.length = 1;
+		if(next != null) this.length += next.length;
 	}
 	
 	public boolean equals(TEMP_LIST other){

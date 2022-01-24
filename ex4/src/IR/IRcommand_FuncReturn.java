@@ -39,7 +39,7 @@ public class IRcommand_FuncReturn extends IRcommand
 		MIPSGenerator.getInstance().jr("$ra");
 	}
 	public TEMP_LIST getLiveTemp(TEMP_LIST input){
-		TEMP_LIST result = input != null ? input.clone() : null;
+		TEMP_LIST result = input.clone();
 		if (value != null) 
 			if(result != null) result.add(value);
 			else result = new TEMP_LIST(value,result);

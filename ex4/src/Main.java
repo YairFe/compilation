@@ -65,7 +65,7 @@ public class Main
 			/* [8] IR the AST ... */
 			/**********************/
 			AST.IRme();
-			
+			IR.getInstance().OPTme();
 			/***********************/
 			/* [9] MIPS the IR ... */
 			/***********************/

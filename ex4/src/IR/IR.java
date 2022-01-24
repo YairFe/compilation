@@ -94,11 +94,14 @@ public class IR
 					}
 				// if the command is return we should invalidate current vertex
 				} else if(tmp.head instanceof IRcommand_FuncReturn){
-					curVertex = null;
 					return_list = new VertexList(curVertex,return_list);
+					curVertex = null;
 				// if the command is label we set a pointer the the right jump command
 				}else if(tmp.head instanceof IRcommand_Label){
-					Vertex returnVertex = jump_list.getVertexWithLabelName(((IRcommand_Label)tmp.head).label_name);
+					Vertex returnVertex;
+					if(jump_list != null)
+						 returnVertex = jump_list.getVertexWithLabelName(((IRcommand_Label)tmp.head).label_name);
+					else returnVertex = null;
 					if(returnVertex != null){
 						returnVertex.addNext(curVertex);
 						curVertex.addPrev(returnVertex);
@@ -115,6 +118,12 @@ public class IR
 				e.head.liveness();
 			}
 		}
+		for(VertexList e=func_list;e!=null;e=e.tail){
+			if(e.head != null){
+				e.head.buildDependancyGraph();
+			}
+		}
+		REG_ALLOC.getInstance().allocate_registers();
 	}
 	/**************************************/
 	/* USUAL SINGLETON IMPLEMENTATION ... */
