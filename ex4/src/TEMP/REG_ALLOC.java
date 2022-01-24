@@ -22,7 +22,8 @@ public class REG_ALLOC {
 		}
 		
 		// insert t into the stack
-		stack.stack_push(t);
+		if(stack!=null) stack.stack_push(t);
+		else stack = new TEMP_LIST(t, null);
 	}
 	
 	private void popFromStack() {
