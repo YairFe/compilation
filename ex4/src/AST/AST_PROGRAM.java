@@ -73,7 +73,7 @@ public class AST_PROGRAM extends AST_Node {
 		return TYPE_VOID.getInstance();
 	}
 	public TYPE IRme(){
-		head.IRme();
+		if(head != null) head.IRme();
 		if (tail != null) tail.IRme();
 		return null;
 	}

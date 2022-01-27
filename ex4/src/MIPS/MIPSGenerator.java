@@ -43,6 +43,9 @@ public class MIPSGenerator
 		fileWriter.format("\tmove $a0,%s\n",t);
 		fileWriter.format("\tli $v0,1\n");
 		fileWriter.format("\tsyscall\n");
+		fileWriter.format("\tli $a0,32\n");
+		fileWriter.format("\tli $v0,11\n");
+		fileWriter.format("\tsyscall\n");
 	}
 	public void funcPrologue(){
 		// there is 10 temp registers we want to save
@@ -126,24 +129,24 @@ public class MIPSGenerator
 	
 	public void lw(String dst,String src, int offset)
 	{
-		fileWriter.format("\tlw %s, %d(%s)",dst,offset,src);
+		fileWriter.format("\tlw %s, %d(%s)\n",dst,offset,src);
 	}
 	public void sw(String src,String dst, int offset)
 	{
-		fileWriter.format("\tsw %s, %d(%s)",src,offset,dst);
+		fileWriter.format("\tsw %s, %d(%s)\n",src,offset,dst);
 	}
 	public void sb(String dst,String src,int offset)
 	{
-		fileWriter.format("\tsb %s, %d(%s)",dst,offset,src);
+		fileWriter.format("\tsb %s, %d(%s)\n",dst,offset,src);
 	}
 	public void lb(String dst,String src,int offset)
 	{
-		fileWriter.format("\tlb %s, %d(%s)",dst,offset,src);
+		fileWriter.format("\tlb %s, %d(%s)\n",dst,offset,src);
 	}
 	
 	public void mov(String dst,String src)
 	{
-		fileWriter.format("\tmov %s, %s\n",dst,src);
+		fileWriter.format("\tmove %s, %s\n",dst,src);
 	}
 	public void sll(String dst,String oprnd1,int times)
 	{
@@ -159,7 +162,7 @@ public class MIPSGenerator
 	}
 	public void div(String dst,String oprnd1,String oprnd2)
 	{
-		fileWriter.format("\tdiv %s,$s,$s\n",dst,oprnd1,oprnd2);
+		fileWriter.format("\tdiv %s,%s,%s\n",dst,oprnd1,oprnd2);
 	}
 	public void sub(String dst,String oprnd1,String oprnd2)
 	{
@@ -173,7 +176,7 @@ public class MIPSGenerator
 	}
 	public void subu(String dst,String src,int offset)
 	{
-		fileWriter.format("\tsubu %s,%s,$d\n",dst,src,offset);
+		fileWriter.format("\tsubu %s,%s,%d\n",dst,src,offset);
 	}
 	public void label(String inlabel)
 	{
@@ -286,11 +289,14 @@ public class MIPSGenerator
 			instance.fileWriter.print("string_invalid_ptr_dref: .asciiz \"Invalid Pointer Dereference\"\n");
 			instance.fileWriter.format("max: .word %d\n",32767);
 			instance.fileWriter.format("min: .word %d\n",-32768);
-
-			instance.text_segment();
-			instance.jump("func_main");
-
-
+			instance.label_text("abort_pointer");
+			instance.la("$a0","string_invalid_ptr_dref");
+			instance.print_string();
+			instance.exit();
+			instance.label_text("abort_array");
+			instance.la("$a0","string_access_violation");
+			instance.print_string();
+			instance.exit();
 		}
 		return instance;
 	}

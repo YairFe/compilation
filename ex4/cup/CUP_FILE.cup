@@ -103,8 +103,6 @@ non terminal AST_VAR var;
 non terminal AST_STMT stmt;
 non terminal AST_NEW_EXP newExp;
 non terminal AST_C_FIELD cField;
-non terminal AST_BINOP BINOP;
-
 non terminal AST_VAR_LIST multiVar;
 non terminal AST_STMT_LIST multiStmt;
 non terminal AST_CLASS_CONT classCont;
@@ -171,7 +169,13 @@ multiExp	::=		exp:e 					{: RESULT= new AST_EXP_LIST(lexer.getLine(),e,null);	:}
 					;
 exp			::=		var:v					{: RESULT = new AST_EXP_VAR(lexer.getLine(),v);		:}
 					| LPAREN exp:e RPAREN {: RESULT = new AST_EXP_PAREN(lexer.getLine(),e);		:}
-					| exp:e1 BINOP:op exp:e2		{: RESULT = new AST_EXP_BINOP(lexer.getLine(),e1,e2,op);	:}
+					| exp:e1 PLUS exp:e2		{: RESULT = new AST_EXP_BINOP(lexer.getLine(),e1,e2,1);	:}
+					| exp:e1 MINUS exp:e2		{: RESULT = new AST_EXP_BINOP(lexer.getLine(),e1,e2,2);	:}
+					| exp:e1 TIMES exp:e2		{: RESULT = new AST_EXP_BINOP(lexer.getLine(),e1,e2,3);	:}
+					| exp:e1 DIVIDE exp:e2		{: RESULT = new AST_EXP_BINOP(lexer.getLine(),e1,e2,4);	:}
+					| exp:e1 EQ exp:e2		{: RESULT = new AST_EXP_BINOP(lexer.getLine(),e1,e2,5);	:}
+					| exp:e1 LT exp:e2		{: RESULT = new AST_EXP_BINOP(lexer.getLine(),e1,e2,6);	:}
+					| exp:e1 GT exp:e2		{: RESULT = new AST_EXP_BINOP(lexer.getLine(),e1,e2,7);	:}
 					| var:v DOT ID:id LPAREN multiExp:mul_e RPAREN		{: RESULT = new AST_EXP_VAR_FUNC(lexer.getLine(),v,id,mul_e);	:}
 					| var:v DOT ID:id LPAREN RPAREN		{: RESULT = new AST_EXP_VAR_FUNC(lexer.getLine(),v,id,null);	:}
 					| ID:id LPAREN RPAREN		{: RESULT = new AST_EXP_FUNC(lexer.getLine(),id,null);		:}
@@ -202,13 +206,5 @@ newExp		::=		NEW type:t			{: RESULT = new AST_NEW_EXP(lexer.getLine(),t,null);	:
 					;
 cField		::=		varDec:v				{: RESULT = new AST_C_FIELD(vleft+1,v);	:}
 					| funcDec:f			{: RESULT = new AST_C_FIELD(fleft+1,f);	:}
-					;
-BINOP		::=		PLUS				{: RESULT = new AST_BINOP(lexer.getLine(),1);	:}
-					| MINUS				{: RESULT = new AST_BINOP(lexer.getLine(),2);	:}
-					| TIMES				{: RESULT = new AST_BINOP(lexer.getLine(),3);	:}
-					| DIVIDE			{: RESULT = new AST_BINOP(lexer.getLine(),4);	:}
-					| EQ				{: RESULT = new AST_BINOP(lexer.getLine(),5);	:}
-					| LT				{: RESULT = new AST_BINOP(lexer.getLine(),6);	:}
-					| GT				{: RESULT = new AST_BINOP(lexer.getLine(),7);	:}
 					;
 

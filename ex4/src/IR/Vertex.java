@@ -28,7 +28,7 @@ public class Vertex
         this.prev = null;
 		this.command = command;
         if(command instanceof IRcommand_FuncReturn && ((IRcommand_FuncReturn)command).value != null){
-            this.input = new TEMP_LIST(((IRcommand_FuncReturn)command).value,null);
+            this.input = new TEMP_LIST(((IRcommand_FuncReturn)command).value,new TEMP_LIST(null,null));
         }else{
             // value is null when the list is empty
             this.input = new TEMP_LIST(null,null);
@@ -46,7 +46,8 @@ public class Vertex
     }
     public void liveness(){
         if(this.next != null){
-            this.input = this.next.head.output.clone();
+            if(this.next.head.output != null)
+                this.input = this.next.head.output.clone();
             for(VertexList e=this.next.tail;e!=null;e=e.tail){
                 this.input.union(e.head.output);
             }
@@ -65,6 +66,9 @@ public class Vertex
 
     public void buildDependancyGraph(){
         if(!this.visitedVertex){
+            System.out.format("command: %s\n",this.command.getClass());
+            this.input.printList();
+            System.out.println();
             for(TEMP_LIST e=this.input;e.value!=null;e=e.next){
                 for(TEMP_LIST f=e.next;f.value!=null;f=f.next){
                     f.value.addNeighbor(e.value);

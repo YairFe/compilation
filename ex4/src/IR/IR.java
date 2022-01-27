@@ -75,7 +75,10 @@ public class IR
 				curVertex.addPrev(prevVertex);
 				// if the command is of type jump we should add edge to the label
 				if(tmp.head instanceof IRcommand_Jump_Label){
-					Vertex labelVertex = label_list.getVertexWithLabelName(((IRcommand_Jump_Label)tmp.head).label_name);
+					Vertex labelVertex = null;
+					if(label_list != null){
+						labelVertex = label_list.getVertexWithLabelName(((IRcommand_Jump_Label)tmp.head).label_name);
+					}
 					if(labelVertex != null){
 						labelVertex.addPrev(curVertex);
 						curVertex.addNext(labelVertex);
@@ -86,7 +89,9 @@ public class IR
 				// if the command is of type conditional jump add edge to the label
 				// without setting current to null
 				} else if(tmp.head instanceof IRcommand_Jump_If_Eq_To_Zero) {
-					Vertex labelVertex = label_list.getVertexWithLabelName(((IRcommand_Jump_If_Eq_To_Zero)tmp.head).label_name);
+					Vertex labelVertex = null;
+					if(label_list != null)
+						labelVertex = label_list.getVertexWithLabelName(((IRcommand_Jump_If_Eq_To_Zero)tmp.head).label_name);
 					if(labelVertex != null){
 						labelVertex.addPrev(curVertex);
 						curVertex.addNext(labelVertex);

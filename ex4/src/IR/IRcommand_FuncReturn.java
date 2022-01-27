@@ -40,9 +40,7 @@ public class IRcommand_FuncReturn extends IRcommand
 	}
 	public TEMP_LIST getLiveTemp(TEMP_LIST input){
 		TEMP_LIST result = input.clone();
-		if (value != null) 
-			if(result != null) result.add(value);
-			else result = new TEMP_LIST(value,result);
+		result.add(value);
 		return result;
 	}
 }

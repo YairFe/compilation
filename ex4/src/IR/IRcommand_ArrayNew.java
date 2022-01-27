@@ -38,7 +38,7 @@ public class IRcommand_ArrayNew extends IRcommand
 	public TEMP_LIST getLiveTemp(TEMP_LIST input){
 		TEMP_LIST result = input.clone();
 		result.add(size);
-		result.remove(dst);
+		result.add(dst);
 		return result;
 	}
 }

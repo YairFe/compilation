@@ -23,6 +23,7 @@ public class VertexList
 	}
     /* return the vertex in the graph with the povided label */
     public Vertex getVertexWithLabelName(String name){
+        System.out.format("get label: %s\n",name);
         VertexList curVertex = new VertexList(head,tail);
         while(curVertex != null && curVertex.head != null){
             if(curVertex.head.command instanceof IRcommand_Label &&

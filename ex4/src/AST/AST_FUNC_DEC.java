@@ -9,6 +9,7 @@ public class AST_FUNC_DEC extends AST_Node {
 	String scope_type;
 	// the nearest class in the tree contain the function name
 	String class_name;
+	int numOfLocalVar;
 
 	public AST_FUNC_DEC(int line, AST_Type type, String id, AST_VAR_LIST vars, AST_STMT_LIST stmts) 
 	{
@@ -102,7 +103,9 @@ public class AST_FUNC_DEC extends AST_Node {
 		t3 = stmts.SemantMe();
 		if(t3.isError()) return t3;
 		s.endFuncScope();
+		this.numOfLocalVar = s.func_local_index;
 		s.enter(id, t);
+		
 		this.scope_type = s.getVarScope(id);
 		if(this.scope_type.equals("local_class")){
 			this.class_name = s.curClass.name;
@@ -113,10 +116,11 @@ public class AST_FUNC_DEC extends AST_Node {
 	
 	public TEMP IRme() { 
 		// add function label
+		System.out.format("function %s num %d\n",this.id,this.numOfLocalVar);
 		if(scope_type.equals("local_class"))
-			IR.getInstance().Add_IRcommand(new IRcommand_Allocate_Func(class_name,id));
+			IR.getInstance().Add_IRcommand(new IRcommand_Allocate_Func(class_name,id,numOfLocalVar));
 		else
-			IR.getInstance().Add_IRcommand(new IRcommand_Allocate_Func(null,id));
+			IR.getInstance().Add_IRcommand(new IRcommand_Allocate_Func(null,id,numOfLocalVar));
 		// process statements (should have a list of commands representing the function body)
 		if(stmts != null) stmts.IRme();
 		// add return statement if there isn't any return statement

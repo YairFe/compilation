@@ -104,4 +104,8 @@ public class TEMP_LIST {
 			tmp = this.next.clone();
 		return new TEMP_LIST(this.value,tmp);
 	}
+	public void printList(){
+		System.out.format("%s ",this.value);
+		if(this.next != null) this.next.printList();
+	}
 }

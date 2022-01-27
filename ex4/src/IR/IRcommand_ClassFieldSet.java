@@ -34,14 +34,12 @@ public class IRcommand_ClassFieldSet extends IRcommand
 	public void MIPSme()
 	{
 		int offset = (index+1)*4;
-		String abort = getFreshLabel("abort");
-		String end_label = getFreshLabel("end_label");
 
-		MIPSGenerator.getInstance().beqz(my_class.toString(), abort);
 
-		if(my_class != null)
+		if(my_class != null){
+			MIPSGenerator.getInstance().beqz(my_class.toString(), "abort_pointer");
 			MIPSGenerator.getInstance().sw(value.toString(), my_class.toString(), offset);
-		else{ // my_class is null only when initiallizing class attributes
+		} else{ // my_class is null only when initiallizing class attributes
 			MIPSGenerator.getInstance().push_to_stack("$s0");
 			// we expect the sp to point to class pointer
 			MIPSGenerator.getInstance().lw("$s0","$sp",4);
@@ -52,13 +50,7 @@ public class IRcommand_ClassFieldSet extends IRcommand
 			}
 			MIPSGenerator.getInstance().popStackTo("$s0");
 		}
-		// abort function
-		MIPSGenerator.getInstance().jump(end_label);
-		MIPSGenerator.getInstance().label(abort);
-		MIPSGenerator.getInstance().la("$a0","string_invalid_ptr_dref");
-		MIPSGenerator.getInstance().print_string();
-		MIPSGenerator.getInstance().exit();
-		MIPSGenerator.getInstance().label(end_label);
+		
 	}
 	public TEMP_LIST getLiveTemp(TEMP_LIST input){
 		TEMP_LIST result = input.clone();

@@ -29,7 +29,7 @@ public class SYMBOL_TABLE
 	private int cur_scope_depth = 0;
 	public TYPE_CLASS curClass = null;
 	private TYPE returnType = null;
-	private int func_local_index; // the local index of a var inside a function
+	public int func_local_index; // the local index of a var inside a function
 	private int param_local_index; // the local index of a param in a function 
 
 	/**************************************************************/
@@ -77,11 +77,13 @@ public class SYMBOL_TABLE
 		else if(var_scope.equals("local")){
 			if(returnType != null){
 				var_scope = "local_func";
-				func_local_index++;
+				if(!t.isFunc() && !(name.equals("SCOPE-BOUNDARY")))
+					local_index = func_local_index++;
 			} else {
 				var_scope = "local_class";
 			}
 		}
+
 		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(local_index,var_scope,name,t,hashValue,next,cur_scope_depth,top,top_index++);
 
 		/**********************************************/

@@ -135,6 +135,7 @@ public class AST_VAR_DEC extends AST_Node {
 		this.scope_type = s.getVarScope(id);
 		if(this.scope_type.equals("local_func")){
 			this.index = s.getLocalIndex(id);
+			System.out.format("local name %s index %d\n",this.id,this.index);
 		} else if(this.scope_type.equals("local_class")){
 			this.index = s.getAttributeIndex(id);
 		}
@@ -163,10 +164,9 @@ public class AST_VAR_DEC extends AST_Node {
 		} else{
 			TEMP t1;
 			if(exp != null) t1 = exp.IRme();
-			else if (newexp != null) t1 = exp.IRme();
+			else if (newexp != null) t1 = newexp.IRme();
 			else t1 = null;
 			if(this.scope_type.equals("local_func")){
-				IR.getInstance().Add_IRcommand(new IRcommand_Allocate(this.scope_type));
 				IR.getInstance().Add_IRcommand(new IRcommand_Store(id,t1,this.scope_type,this.index));
 			} else if(this.scope_type.equals("local_class"))
 				IR.getInstance().Add_IRcommand(new IRcommand_ClassFieldSet(null,id,t1,this.index));		

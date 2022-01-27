@@ -2,7 +2,7 @@ package AST; import TYPES.*; import TEMP.*; import IR.*; import SYMBOL_TABLE.*;
 
 public class AST_EXP_BINOP extends AST_EXP
 {
-	AST_BINOP OP;
+	int OP;
 	public AST_EXP left;
 	public AST_EXP right;
 	boolean stringConcat = false;
@@ -11,7 +11,7 @@ public class AST_EXP_BINOP extends AST_EXP
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
-	public AST_EXP_BINOP(int line, AST_EXP left,AST_EXP right,AST_BINOP OP)
+	public AST_EXP_BINOP(int line, AST_EXP left,AST_EXP right,int OP)
 	{
 		super(line);
 		/******************************/
@@ -47,7 +47,6 @@ public class AST_EXP_BINOP extends AST_EXP
 		/* RECURSIVELY PRINT left + right ... */
 		/**************************************/
 		if (left != null) left.PrintMe();
-		if (OP != null) OP.PrintMe();
 		if (right != null) right.PrintMe();
 		
 		/***************************************/
@@ -61,7 +60,6 @@ public class AST_EXP_BINOP extends AST_EXP
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
 		/****************************************/
 		if (left  != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,left.SerialNumber);
-		if (OP  != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,OP.SerialNumber);
 		if (right != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,right.SerialNumber);
 	}
 	
@@ -81,7 +79,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		// case: int binop
 		if ((t1 == TYPE_INT.getInstance()) && (t2 == TYPE_INT.getInstance()))
 		{
-			if((right instanceof AST_EXP_INT) && (((AST_EXP_INT)right).value == 0) && (OP.OP == 4))
+			if((right instanceof AST_EXP_INT) && (((AST_EXP_INT)right).value == 0) && (OP == 4))
 				return new TYPE_ERROR(line);
 			return TYPE_INT.getInstance();
 		}
@@ -89,13 +87,14 @@ public class AST_EXP_BINOP extends AST_EXP
 		// case: string concatenation
 		if ((t1 == TYPE_STRING.getInstance()) && (t2 == TYPE_STRING.getInstance()))
 		{
-			if(OP.OP == 1)
+			if(OP == 1){
 				this.stringConcat = true;
 				return TYPE_STRING.getInstance();
+			}
 		}
 		
 		// case: equality testing
-		if(OP.OP == 5) 
+		if(OP == 5) 
 		{	
 			/* check for string equality testing */
 			if((t1 == TYPE_STRING.getInstance()) && (t2 == TYPE_STRING.getInstance())) { this.stringEQ = true;}
@@ -116,10 +115,11 @@ public class AST_EXP_BINOP extends AST_EXP
 		TEMP t2 = null;
 		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
 				
-		if (left  != null) t1 = left.IRme();
-		if (right != null) t2 = right.IRme();
-		
-		switch(OP.OP) {
+		t1 = left.IRme();
+		t2 = right.IRme();
+		System.out.println(left.getClass());
+		System.out.println(right.getClass());
+		switch(OP) {
 			case 1: {
 				// case: addition
 				if (this.stringConcat) { IR.getInstance().Add_IRcommand(new IRcommand_Binop_String_Concat(dst, t1, t2)); }

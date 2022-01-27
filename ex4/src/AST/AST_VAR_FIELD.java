@@ -67,7 +67,7 @@ public class AST_VAR_FIELD extends AST_VAR
 		TYPE t = ((TYPE_CLASS) var_type).findInClassScope(name);
 		if(t == null) return new TYPE_ERROR(line);
 		this.scope_type = SYMBOL_TABLE.getInstance().getVarScope(name); 
-		this.index = SYMBOL_TABLE.getInstance().getAttributeIndex(name);
+		this.index = ((TYPE_CLASS) var_type).getAttributeIndex(name);
 		return t;
 	}
 

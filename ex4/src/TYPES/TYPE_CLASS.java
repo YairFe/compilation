@@ -99,9 +99,10 @@ public class TYPE_CLASS extends TYPE
 			lst = new LinkedList<String>();
 		}
 		for(TYPE_CLASS_VAR_DEC_LIST e=this.data_members;e!=null;e=e.tail){
-			if(!e.head.t.isFunc() && !lst.contains(e.head.name))
+			if(!e.head.t.isFunc() && !e.head.name.equals(this.name) && !lst.contains(e.head.name))
 				lst.add(e.head.name);
 		}
+		System.out.println(lst.toString());
 		return lst;
 	}
 

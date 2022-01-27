@@ -65,7 +65,9 @@ public class Main
 			/* [8] IR the AST ... */
 			/**********************/
 			AST.IRme();
+			System.out.println("done Generating IR");
 			IR.getInstance().OPTme();
+			System.out.println("done allocating registers");
 			/***********************/
 			/* [9] MIPS the IR ... */
 			/***********************/

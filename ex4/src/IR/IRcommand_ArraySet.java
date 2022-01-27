@@ -33,13 +33,11 @@ public class IRcommand_ArraySet extends IRcommand
 	{
 		// same code as in recitation 11, with saving instead of loading a value
 		
-		String abort = getFreshLabel("abort");
-		String end_label = getFreshLabel("end_label");
 		// save $s0
 		MIPSGenerator.getInstance().push_to_stack("$s0");
-		MIPSGenerator.getInstance().bltz(index.toString(), abort);
+		MIPSGenerator.getInstance().bltz(index.toString(), "abort_array");
 		MIPSGenerator.getInstance().lw("$s0", arr.toString(), 0);
-		MIPSGenerator.getInstance().bge(index.toString(), "$s0", abort);
+		MIPSGenerator.getInstance().bge(index.toString(), "$s0", "abort_array");
 		MIPSGenerator.getInstance().mov("$s0", index.toString());
 		MIPSGenerator.getInstance().add("$s0", "$s0", "1");
 		MIPSGenerator.getInstance().mul("$s0", "$s0", "4");
@@ -48,13 +46,7 @@ public class IRcommand_ArraySet extends IRcommand
 		MIPSGenerator.getInstance().sw(value.toString(), "$s0", 0);
 		// after saving the value, restore $s0
 		MIPSGenerator.getInstance().popStackTo("$s0");
-		// jump to OK label
-		MIPSGenerator.getInstance().jump(end_label);
-		MIPSGenerator.getInstance().label(abort);
-		MIPSGenerator.getInstance().la("$a0","string_access_violation");
-		MIPSGenerator.getInstance().print_string();
-		MIPSGenerator.getInstance().exit();
-		MIPSGenerator.getInstance().label(end_label);
+		
 	}
 	public TEMP_LIST getLiveTemp(TEMP_LIST input){
 		TEMP_LIST result = input.clone();

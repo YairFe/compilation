@@ -33,18 +33,9 @@ public class IRcommand_ClassFieldAccess extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		String abort = getFreshLabel("abort");
-		String end_label = getFreshLabel("end_label");
 
-		MIPSGenerator.getInstance().beqz(my_class.toString(), abort);
+		MIPSGenerator.getInstance().beqz(my_class.toString(), "abort_pointer");
 		MIPSGenerator.getInstance().lw(dst.toString(), my_class.toString(),(index+1)*4);
-		// abort function
-		MIPSGenerator.getInstance().jump(end_label);
-		MIPSGenerator.getInstance().label(abort);
-		MIPSGenerator.getInstance().la("$a0","string_invalid_ptr_dref");
-		MIPSGenerator.getInstance().print_string();
-		MIPSGenerator.getInstance().exit();
-		MIPSGenerator.getInstance().label(end_label);
 	}
 
 	public TEMP_LIST getLiveTemp(TEMP_LIST input){

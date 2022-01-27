@@ -133,7 +133,7 @@ public class AST_CLASS_DEC extends AST_Node {
 		// visit all AST_VAR_DEC of the class
 		if(this.cont != null) this.cont.IRme(false);
 		// jumping back to the main flow with $ra address
-		IR.getInstance().Add_IRcommand(new IRcommand_Jump_Label(null));
+		IR.getInstance().Add_IRcommand(new IRcommand_Jump_Label("back"));
 		return null;
 	}
 }

@@ -54,5 +54,5 @@ public class AST_EXP_PAREN extends AST_EXP {
 	
 	public TYPE SemantMe() { return exp.SemantMe(); }
 
-	public TEMP IRMe() { return exp.IRme(); }
+	public TEMP IRme() { return exp.IRme(); }
 }
