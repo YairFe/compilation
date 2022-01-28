@@ -41,6 +41,7 @@ public class IRcommand_Allocate extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
+		MIPSGenerator.getInstance().label("IR_Allocate");
 		if(scope_type.equals("global")){
 			if(var_value_string != null){
 				MIPSGenerator.getInstance().allocate_string(String.format("global_%s",var_name),var_value_string);
