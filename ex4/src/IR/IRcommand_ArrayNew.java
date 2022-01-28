@@ -29,6 +29,7 @@ public class IRcommand_ArrayNew extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
+		MIPSGenerator.getInstance().label("IR_ArrayNew");
 		MIPSGenerator.getInstance().addi("$a0",size.toString(),1);
 		MIPSGenerator.getInstance().sll("$a0","$a0",2);
 		MIPSGenerator.getInstance().malloc();
