@@ -34,8 +34,8 @@ public class IRcommand_Binop_EQ_Strings extends IRcommand
         String label_start      = getFreshLabel("start");
 		String label_end        = getFreshLabel("end");
 		String label_AssignOne  = getFreshLabel("AssignOne");
-		int offset = 0;
-        
+		
+        	MIPSGenerator.getInstance().label(String.format("IR_BinopEQStrings_%d", this.dst.getSerialNumber()));
 		// save $s0-$s3 to stack
 		MIPSGenerator.getInstance().push_to_stack("$s0");
 		MIPSGenerator.getInstance().push_to_stack("$s1");
