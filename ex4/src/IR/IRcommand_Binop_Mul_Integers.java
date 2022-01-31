@@ -30,6 +30,7 @@ public class IRcommand_Binop_Mul_Integers extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
+		MIPSGenerator.getInstance().label(String.format("IR_BinopMulInt_%d", this.dst.getSerialNumber()));
 		int max = 32767;
 		int min = -32768;
 		String label_end_max = getFreshLabel("label_end_max");
