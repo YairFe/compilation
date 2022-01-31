@@ -31,6 +31,7 @@ public class IRcommand_Binop_LT_Integers extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
+		MIPSGenerator.getInstance().label(String.format("IR_BinopLTInt_%d", this.dst.getSerialNumber()));
 		/*******************************/
 		/* [1] Allocate 2 fresh labels */
 		/*******************************/
