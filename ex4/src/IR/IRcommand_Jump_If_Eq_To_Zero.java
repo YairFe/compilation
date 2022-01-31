@@ -29,6 +29,7 @@ public class IRcommand_Jump_If_Eq_To_Zero extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
+		MIPSGenerator.getInstance().label(String.format("IR_JumpIfEq0_%d", this.t.getSerialNumber()));
 		MIPSGenerator.getInstance().beqz(t.toString(),label_name);
 	}
 
