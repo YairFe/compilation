@@ -19,6 +19,7 @@ public class IRcommand_Store extends IRcommand
 	TEMP src;
 	String scope_type;
 	int index;
+	static int count = 0;
 
 	public IRcommand_Store(String var_name,TEMP src, String scope_type, int index)
 	{
@@ -33,6 +34,8 @@ public class IRcommand_Store extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
+		MIPSGenerator.getInstance().label(String.format("IR_Store_%d", count));
+		count++;
 		if(scope_type.equals("global"))
 			MIPSGenerator.getInstance().store(var_name,src.toString());
 		else if(scope_type.equals("param"))
