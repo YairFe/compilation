@@ -17,6 +17,7 @@ public class IRcommand_Binop_Div_Integers extends IRcommand {
 	}
 	
 	public void MIPSme() { 
+		MIPSGenerator.getInstance().label(String.format("IR_BinopDivInt_%d", this.dst.getSerialNumber()));
 		int max = 32767;
 		int min = -32768;
 		String abort = getFreshLabel("abort");
