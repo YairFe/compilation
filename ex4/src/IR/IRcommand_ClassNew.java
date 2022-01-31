@@ -29,6 +29,7 @@ public class IRcommand_ClassNew extends IRcommand
 	/***************/
 	public void MIPSme()
 	{		
+		MIPSGenerator.getInstance().label(String.format("IR_ClassNew_%s_%d", this.name, this.dst.getSerialNumber()));
 		// jump to class allocation function
 		MIPSGenerator.getInstance().jal(String.format("class_%s",name));
 		// move the pointer of the new class to dst
