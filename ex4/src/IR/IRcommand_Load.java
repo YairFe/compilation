@@ -33,6 +33,7 @@ public class IRcommand_Load extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
+		MIPSGenerator.getInstance().label(String.format("IR_Load_%d", this.dst.getSerialNumber()));
 		if(scope_type.equals("global"))
 			MIPSGenerator.getInstance().load(dst.toString(),var_name);
 		else if(scope_type.equals("param"))
