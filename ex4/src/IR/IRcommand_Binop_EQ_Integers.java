@@ -31,6 +31,7 @@ public class IRcommand_Binop_EQ_Integers extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
+		MIPSGenerator.getInstance().label(String.format("IR_BinopEQInt_%d", this.dst.getSerialNumber()));
 		/*******************************/
 		/* [1] Allocate 3 fresh labels */
 		/*******************************/
