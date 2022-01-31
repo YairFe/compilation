@@ -8,6 +8,7 @@ public class IRcommandConstNil extends IRcommand {
 	
 	public IRcommandConstNil(TEMP t) { this.t = t; }
 	public void MIPSme() { 
+		MIPSGenerator.getInstance().label(String.format("IR_ConstNil_%d", this.t.getSerialNumber()));
 		MIPSGenerator.getInstance().mov(t.toString(),"$zero");	
 	}
 	public TEMP_LIST getLiveTemp(TEMP_LIST input){
