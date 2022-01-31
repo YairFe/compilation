@@ -16,6 +16,7 @@ import MIPS.*;
 public class IRcommand_Jump_Label extends IRcommand
 {
 	String label_name;
+	static int count = 0;
 	
 	public IRcommand_Jump_Label(String label_name)
 	{
@@ -27,6 +28,8 @@ public class IRcommand_Jump_Label extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
+		MIPSGenerator.getInstance().label(String.format("IR_JumpLabel_%d", count));
+		count++;
 		if(label_name.equals("back")){
 			MIPSGenerator.getInstance().jr("$ra");	
 		} else {
