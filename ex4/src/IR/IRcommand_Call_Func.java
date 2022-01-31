@@ -13,6 +13,7 @@ public class IRcommand_Call_Func extends IRcommand {
 	}
 	
 	public void MIPSme() { 
+		MIPSGenerator.getInstance().label(String.format("IR_CallFunc_%s_%d", this.name, this.dst.getSerialNumber()));
 		// push temps to stack
 		MIPSGenerator.getInstance().funcPrologue();
 		// save args to stack from last to first
