@@ -33,7 +33,7 @@ public class IRcommand_ClassFieldAccess extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-
+		MIPSGenerator.getInstance().label(String.format("IR_ClassFieldAccess_%s_%d", this.field_name, this.dst.getSerialNumber()));
 		MIPSGenerator.getInstance().beqz(my_class.toString(), "abort_pointer");
 		MIPSGenerator.getInstance().lw(dst.toString(), my_class.toString(),(index+1)*4);
 	}
