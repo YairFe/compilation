@@ -14,6 +14,7 @@ public class IRcommandConstString extends IRcommand {
 	}
 	
 	public void MIPSme() { 
+		MIPSGenerator.getInstance().label(String.format("IR_ConstString_%d", this.t.getSerialNumber()));
 		String str_name = getFreshLabel(value);
 		// allocate new constant string in the data segment
 		MIPSGenerator.getInstance().allocate_string(str_name,value);
