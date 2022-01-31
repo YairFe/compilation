@@ -17,7 +17,8 @@ public class IRcommand_ArraySet extends IRcommand
 {
 	TEMP arr;
 	TEMP index;
-    TEMP value;
+        TEMP value;
+	static int count = 0;
 	
 	public IRcommand_ArraySet(TEMP arr, TEMP index, TEMP value)
 	{
@@ -33,6 +34,8 @@ public class IRcommand_ArraySet extends IRcommand
 	{
 		// same code as in recitation 11, with saving instead of loading a value
 		
+		MIPSGenerator.getInstance().label(String.format("IR_ArraySet_%d", count));
+		count++;
 		// save $s0
 		MIPSGenerator.getInstance().push_to_stack("$s0");
 		MIPSGenerator.getInstance().bltz(index.toString(), "abort_array");
