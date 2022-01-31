@@ -16,6 +16,7 @@ import MIPS.*;
 public class IRcommand_FuncReturn extends IRcommand
 {
 	TEMP value;
+	static int count = 0;
 	
 	public IRcommand_FuncReturn(TEMP value)
 	{
@@ -27,6 +28,8 @@ public class IRcommand_FuncReturn extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
+		MIPSGenerator.getInstance().label(String.format("IR_FuncReturn_%d", count));
+		count++;
 		// move value to $v0
 		if(value != null) MIPSGenerator.getInstance().mov("$v0",value.toString());	
 		// pop out all local func variables from stack
