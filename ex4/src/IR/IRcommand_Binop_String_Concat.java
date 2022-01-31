@@ -24,7 +24,8 @@ public class IRcommand_Binop_String_Concat extends IRcommand {
 		String assign_first = getFreshLabel("assign_first");
 		String assign_second = getFreshLabel("assign_second");
 		String end_label = getFreshLabel("end_label");
-
+		
+		MIPSGenerator.getInstance().label(String.format("IR_StringConcat_%d", this.dst.getSerialNumber()));
 		// saves $s0-$s2 to stack
 		MIPSGenerator.getInstance().push_to_stack("$s0");
 		MIPSGenerator.getInstance().push_to_stack("$s1");
