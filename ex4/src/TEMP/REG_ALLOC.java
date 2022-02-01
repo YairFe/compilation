@@ -18,7 +18,6 @@ public class REG_ALLOC {
 				if(e.value.numOfNeighbors() < 10){
 					stack.push(e.value);
 					e.value.disconnectFromNeighbors();
-					System.out.println("here");
 					this.all_temporaries.remove(e.value);
 					break;
 				}
