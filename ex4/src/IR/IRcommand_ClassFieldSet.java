@@ -40,15 +40,11 @@ public class IRcommand_ClassFieldSet extends IRcommand
 			MIPSGenerator.getInstance().beqz(my_class.toString(), "abort_pointer");
 			MIPSGenerator.getInstance().sw(value.toString(), my_class.toString(), offset);
 		} else{ // my_class is null only when initiallizing class attributes
-			MIPSGenerator.getInstance().push_to_stack("$s0");
-			// we expect the sp to point to class pointer
-			MIPSGenerator.getInstance().lw("$s0","$sp",4);
 			if(value != null){
-				MIPSGenerator.getInstance().sw(value.toString(),"$s0",offset);
+				MIPSGenerator.getInstance().sw(value.toString(),"$a0",offset);
 			} else {
-				MIPSGenerator.getInstance().sw("$zero","$s0",offset);
+				MIPSGenerator.getInstance().sw("$zero","$a0",offset);
 			}
-			MIPSGenerator.getInstance().popStackTo("$s0");
 		}
 		
 	}

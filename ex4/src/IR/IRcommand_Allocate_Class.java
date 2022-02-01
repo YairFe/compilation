@@ -32,11 +32,12 @@ public class IRcommand_Allocate_Class extends IRcommand
 	{
 		// build virtual table
 		List<String> funcList = my_class.getFuncList();
+		System.out.format("class:%s list:%s\n",my_class.name,funcList.toString());
 		if(!funcList.isEmpty()){
 			MIPSGenerator.getInstance().label_data(String.format("vt_%s",my_class.name));
 			for(String func : funcList){
-				String father_name = my_class.getClassNameWithAttribute(func);
-				MIPSGenerator.getInstance().allocate_func(String.format("%s_%s",father_name,func));
+				String declared_in_class = my_class.getClassNameWithAttribute(func);
+				MIPSGenerator.getInstance().allocate_func(String.format("%s_%s",declared_in_class,func));
 			}
 		}
 		// build class allocation function
@@ -51,8 +52,14 @@ public class IRcommand_Allocate_Class extends IRcommand
 			MIPSGenerator.getInstance().mov("$s0", "$zero");
 		MIPSGenerator.getInstance().sw("$s0","$v0",0);
 		MIPSGenerator.getInstance().popStackTo("$s0");
-		// saves pointer to stack
 		MIPSGenerator.getInstance().push_to_stack("$v0");
+		MIPSGenerator.getInstance().push_to_stack("$ra");
+		// saves pointer to stack
+		MIPSGenerator.getInstance().mov("$a0", "$v0");
+		MIPSGenerator.getInstance().label(String.format("initialize_class_%s",this.my_class.name));
+		if(this.my_class.father != null){
+			MIPSGenerator.getInstance().jal(String.format("initialize_class_%s",this.my_class.father.name));
+		}
 
 	}
 }

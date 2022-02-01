@@ -20,7 +20,7 @@ public class IRcommand_Call_Func extends IRcommand {
 		// jump to function
 		MIPSGenerator.getInstance().jal(String.format("func_%s",name));
 		// clear arguments from stack
-		MIPSGenerator.getInstance().subu("$sp","$sp",stack_offset);
+		MIPSGenerator.getInstance().addu("$sp","$sp",stack_offset);
 		// pop temps from stack
 		MIPSGenerator.getInstance().funcEpilogue();
 		if(dst != null)

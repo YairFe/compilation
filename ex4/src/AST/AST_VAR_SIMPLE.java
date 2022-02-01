@@ -5,7 +5,7 @@ import TEMP.*; import IR.*;
 
 public class AST_VAR_SIMPLE extends AST_VAR
 {
-	
+	Boolean is_string = false;
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
@@ -52,13 +52,14 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		TYPE id_type = s.find(name);
 		if(id_type == null) return new TYPE_ERROR(line);
 		this.scope_type = s.getVarScope(name);
-		this.index = s.getLocalIndex(name);
+		this.index = this.scope_type.equals("local_class") ? s.getAttributeIndex(name) : s.getLocalIndex(name);
+		if(id_type == TYPE_STRING.getInstance()) this.is_string = true;
 		return id_type;
 	}
 
 	public TEMP IRme(){
 		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
-		IR.getInstance().Add_IRcommand(new IRcommand_Load(dst, name, this.scope_type, this.index));
+		IR.getInstance().Add_IRcommand(new IRcommand_Load(dst, name, this.scope_type, this.index, this.is_string));
 		return dst;
 	}
 }

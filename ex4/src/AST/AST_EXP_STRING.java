@@ -24,8 +24,8 @@ public class AST_EXP_STRING extends AST_EXP {
 		/*******************************/
 		/* COPY INPUT DATA MEMBERS ... */
 		/*******************************/
-		this.value = value;
-		this.length = value.length();
+		this.value = value.substring(1, value.length()-1);
+		this.length = this.value.length();
 	}
 	
 	/************************************************/

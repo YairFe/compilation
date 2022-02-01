@@ -135,9 +135,9 @@ public class AST_VAR_DEC extends AST_Node {
 		this.scope_type = s.getVarScope(id);
 		if(this.scope_type.equals("local_func")){
 			this.index = s.getLocalIndex(id);
-			System.out.format("local name %s index %d\n",this.id,this.index);
 		} else if(this.scope_type.equals("local_class")){
 			this.index = s.getAttributeIndex(id);
+			System.out.format("local name %s index %d\n",this.id,this.index);
 		}
 		
 		return new TYPE_CLASS_VAR_DEC(var_type,id);

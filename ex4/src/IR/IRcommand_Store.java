@@ -41,8 +41,10 @@ public class IRcommand_Store extends IRcommand
 			MIPSGenerator.getInstance().sw(src.toString(),"$fp",(index+1)*-4);
 		else if(scope_type.equals("local_class")){
 			// the first param of a method is the class pointer
+			MIPSGenerator.getInstance().push_to_stack("$s0");
 			MIPSGenerator.getInstance().lw("$s0","$fp",8);
 			MIPSGenerator.getInstance().sw(src.toString(),"$s0",(index+1)*4);
+			MIPSGenerator.getInstance().popStackTo("$s0");
 		}
 
 	}

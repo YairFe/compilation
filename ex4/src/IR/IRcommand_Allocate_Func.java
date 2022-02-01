@@ -43,7 +43,8 @@ public class IRcommand_Allocate_Func extends IRcommand
         MIPSGenerator.getInstance().push_to_stack("$ra");
         MIPSGenerator.getInstance().push_to_stack("$fp");
         MIPSGenerator.getInstance().mov("$fp","$sp");
-		MIPSGenerator.getInstance().subu("$sp","$sp",this.num_of_local_vars*4);
+		if(this.num_of_local_vars > 0)
+			MIPSGenerator.getInstance().subu("$sp","$sp",this.num_of_local_vars*4);
 
 	}
 }

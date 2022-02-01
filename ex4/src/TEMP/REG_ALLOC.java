@@ -14,11 +14,12 @@ public class REG_ALLOC {
 	public void allocate_registers() {
 		Stack<TEMP> stack = new Stack<TEMP>();
 		while(this.all_temporaries.length > 0){
-			for(TEMP_LIST e=this.all_temporaries;e!=null;e=e.next){
+			for(TEMP_LIST e=this.all_temporaries;e!=null && e.value!=null;e=e.next){
 				if(e.value.numOfNeighbors() < 10){
 					stack.push(e.value);
 					e.value.disconnectFromNeighbors();
-					e.remove(e.value);
+					System.out.println("here");
+					this.all_temporaries.remove(e.value);
 					break;
 				}
 			}

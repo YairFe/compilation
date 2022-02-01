@@ -77,19 +77,22 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		return TYPE_VOID.getInstance();
 	}
 	 public TEMP IRme(){
-		 TEMP t = exp.IRme();
+		 TEMP t = null;
 		 TEMP dst;
 		 if(var instanceof AST_VAR_SIMPLE){
 			// need to enter the offset if var is not global
+			t = exp.IRme();
 			IR.getInstance().Add_IRcommand(new IRcommand_Store(var.name,t,var.scope_type,var.index));
 		} else if(var instanceof AST_VAR_FIELD){
 			// pointer to the class
 			dst = ((AST_VAR_FIELD) var).var.IRme();
+			t = exp.IRme();
 			IR.getInstance().Add_IRcommand(new IRcommand_ClassFieldSet(dst,var.name,t,var.index));
 		} else if(var instanceof AST_VAR_SUBSCRIPT){
 			// subscript value
 			dst = ((AST_VAR_SUBSCRIPT) var).var.IRme(); 
 			TEMP index = ((AST_VAR_SUBSCRIPT) var).subscript.IRme();
+			t = exp.IRme();
 			IR.getInstance().Add_IRcommand(new IRcommand_ArraySet(dst,index,t));
 		}
 		return null;

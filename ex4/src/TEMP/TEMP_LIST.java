@@ -70,12 +70,12 @@ public class TEMP_LIST {
 			if(e.value == null){
 				e.value = other;
 				e.next = new TEMP_LIST(null,null);
-				length += 1;
+				this.length += 1;
 				return;
-			} else if(e.value.getSerialNumber() == other.getSerialNumber())
+			} else if(e.value.getSerialNumber() == other.getSerialNumber()){
 				// element already present
 				return;
-			else if(e.value.getSerialNumber() > other.getSerialNumber()){
+			} else if(e.value.getSerialNumber() > other.getSerialNumber()){
 				if(prevValue == null){
 					e.next = new TEMP_LIST(e.value,e.next);
 					e.value = other;
@@ -88,8 +88,6 @@ public class TEMP_LIST {
 			}
 			prevValue = e;
 		}
-		// might have to remove that row
-		prevValue.next = new TEMP_LIST(other,null);
 	}
 
 	public void union(TEMP_LIST other){

@@ -57,7 +57,7 @@ public class MIPSGenerator
 	public void funcEpilogue(){
 		// there is 10 temp registers we want to load
 		for(int i=0;i<10;i++){
-			fileWriter.format("\tlw $t%d,0($sp)\n", i);
+			fileWriter.format("\tlw $t%d,0($sp)\n", 9-i);
 			fileWriter.format("\taddu $sp,$sp,4\n");			
 		}
 	}
@@ -110,9 +110,13 @@ public class MIPSGenerator
 		fileWriter.format("\tli $v0,9\n");
 		fileWriter.format("\tsyscall\n");
 	}
-	public void load(String dst,String var_name)
+	public void load_label(String dst,String var_name)
 	{
 		fileWriter.format("\tlw %s,global_%s\n",dst,var_name);
+	}
+	public void load(String dst,String var_name)
+	{
+		fileWriter.format("\tla %s,global_%s\n",dst,var_name);
 	}
 	public void store(String var_name,String src)
 	{

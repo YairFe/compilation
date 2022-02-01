@@ -40,18 +40,14 @@ public class IRcommand_Binop_String_Concat extends IRcommand {
 		MIPSGenerator.getInstance().addu("$s2","$s2",1);
 		MIPSGenerator.getInstance().jump(first_loop);
 		MIPSGenerator.getInstance().label(end_first_loop);
-		MIPSGenerator.getInstance().li("$s1",0);
 		MIPSGenerator.getInstance().mov("$s2",t2.toString());
 		MIPSGenerator.getInstance().label(second_loop);
 		MIPSGenerator.getInstance().lb("$s3","$s2",0);
 		MIPSGenerator.getInstance().beqz("$s3",end_second_loop);
-		MIPSGenerator.getInstance().addu("$s1","$s1",1);
+		MIPSGenerator.getInstance().addu("$s0","$s0",1);
 		MIPSGenerator.getInstance().addu("$s2","$s2",1);
 		MIPSGenerator.getInstance().jump(second_loop);
 		MIPSGenerator.getInstance().label(end_second_loop);
-		// calculate the total size of the desired string
-		// save the size to $s0
-		MIPSGenerator.getInstance().add("$s0","$s0","$s1");
 		// add size for null and the size of the string
 		MIPSGenerator.getInstance().addu("$a0","$s0",1);
 		// allocate memory
@@ -63,18 +59,20 @@ public class IRcommand_Binop_String_Concat extends IRcommand {
 		MIPSGenerator.getInstance().mov("$s1",t2.toString());
 		// label assign_first
 		MIPSGenerator.getInstance().label(assign_first);
-		MIPSGenerator.getInstance().beqz("$s0",assign_second);
+		MIPSGenerator.getInstance().lb("$s3","$s0",0);
+		MIPSGenerator.getInstance().beqz("$s3",assign_second);
 		// store the char
-		MIPSGenerator.getInstance().sb("$s0","$s2",0);
+		MIPSGenerator.getInstance().sb("$s3","$s2",0);
 		// set the pointer to the next char
 		MIPSGenerator.getInstance().addu("$s0","$s0",1);
 		MIPSGenerator.getInstance().addu("$s2","$s2",1);
 		MIPSGenerator.getInstance().jump(assign_first);
 		// label assign second
 		MIPSGenerator.getInstance().label(assign_second);
-		MIPSGenerator.getInstance().beqz("$s1",end_label);
+		MIPSGenerator.getInstance().lb("$s3","$s1",0);
+		MIPSGenerator.getInstance().beqz("$s3",end_label);
 		// store the char
-		MIPSGenerator.getInstance().sb("$s1","$s2",0);
+		MIPSGenerator.getInstance().sb("$s3","$s2",0);
 		// set the pointer to the next char
 		MIPSGenerator.getInstance().addu("$s1","$s1",1);
 		MIPSGenerator.getInstance().addu("$s2","$s2",1);

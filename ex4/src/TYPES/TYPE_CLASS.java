@@ -1,5 +1,6 @@
 package TYPES;
 import java.util.*;
+import MIPS.*;
 
 public class TYPE_CLASS extends TYPE
 {
@@ -78,16 +79,22 @@ public class TYPE_CLASS extends TYPE
 		}
 		return this.father.getClassNameWithAttribute(name);
 	}
-	public LinkedList<String> getFuncList(){
-		LinkedList<String> lst;
+	
+	public List<String> getFuncList(){
+		List<String> lst;
 		if(father != null){
 			lst = father.getFuncList();
 		} else {
 			lst = new LinkedList<String>();
 		}
+		TYPE_CLASS_VAR_DEC_LIST tmp_list = null;
 		for(TYPE_CLASS_VAR_DEC_LIST e=this.data_members;e!=null;e=e.tail){
-			if(e.head.t.isFunc() && !lst.contains(e.head.name))
-				lst.add(String.format("%s",this.name,e.head.name));
+			if(e.head.t.isFunc() && !lst.contains(e.head.name)){
+				tmp_list = new TYPE_CLASS_VAR_DEC_LIST(e.head,tmp_list);
+			}
+		}
+		for(TYPE_CLASS_VAR_DEC_LIST e=tmp_list;e!=null;e=e.tail){
+			lst.add(String.format("%s",e.head.name));
 		}
 		return lst;
 	}
@@ -98,9 +105,14 @@ public class TYPE_CLASS extends TYPE
 		} else {
 			lst = new LinkedList<String>();
 		}
+		TYPE_CLASS_VAR_DEC_LIST tmp_list = null;
 		for(TYPE_CLASS_VAR_DEC_LIST e=this.data_members;e!=null;e=e.tail){
-			if(!e.head.t.isFunc() && !e.head.name.equals(this.name) && !lst.contains(e.head.name))
-				lst.add(e.head.name);
+			if(!e.head.t.isFunc() && !lst.contains(e.head.name)){
+				tmp_list = new TYPE_CLASS_VAR_DEC_LIST(e.head,tmp_list);
+			}
+		}
+		for(TYPE_CLASS_VAR_DEC_LIST e=tmp_list;e!=null;e=e.tail){
+			lst.add(String.format("%s",e.head.name));
 		}
 		System.out.println(lst.toString());
 		return lst;

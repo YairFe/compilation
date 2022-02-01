@@ -96,7 +96,7 @@ public class SYMBOL_TABLE
 		/****************************************/
 		table[hashValue] = e;
 		
-		if(curClass != null && cur_scope_depth==1){
+		if(curClass != null && cur_scope_depth==1 && !curClass.name.equals(name) && !(t instanceof TYPE_FOR_SCOPE_BOUNDARIES)){
 			curClass.data_members = new TYPE_CLASS_VAR_DEC_LIST(
 												new TYPE_CLASS_VAR_DEC(t,name),
 												curClass.data_members);

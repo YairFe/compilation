@@ -35,11 +35,12 @@ public class IRcommand_ClassVirtualCall extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		String abort = getFreshLabel("abort");
-		String end_label = getFreshLabel("end_label");
-		MIPSGenerator.getInstance().beqz(my_class.toString(), abort);
+		MIPSGenerator.getInstance().beqz(my_class.toString(), "abort_pointer");
 
 		MIPSGenerator.getInstance().push_to_stack("$s0");
+		// get the function address from class pointer
+		MIPSGenerator.getInstance().lw("$s0",my_class.toString(),0);
+		MIPSGenerator.getInstance().lw("$s0","$s0",index*4);
 		// save temp register to stack
 		MIPSGenerator.getInstance().funcPrologue();
 		// save args to stack from last to first
@@ -47,27 +48,15 @@ public class IRcommand_ClassVirtualCall extends IRcommand
 		// save class pointer to stack as first param
 		MIPSGenerator.getInstance().push_to_stack(my_class.toString());
 		stack_offset += 4;
-		// get the function address from class pointer
-		MIPSGenerator.getInstance().lw("$s0",my_class.toString(),0);
-		MIPSGenerator.getInstance().lw("$s0","$s0",index*4);
-		
 		MIPSGenerator.getInstance().jalr("$s0");
 
 		MIPSGenerator.getInstance().addu("$sp","$sp",stack_offset);
-
-		if(dst != null){
-			MIPSGenerator.getInstance().mov(dst.toString(),"$v0");
-		}
 		// poping out the temps back to their registers
 		MIPSGenerator.getInstance().funcEpilogue();
 		MIPSGenerator.getInstance().popStackTo("$s0");
-		// abort function
-		MIPSGenerator.getInstance().jump(end_label);
-		MIPSGenerator.getInstance().label(abort);
-		MIPSGenerator.getInstance().la("$a0","string_invalid_ptr_dref");
-		MIPSGenerator.getInstance().print_string();
-		MIPSGenerator.getInstance().exit();
-		MIPSGenerator.getInstance().label(end_label);
+		if(dst != null){
+			MIPSGenerator.getInstance().mov(dst.toString(),"$v0");
+		}
 	}
 
 	/* recursive function to save the arguments from last to first*/

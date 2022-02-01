@@ -29,19 +29,16 @@ public class TEMP
 	
 	public int numOfNeighbors() {
 		// get current number of interfering temporaries
-		if(this.neighbors == null) return 0;
 		return this.neighbors.length;
 	}
 	
 	public void addNeighbor(TEMP n) { 
-		// add a node to the neighbor list
-		if(this.neighbors == null) this.neighbors = new TEMP_LIST(n, null);
-		else this.neighbors.add(n);
+		this.neighbors.add(n);
 	}
 	
 	public void removeNeighbor(TEMP n) { 
 		// remove a node from the neighbor list
-		if(this.neighbors != null) this.neighbors.remove(n);
+		this.neighbors.remove(n);
 	}
 	public void disconnectFromNeighbors(){
 		for(TEMP_LIST e=this.neighbors;e.value!=null;e=e.next){
