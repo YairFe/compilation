@@ -17,7 +17,7 @@ public class IRcommand_ArraySet extends IRcommand
 {
 	TEMP arr;
 	TEMP index;
-    TEMP value;
+	TEMP value;
 	
 	public IRcommand_ArraySet(TEMP arr, TEMP index, TEMP value)
 	{
@@ -30,9 +30,7 @@ public class IRcommand_ArraySet extends IRcommand
 	/* MIPS me !!! */
 	/***************/
 	public void MIPSme()
-	{
-		// same code as in recitation 11, with saving instead of loading a value
-		
+	{		
 		// save $s0
 		MIPSGenerator.getInstance().push_to_stack("$s0");
 		MIPSGenerator.getInstance().bltz(index.toString(), "abort_array");

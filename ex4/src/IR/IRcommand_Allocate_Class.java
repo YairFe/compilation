@@ -29,7 +29,7 @@ public class IRcommand_Allocate_Class extends IRcommand
 	/* MIPS me !!! */
 	/***************/
 	public void MIPSme()
-	{
+	{	
 		// build virtual table
 		List<String> funcList = my_class.getFuncList();
 		System.out.format("class:%s list:%s\n",my_class.name,funcList.toString());

@@ -17,16 +17,16 @@ public class IRcommand_ClassVirtualCall extends IRcommand
 {
 	TEMP dst;
 	TEMP my_class;
-    String method_name;
-    TEMP_LIST args;
+        String method_name;
+        TEMP_LIST args;
 	int index;
 	
 	public IRcommand_ClassVirtualCall(TEMP dst, TEMP my_class, String name, TEMP_LIST args, int index)
 	{
 		this.dst = dst;
 		this.my_class = my_class;
-        this.method_name = name;
-        this.args = args;
+                this.method_name = name;
+                this.args = args;
 		this.index = index;
 	}
 

@@ -33,7 +33,6 @@ public class IRcommand_ClassFieldAccess extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-
 		MIPSGenerator.getInstance().beqz(my_class.toString(), "abort_pointer");
 		MIPSGenerator.getInstance().lw(dst.toString(), my_class.toString(),(index+1)*4);
 	}

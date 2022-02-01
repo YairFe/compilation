@@ -17,14 +17,14 @@ public class IRcommand_ClassFieldSet extends IRcommand
 {
 	TEMP my_class;
 	String field_name;
-    TEMP value;
+	TEMP value;
 	int index;
 
 	public IRcommand_ClassFieldSet(TEMP my_class, String field_name, TEMP value, int index)
 	{
 		this.my_class = my_class;
 		this.field_name = field_name;
-        this.value = value;
+                this.value = value;
 		this.index = index;
 	}
 	
@@ -34,8 +34,7 @@ public class IRcommand_ClassFieldSet extends IRcommand
 	public void MIPSme()
 	{
 		int offset = (index+1)*4;
-
-
+			
 		if(my_class != null){
 			MIPSGenerator.getInstance().beqz(my_class.toString(), "abort_pointer");
 			MIPSGenerator.getInstance().sw(value.toString(), my_class.toString(), offset);

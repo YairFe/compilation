@@ -15,7 +15,7 @@ import MIPS.*;
 
 public class IRcommand_ArrayAccess extends IRcommand
 {
-	TEMP dst;
+    TEMP dst;
     TEMP array;
     TEMP index;
 	
