@@ -118,6 +118,11 @@ public class SYMBOL_TABLE
 				return e.var_scope;
 			}
 		}
+		if(curClass != null){
+			if(curClass.existInFatherScope(name)){
+				return "class_scope";
+			}
+		}
 		return null;
 	}
 	/****************************************************/
