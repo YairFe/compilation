@@ -53,10 +53,11 @@ public class IRcommand_Allocate_Class extends IRcommand
 		MIPSGenerator.getInstance().sw("$s0","$v0",0);
 		MIPSGenerator.getInstance().popStackTo("$s0");
 		MIPSGenerator.getInstance().push_to_stack("$v0");
-		MIPSGenerator.getInstance().push_to_stack("$ra");
+		
 		// saves pointer to stack
 		MIPSGenerator.getInstance().mov("$a0", "$v0");
 		MIPSGenerator.getInstance().label(String.format("initialize_class_%s",this.my_class.name));
+		MIPSGenerator.getInstance().push_to_stack("$ra");
 		if(this.my_class.father != null){
 			MIPSGenerator.getInstance().jal(String.format("initialize_class_%s",this.my_class.father.name));
 		}

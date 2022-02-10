@@ -120,7 +120,7 @@ public class SYMBOL_TABLE
 		}
 		if(curClass != null){
 			if(curClass.existInFatherScope(name)){
-				return "class_scope";
+				return "local_class";
 			}
 		}
 		return null;
